@@ -1,0 +1,114 @@
+name: PROD
+values:
+  - key: baseUrl
+    value: https://www.mr-group.ru/api
+  - key: projectCode
+    value: ""
+  - key: newsCode
+    value: ""
+  - key: projectsArray
+    value: ""
+  - key: index
+    value: ""
+  - key: faqCategoryCode
+    value: ""
+  - key: faqQuery
+    value: ""
+  - key: decoration
+    value: ""
+  - key: request_url
+    value: ""
+  - key: objectCodeDecaration
+    value: ""
+  - key: projectCodeDecaration
+    value: ""
+  - key: formsConsentsMap
+    value: ""
+  - key: formCode
+    value: ""
+  - key: consentIds
+    value: ""
+  - key: consentIdFirst
+    value: ""
+  - key: category
+    value: ""
+  - key: bookedRealtyObjects
+    value: ""
+  - key: product_code
+    value: ""
+  - key: timestamp
+    value: ""
+  - key: categoryForMrAndPrivate
+    value: ""
+  - key: categoryForZagorod
+    value: ""
+  - key: stepsCode
+    value: ""
+  - key: stepsCodesQueue
+    value: ""
+  - key: stepsCodesIndex
+    value: ""
+  - key: stepsProbesLeft
+    value: ""
+  - key: templateCode
+    value: ""
+  - key: templatesArray
+    value: ""
+  - key: stepsTemplateMap
+    value: ""
+  - key: factCode
+    value: ""
+  - key: contentBannerCode
+    value: ""
+  - key: consentIdsBrokers
+    value: ""
+  - key: projectName
+    value: ""
+  - key: projectsMap
+    value: ""
+  - key: searchQueryLen
+    value: ""
+  - key: categoryHasPlan
+    value: ""
+  - key: projectHasPlanCode
+    value: ""
+  - key: buildingArray
+    value: ""
+  - key: buildingHasPlan
+    value: ""
+  - key: floorNumberArray
+    value: ""
+  - key: floorNumberHasPlan
+    value: ""
+  - key: objectsArray
+    value: ""
+  - key: crmIdHasPlan
+    value: ""
+  - key: sybtypeCodeMortgage
+    value: ""
+  - key: priceForSelectedSubtapeCode
+    value: ""
+  - key: initialPaymentMortgage
+    value: ""
+  - key: periodMortgage
+    value: ""
+  - key: current_id
+    value: ""
+  - key: randProjectMonth
+    value: ""
+  - key: randProjectYear
+    value: ""
+  - key: idDeal
+    value: ""
+  - key: projectCode__index
+    value: ""
+  - key: objectCode
+    value: ""
+  - key: objectFavouritesAdd
+    value: ""
+  - key: deleteObjectFavourites
+    value: ""
+  - key: objectFavouritesAdd__index
+    value: ""
+  - key: deleteObjectFavourites__index
+    value: ""

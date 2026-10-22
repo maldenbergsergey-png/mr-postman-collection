@@ -1,5 +1,5 @@
 $kind: http-request
-name: Получение маркетинговых способов покупок ТЕСТ
+name: Получение маркетинговых способов покупок ТЕСТ2
 url: https://devservices.mr-group.ru:5117/api/v1/Catalogue/project/fabdd00e-c970-4357-a1fa-4e1db3b5407f/purchasemethods
 method: GET
 headers:

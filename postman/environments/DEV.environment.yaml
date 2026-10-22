@@ -1,0 +1,144 @@
+name: DEV
+values:
+  - key: baseUrl
+    value: https://mrsuperapp.adv.ru/api
+  - key: bearerToken
+    value: ""
+  - key: projectCode
+    value: ""
+  - key: newsCode
+    value: ""
+  - key: idDeal
+    value: ""
+  - key: category
+    value: ""
+  - key: product_code
+    value: ""
+  - key: projectsArray
+    value: ""
+  - key: index
+    value: ""
+  - key: current_id
+    value: ""
+  - key: categoryForMrAndPrivate
+    value: ""
+  - key: categoryForZagorod
+    value: ""
+  - key: typicalObjectId
+    value: ""
+  - key: decoration
+    value: ""
+  - key: objectCodeDecaration
+    value: ""
+  - key: projectCodeDecaration
+    value: ""
+  - key: codeTemplates
+    value: ""
+  - key: promoArray
+    value: ""
+  - key: promoCode
+    value: ""
+  - key: projectCodePromo
+    value: ""
+  - key: codeFacts
+    value: ""
+  - key: formsConsentsMap
+    value: ""
+  - key: formCode
+    value: ""
+  - key: consentIds
+    value: ""
+  - key: consentIdFirst
+    value: ""
+  - key: timestamp
+    value: ""
+  - key: bookedRealtyObjects
+    value: ""
+  - key: projectPrivateCode
+    value: ""
+  - key: categoriesOffersListMrclubArray
+    value: ""
+  - key: categoryCode
+    value: ""
+  - key: categoryHasPlan
+    value: ""
+  - key: projectsHasPlanArray
+    value: ""
+  - key: projectHasPlanCode
+    value: ""
+  - key: indexHasPlan
+    value: ""
+  - key: kitchenLayout_type_id
+    value: ""
+  - key: documentDeal
+    value: ""
+  - key: product_id
+    value: ""
+  - key: faqCategoryCode
+    value: ""
+  - key: faqQuery
+    value: ""
+  - key: identifier
+    value: ""
+  - key: consentIndex
+    value: ""
+  - key: projectSearchQueue
+    value: ""
+  - key: projectQueueIndex
+    value: ""
+  - key: searchQuery
+    value: ""
+  - key: searchQueryLen
+    value: ""
+  - key: contentBannerCode
+    value: ""
+  - key: consentsQueue
+    value: ""
+  - key: consentsSourceRaw
+    value: ""
+  - key: consentId
+    value: ""
+  - key: consentIdsBrokers
+    value: ""
+  - key: projectName
+    value: ""
+  - key: projectsMap
+    value: ""
+  - key: randProjectMonth
+    value: ""
+  - key: randProjectYear
+    value: ""
+  - key: categoryCodeMrClub
+    value: ""
+  - key: offersCodeArray
+    value: ""
+  - key: offerCode
+    value: ""
+  - key: buildingArray
+    value: ""
+  - key: buildingHasPlan
+    value: ""
+  - key: floorNumberArray
+    value: ""
+  - key: floorNumberHasPlan
+    value: ""
+  - key: objectsArray
+    value: ""
+  - key: crmIdHasPlan
+    value: ""
+  - key: sybtypeCodeMortgage
+    value: ""
+  - key: priceForSelectedSubtapeCode
+    value: ""
+  - key: initialPaymentMortgage
+    value: ""
+  - key: periodMortgage
+    value: ""
+  - key: templateCode
+    value: ""
+  - key: factCode
+    value: ""
+  - key: stepsCodesQueue
+    value: ""
+  - key: stepsCode
+    value: ""
