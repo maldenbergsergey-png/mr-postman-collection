@@ -1,0 +1,29 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/purchase/:purchase-id/inspections/registration"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    purchase-id: ""
+  body:
+    type: json
+    content: |-
+      {
+        "slot": "<uuid>",
+        "vehicle": {
+          "number": "<string>",
+          "brand": "<string>"
+        }
+      }
+response:
+  statusCode: 204
+  statusText: No Content
+  body:
+    type: text
+    content: ""
+order: 1000

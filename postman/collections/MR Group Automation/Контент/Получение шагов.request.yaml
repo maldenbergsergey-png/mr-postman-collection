@@ -1,0 +1,91 @@
+$kind: http-request
+description: Метод получения данных для контента для блоков с шагами
+url: "{{baseUrl}}/content/steps/{{stepsCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // === Pick stepsCode from stepsCodesQueue (skip null/empty); fallback to env.stepsCode ===
+      const isValid = v =>
+        typeof v === "string" &&
+        v.trim().length > 0 &&
+        !["null","undefined"].includes(v.trim().toLowerCase());
+
+      // 1) Берём очередь кодов
+      let queue;
+      try { queue = JSON.parse(pm.environment.get("stepsCodesQueue") || "[]"); } catch { queue = []; }
+      queue = Array.isArray(queue) ? queue.filter(isValid) : [];
+
+      // 2) Предыдущее значение
+      const prev = String(pm.environment.get("stepsCode") || "").trim();
+
+      // 3) Выбор
+      let pick = prev;
+      if (queue.length === 0) {
+        if (!isValid(prev)) {
+          throw new Error("Нет валидных stepsCodesQueue/stepsCode — сначала вызови /content/template/{{templateCode}}");
+        }
+      } else if (queue.length === 1) {
+        pick = queue[0];
+      } else {
+        // Пытаемся выбрать, отличное от предыдущего
+        for (let i = 0; i < 10; i++) {
+          const candidate = queue[Math.floor(Math.random() * queue.length)];
+          if (candidate !== prev) { pick = candidate; break; }
+        }
+      }
+
+      // 4) Сохраняем только в окружение
+      pm.environment.set("stepsCode", pick);
+      console.log(`→ /content/steps/${pick}`);
+
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: ["steps"],
+        types: {
+          "steps": "array",
+
+          "steps.*.description": "string",
+          "steps.*.number": "string",
+          "steps.*.title": "string"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |
+      // === basic checks for steps ===
+      pm.test("Статус 200 или 404", () => {
+        pm.expect([200, 404]).to.include(pm.response.code);
+      });
+      if (pm.response.code === 404) {
+        console.warn("404 для группы:", pm.variables.get("usedStepsCode"));
+        return;
+      }
+
+      let json;
+      try { json = pm.response.json(); }
+      catch { throw new Error("Ответ /content/steps не JSON"); }
+
+      const steps = Array.isArray(json?.steps) ? json.steps
+                 : Array.isArray(json?.data?.steps) ? json.data.steps
+                 : Array.isArray(json?.items) ? json.items
+                 : Array.isArray(json) ? json
+                 : [];
+
+      pm.test("steps — непустой массив", () => {
+        pm.expect(steps.length, "пусто").to.be.above(0);
+      });
+
+      // краткая сводка
+      console.log({
+        usedStepsCode: pm.variables.get("usedStepsCode"),
+        count: steps.length,
+        sample: steps.slice(0, 3)
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение шагов.resources/examples
+order: 10000

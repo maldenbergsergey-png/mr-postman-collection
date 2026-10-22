@@ -1,0 +1,16 @@
+$kind: http-request
+name: Удаление пользователя [не запускать]
+description: |
+  Метод удаляет личный кабинет и пользователя в SuperApp со всеми связанными сущностями\
+  Работает только для авторизованных пользователей\
+url: "{{baseUrl}}/user"
+method: DELETE
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Удаление пользователя [не запускат.resources/examples
+order: 1000

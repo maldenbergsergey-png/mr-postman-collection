@@ -1,0 +1,170 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/sale/search?query=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: query
+      value: <string>
+      description: (Required) Поисковый запрос
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "air_3d": "<string>",
+            "code": "<string>",
+            "completion_date": "<date>",
+            "external": "<boolean>",
+            "id": "<integer>",
+            "image": "<string>",
+            "is_completed": "<boolean>",
+            "key_project": "<boolean>",
+            "latitude": "<number>",
+            "logo": "<string>",
+            "longitude": "<number>",
+            "main_3d": "<string>",
+            "max_discount": "<number>",
+            "metro": {
+              "color": "<string>",
+              "name": "<string>"
+            },
+            "metro_distance": "<integer>",
+            "min_price": "<number>",
+            "movement_way": {
+              "icon": "<string>",
+              "name": "<string>"
+            },
+            "name": "<string>",
+            "partners": [
+              {
+                "logo": "<string>",
+                "name": "<string>"
+              },
+              {
+                "logo": "<string>",
+                "name": "<string>"
+              }
+            ],
+            "price_table": [
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              },
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              }
+            ],
+            "project_usp": [
+              {
+                "icon": "<string>",
+                "name": "<string>"
+              },
+              {
+                "icon": "<string>",
+                "name": "<string>"
+              }
+            ],
+            "queues": {
+              "consectetur_46a": [
+                "<date>",
+                "<date>"
+              ],
+              "officia_db": [
+                "<date>",
+                "<date>"
+              ]
+            },
+            "title": "<string>",
+            "is_private": "<boolean>",
+            "business_unit": "commercials"
+          },
+          {
+            "air_3d": "<string>",
+            "code": "<string>",
+            "completion_date": "<date>",
+            "external": "<boolean>",
+            "id": "<integer>",
+            "image": "<string>",
+            "is_completed": "<boolean>",
+            "key_project": "<boolean>",
+            "latitude": "<number>",
+            "logo": "<string>",
+            "longitude": "<number>",
+            "main_3d": "<string>",
+            "max_discount": "<number>",
+            "metro": {
+              "color": "<string>",
+              "name": "<string>"
+            },
+            "metro_distance": "<integer>",
+            "min_price": "<number>",
+            "movement_way": {
+              "icon": "<string>",
+              "name": "<string>"
+            },
+            "name": "<string>",
+            "partners": [
+              {
+                "logo": "<string>",
+                "name": "<string>"
+              },
+              {
+                "logo": "<string>",
+                "name": "<string>"
+              }
+            ],
+            "price_table": [
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              },
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              }
+            ],
+            "project_usp": [
+              {
+                "icon": "<string>",
+                "name": "<string>"
+              },
+              {
+                "icon": "<string>",
+                "name": "<string>"
+              }
+            ],
+            "queues": {
+              "veniam7a": [
+                "<date>",
+                "<date>"
+              ],
+              "eiusmod_6e": [
+                "<date>",
+                "<date>"
+              ]
+            },
+            "title": "<string>",
+            "is_private": "<boolean>",
+            "business_unit": "offices"
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

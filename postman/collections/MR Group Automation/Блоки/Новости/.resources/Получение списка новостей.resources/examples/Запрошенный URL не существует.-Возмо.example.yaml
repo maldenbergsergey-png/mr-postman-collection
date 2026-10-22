@@ -1,0 +1,64 @@
+$kind: http-example
+name: |
+  Запрошенный URL не существует.
+
+  Возможные коды ошибок:
+
+  - `not_found` — запрошенный ресурс не найден.
+request:
+  url: "{{baseUrl}}/news?project[]=<string>&dateFrom=<date>&dateTo=<date>&tags[]=<string>&page=<integer>&limit=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: project[]
+      value: <string>
+      description: Фильтр по коду проектов
+    - key: dateFrom
+      value: <date>
+      description: |
+        Фильтр по дате новости, ОТ (включительно).
+    - key: dateTo
+      value: <date>
+      description: |
+        Фильтр по дате новости, ДО (включительно).
+    - key: tags[]
+      value: <string>
+      description: |
+        Вернуть только те новости, у которых есть **хотя бы одна** из перечисленных меток.
+    - key: page
+      value: <integer>
+      description: Номер страницы для пагинации (по умолчанию = 1)
+    - key: limit
+      value: <integer>
+      description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+response:
+  statusCode: 404
+  statusText: Not Found
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 3000

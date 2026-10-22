@@ -1,0 +1,206 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/purchases"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": "<number>",
+            "phase": {
+              "code": "inspection",
+              "name": "<string>",
+              "number": "<number>",
+              "phases_qty": "<number>"
+            },
+            "status": {
+              "code": "active",
+              "name": "Отменена"
+            },
+            "products": [
+              {
+                "area": "<number>",
+                "building": {
+                  "id": "<integer>",
+                  "code": "<string>",
+                  "name": "<string>",
+                  "floors_number": "<integer>",
+                  "deadline": "<string>",
+                  "readiness": "<integer>",
+                  "scheme": "<string>",
+                  "compass_angle": "<number>"
+                },
+                "category": {
+                  "id": "<integer>",
+                  "code": "commercials",
+                  "name": "<string>"
+                },
+                "code": "<string>",
+                "floor": "<integer>",
+                "id": "<integer>",
+                "name": "<string>",
+                "number": "<string>",
+                "project": {
+                  "code": "<string>",
+                  "description": "<string>",
+                  "id": "<integer>",
+                  "marketing_image": "<string>",
+                  "name": "<string>",
+                  "title": "<string>",
+                  "is_private": "<boolean>"
+                },
+                "rooms_number": 0,
+                "technical_layout": "<string>",
+                "contract_price": "<number>"
+              },
+              {
+                "area": "<number>",
+                "building": {
+                  "id": "<integer>",
+                  "code": "<string>",
+                  "name": "<string>",
+                  "floors_number": "<integer>",
+                  "deadline": "<string>",
+                  "readiness": "<integer>",
+                  "scheme": "<string>",
+                  "compass_angle": "<number>"
+                },
+                "category": {
+                  "id": "<integer>",
+                  "code": "parkings",
+                  "name": "<string>"
+                },
+                "code": "<string>",
+                "floor": "<integer>",
+                "id": "<integer>",
+                "name": "<string>",
+                "number": "<string>",
+                "project": {
+                  "code": "<string>",
+                  "description": "<string>",
+                  "id": "<integer>",
+                  "marketing_image": "<string>",
+                  "name": "<string>",
+                  "title": "<string>",
+                  "is_private": "<boolean>"
+                },
+                "rooms_number": 0,
+                "technical_layout": "<string>",
+                "contract_price": "<number>"
+              }
+            ],
+            "expiration_dt": "<date>",
+            "free_booking_dt": "<string>",
+            "cancel_dt": "<date>",
+            "complete_dt": "<date>",
+            "lead_id": "<string>"
+          },
+          {
+            "id": "<number>",
+            "phase": {
+              "code": "booking",
+              "name": "<string>",
+              "number": "<number>",
+              "phases_qty": "<number>"
+            },
+            "status": {
+              "code": "completed",
+              "name": "Отменена"
+            },
+            "products": [
+              {
+                "area": "<number>",
+                "building": {
+                  "id": "<integer>",
+                  "code": "<string>",
+                  "name": "<string>",
+                  "floors_number": "<integer>",
+                  "deadline": "<string>",
+                  "readiness": "<integer>",
+                  "scheme": "<string>",
+                  "compass_angle": "<number>"
+                },
+                "category": {
+                  "id": "<integer>",
+                  "code": "boxrooms",
+                  "name": "<string>"
+                },
+                "code": "<string>",
+                "floor": "<integer>",
+                "id": "<integer>",
+                "name": "<string>",
+                "number": "<string>",
+                "project": {
+                  "code": "<string>",
+                  "description": "<string>",
+                  "id": "<integer>",
+                  "marketing_image": "<string>",
+                  "name": "<string>",
+                  "title": "<string>",
+                  "is_private": "<boolean>"
+                },
+                "rooms_number": 3,
+                "technical_layout": "<string>",
+                "contract_price": "<number>"
+              },
+              {
+                "area": "<number>",
+                "building": {
+                  "id": "<integer>",
+                  "code": "<string>",
+                  "name": "<string>",
+                  "floors_number": "<integer>",
+                  "deadline": "<string>",
+                  "readiness": "<integer>",
+                  "scheme": "<string>",
+                  "compass_angle": "<number>"
+                },
+                "category": {
+                  "id": "<integer>",
+                  "code": "commercials",
+                  "name": "<string>"
+                },
+                "code": "<string>",
+                "floor": "<integer>",
+                "id": "<integer>",
+                "name": "<string>",
+                "number": "<string>",
+                "project": {
+                  "code": "<string>",
+                  "description": "<string>",
+                  "id": "<integer>",
+                  "marketing_image": "<string>",
+                  "name": "<string>",
+                  "title": "<string>",
+                  "is_private": "<boolean>"
+                },
+                "rooms_number": 3,
+                "technical_layout": "<string>",
+                "contract_price": "<number>"
+              }
+            ],
+            "expiration_dt": "<date>",
+            "free_booking_dt": "<string>",
+            "cancel_dt": "<date>",
+            "complete_dt": "<date>",
+            "lead_id": "<string>"
+          }
+        ],
+        "active_purchases_qty": "<integer>",
+        "canceled_purchases_qty": "<integer>",
+        "completed_purchases_qty": "<integer>"
+      }
+order: 1000

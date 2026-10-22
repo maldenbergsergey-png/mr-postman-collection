@@ -1,0 +1,31 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/content/steps/:code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "steps": [
+          {
+            "number": "<string>",
+            "title": "<string>",
+            "description": "<string>"
+          },
+          {
+            "number": "<string>",
+            "title": "<string>",
+            "description": "<string>"
+          }
+        ]
+      }
+order: 1000

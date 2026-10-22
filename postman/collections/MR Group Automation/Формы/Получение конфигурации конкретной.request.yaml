@@ -1,0 +1,82 @@
+$kind: http-request
+name: Получение конфигурации конкретной формы
+description: |
+  Возвращает [конфигурацию](https://wiki.adv.ru/pages/viewpage.action?pageId=307092923)
+  запрошенной формы.
+
+  **Обратите внимание, что перечень идентификаторов определён как перечисляемый тип, но может
+  набор его вариантов может изменяться с выпуском новых версий.**
+
+  - [Обзорное описание получения согласий пользователя](https://wiki.adv.ru/pages/viewpage.action?pageId=307094741)
+  - [Описание метода API для бэкенда](https://wiki.adv.ru/pages/viewpage.action?pageId=307093643)
+url: "{{baseUrl}}/forms/configs/{{formCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // 1) Получаем всё, что могли сохранить ранее
+      let raw = pm.environment.get("formsConsentsMap") || "{}";
+      let formsConsentsMap = {};
+
+      try {
+          formsConsentsMap = JSON.parse(raw);
+      } catch (e) {
+          pm.expect.fail("formsConsentsMap в окружении повреждён — вызови заново запрос /forms/configs");
+      }
+
+      // 2) Выбираем случайную форму каждый запуск
+      const formCodes = Object.keys(formsConsentsMap);
+      pm.expect(formCodes, "formsConsentsMap пуст — нечего выбирать").to.be.an("array").that.is.not.empty;
+
+      // РАНДОМНАЯ ФОРМА ВСЕГДА
+      const formCode = formCodes[Math.floor(Math.random() * formCodes.length)];
+      pm.environment.set("formCode", formCode);
+      console.log(`Выбрана форма: ${formCode}`);
+
+      // 3) Получаем consent ids для выбранной формы
+      const consentIds = formsConsentsMap[formCode] || [];
+      pm.expect(consentIds, `Для формы '${formCode}' нет consent_ids`).to.be.an("array");
+
+      pm.environment.set("consentIds", JSON.stringify(consentIds));
+
+      if (consentIds.length > 0) {
+          pm.environment.set("consentIdFirst", String(consentIds[0]));
+      }
+
+      console.log(`Форма ${formCode}: ${consentIds.length} consent_ids →`, consentIds);
+
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "data",
+          "data.id",
+          "data.consents",
+          "data.consents.*.caption",
+          "data.consents.*.consent_document",
+          "data.consents.*.display_condition",
+          "data.consents.*.required",
+          "data.consents.*.consent_document.*.id",
+          "data.consents.*.consent_document.*.name",
+          "data.consents.*.consent_document.*.url_name"
+        ],
+        types: {
+          "data": "object",
+          "data.id": "string",
+          "data.consents": "array",
+          "data.consents.*": "object",
+          "data.consents.*.caption": "string",
+          "data.consents.*.consent_document": "object",
+          "data.consents.*.consent_document.id": "string",
+          "data.consents.*.consent_document.name": "string",
+          "data.consents.*.consent_document.url_name": "string",
+          "data.consents.*.display_condition": "string",
+          "data.consents.*.required": "boolean"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение конфигурации конкретной.resources/examples
+order: 2000

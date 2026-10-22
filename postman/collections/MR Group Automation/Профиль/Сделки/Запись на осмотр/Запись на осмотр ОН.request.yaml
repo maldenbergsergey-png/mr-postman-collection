@@ -1,0 +1,29 @@
+$kind: http-request
+description: |
+  Метод создания записи на осмотр
+url: "{{baseUrl}}/purchase/:purchase-id/inspections/registration"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: purchase-id
+    value: <string>
+    description: (Required) Внутренний идентификатор сделки
+body:
+  type: json
+  content: |-
+    {
+      "slot": "<uuid>",
+      "vehicle": {
+        "number": "<string>",
+        "brand": "<string>"
+      }
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Запись на осмотр ОН.resources/examples
+order: 2000

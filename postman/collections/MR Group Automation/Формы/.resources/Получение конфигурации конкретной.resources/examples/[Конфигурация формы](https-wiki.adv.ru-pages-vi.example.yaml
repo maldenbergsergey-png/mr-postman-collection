@@ -1,0 +1,45 @@
+$kind: http-example
+name: |
+  [Конфигурация формы](https://wiki.adv.ru/pages/viewpage.action?pageId=307092923).
+request:
+  url: "{{baseUrl}}/forms/configs/:id"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    id: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+    cache-control: ""
+  body:
+    type: json
+    content: |-
+      {
+        "data": {
+          "consents": [
+            {
+              "caption": "<string>",
+              "consent_document": {
+                "id": "<string>",
+                "url_name": "<string>"
+              },
+              "display_condition": "anonymous",
+              "required": "<boolean>"
+            },
+            {
+              "caption": "<string>",
+              "consent_document": {
+                "id": "<string>",
+                "url_name": "<string>"
+              },
+              "display_condition": "anonymous",
+              "required": "<boolean>"
+            }
+          ],
+          "id": "consultation_boxrooms_parking"
+        }
+      }
+order: 1000

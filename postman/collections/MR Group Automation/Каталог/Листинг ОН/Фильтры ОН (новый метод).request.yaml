@@ -1,0 +1,217 @@
+$kind: http-request
+description: |
+  Фильтры поиска товаров в ES с учётом фильтров и строки поиска
+url: "{{baseUrl}}/realty/filters"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: commercials
+    disabled: true
+    description: Фильтр по типу ОН
+  - key: project_code
+    value: <string>
+    disabled: true
+    description: Код проекта (не путать с фильтром по проекту). Параметр передается, если метод вызывается со страницы проекта
+  - key: price_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин цене
+  - key: price_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс цене
+  - key: payment_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин платежу
+  - key: payment_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс платежу
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: area_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальной площади
+  - key: area_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальной площади
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: booked
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Забронирован"
+  - key: free
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Доступен"
+  - key: floor_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному этажу
+  - key: floor_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному этажу
+  - key: level_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному уровню
+  - key: level_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному уровню
+  - key: discount
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию скидки
+  - key: family
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Семейное"
+  - key: ventilation
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Технологическая вентиляция"
+  - key: housing[]
+    value: Flat
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: housing[]
+    value: Apartment
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: has_kitchen
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию кухни
+  - key: assignment
+    value: <boolean>
+    disabled: true
+    description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+  - key: installments
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+  - key: private_filter
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку MR Private
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: ["categories","count", "filters","projects_count", "sorts", "typical_objects_count"],
+        types: {
+          "categories" : "array",
+          "count" : "integer",
+          "filters" : "array",
+          "projects_count" : "integer",
+          "sorts" : "array",
+          "typical_objects_count" : "integer",
+
+          //categories[]
+          "categories.*.additional_info": "any?",
+          "categories.*.available": "boolean",
+          "categories.*.checked": "boolean",
+          "categories.*.name": "string",
+          "categories.*.value": "string",
+          // filters[*] — тип может быть один из нескольких (boolean/floatRange/intRange/select)
+          "filters.*.available": "boolean",
+          "filters.*.checked": "boolean",
+          "filters.*.code": "string",
+          "filters.*.name": "string",
+          "filters.*.type": "string",
+          "filters.*.projects_count": "integer",
+          "filters.*.global_range": "object",
+          "filters.*.range": "object",
+          "filters.*.values": "array",
+          //"filters.*.global_range"
+          "filters.*.global_range.max" : "number",
+          "filters.*.global_range.min" : "number",
+          //"filters.*.range"
+          "filters.*.range.max": "number",
+          "filters.*.range.min": "number",
+          // filters.*.values[*] 
+          "filters.*.values.*.additional_info": "object?",
+          "filters.*.values.*.available": "boolean",
+          "filters.*.values.*.checked": "boolean",
+          "filters.*.values.*.name": "string", 
+          "filters.*.values.*.value": "string|integer",
+      // filters.*.values[*].additional_info
+      "filters.*.values.*.additional_info.image": "string?",
+      "filters.*.values.*.additional_info.metro_color": "string?",
+      "filters.*.values.*.additional_info.metro_distance": "integer?",
+      "filters.*.values.*.additional_info.metro_line": "string?",
+      "filters.*.values.*.additional_info.metro_name": "string?",   // ✅ добавлено
+      "filters.*.values.*.additional_info.min_price": "number?",
+      "filters.*.values.*.additional_info.movement_way": "string?",
+      "filters.*.values.*.additional_info.project_id": "integer?",
+      "filters.*.values.*.additional_info.project_name": "string?",
+      "filters.*.values.*.additional_info.quater": "integer?",
+      "filters.*.values.*.additional_info.quarter": "integer?",      // ✅ добавлено (встречается в новых данных)
+      "filters.*.values.*.additional_info.released": "boolean?",
+      "filters.*.values.*.additional_info.year": "string?",
+      "filters.*.values.*.additional_info.area_id": "integer?",
+      "filters.*.values.*.additional_info.area_name": "string?",
+
+      //sorts[]
+      "sorts.*.code": "string",
+      "sorts.*.name": "string",
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Фильтры ОН (новый метод).resources/examples
+order: 2000

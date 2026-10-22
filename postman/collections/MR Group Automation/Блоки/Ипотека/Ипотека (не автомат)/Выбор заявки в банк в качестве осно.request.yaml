@@ -1,0 +1,19 @@
+$kind: http-request
+name: Выбор заявки в банк в качестве основной
+description: |
+  Выбор заявки в банк в качестве основной
+url: "{{baseUrl}}/mortgage/offer/:offer-id"
+method: POST
+headers:
+  Accept: application/json
+pathVariables:
+  - key: offer-id
+    value: <integer>
+    description: (Required) Внутренний ID заявки в банк
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Выбор заявки в банк в качестве осно.resources/examples
+order: 3000

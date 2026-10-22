@@ -1,0 +1,63 @@
+$kind: http-request
+name: Получение списка проектов с ходом строительства
+description: Метод получения списка проектов с ходом строительства
+url: "{{baseUrl}}/construction-progress/projects"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |
+      const res = [];
+
+      for (let i = 0; i < pm.response.json().length; i++) {
+          res.push(pm.response.json()[i].code);
+      }
+      pm.collectionVariables.set("construction-progress/projectCodes", res);
+    language: text/javascript
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+
+          "*.brandbook",
+          "*.business_unit",
+          "*.code",
+          "*.id",
+          "*.image",
+          "*.is_private",
+          "*.name",
+          "*.title",
+          "*.metro",
+          "*.metro_distance",
+          "*.movement_way"
+        ],
+        types: { //проверка типов данных
+
+        "*.brandbook" : "string",
+        "*.business_unit" : "string",
+        "*.code" : "string",
+        "*.id" : "integer",
+        "*.image" : "string?",
+        "*.is_private" : "boolean",
+        "*.name" : "string",
+        "*.title" : "string?",
+
+        "*.metro" : "object?",
+        "*.metro.color" : "string?",
+        "*.metro.name" : "string",
+
+        "*.metro_distance" : "integer?",
+
+        "*.movement_way" : "object?",
+        "*.movement_way.icon" : "string",
+        "*.movement_way.name" : "string",
+        
+        }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка проектов с ходом.resources/examples
+order: 1000

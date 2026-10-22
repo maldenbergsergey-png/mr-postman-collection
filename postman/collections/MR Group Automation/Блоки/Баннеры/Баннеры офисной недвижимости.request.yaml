@@ -1,0 +1,63 @@
+$kind: http-request
+description: |
+  Возвращает список баннеров для разводящей страницы офисов.
+url: "{{baseUrl}}/offices/banners"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "items"
+
+        ],
+        types: { //проверка типов данных
+        "items": "array",
+        "items.*.active_btn_link": "string?",
+        "items.*.active_btn_text": "string?",
+        "items.*.active_color": "string",
+        "items.*.active_title": "string",
+        "items.*.ad_label": "string?",
+        "items.*.desktop_big_picture": "string?",
+        "items.*.desktop_normal_picture": "string?",
+        "items.*.discount_amount": "string?",
+        "items.*.id": "integer",
+        "items.*.mobile_picture": "string?",
+        "items.*.preview_picture": "string",
+        "items.*.preview_title": "string",
+        "items.*.tablet_picture": "string?",
+        "items.*.title": "string",
+        "items.*.type": "string",
+
+        "items.*.project": "object?",
+        "items.*.project.brandbook": "string",
+        "items.*.project.business_unit": "string",
+        "items.*.project.code": "string",
+        "items.*.project.id": "integer",
+        "items.*.project.image": "string?",
+        "items.*.project.is_private": "boolean",
+        "items.*.project.name": "string",
+        "items.*.project.title": "string?",
+        "items.*.project.logo": "string?",
+        "items.*.project.metro_distance": "integer?",
+        "items.*.project.min_meter_price" : "number?",
+        "items.*.project.is_countryside": "boolean",
+
+        "items.*.project.metro": "object?",
+        "items.*.project.metro.color": "string?",
+        "items.*.project.metro.name": "string",
+
+        "items.*.project.movement_way": "object?",
+        "items.*.project.movement_way.icon": "string",
+        "items.*.project.movement_way.name": "string",
+
+        }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Баннеры офисной недвижимости.resources/examples
+order: 2000

@@ -1,0 +1,32 @@
+$kind: http-request
+description: |
+  Получение данных для контентной страницы "Карта сайта"
+url: "{{baseUrl}}/content/sitemap"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "sections",
+          "sections.*.links",
+          "sections.*.name",
+          "sections.*.links.*.link",
+          "sections.*.links.*.text"
+        ],
+        types: {
+          "sections": "array",
+          "sections.*.name": "string",
+          "sections.*.links": "array",
+          "sections.*.links.*.link": "string",
+          "sections.*.links.*.text": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Карта сайта.resources/examples
+order: 2000

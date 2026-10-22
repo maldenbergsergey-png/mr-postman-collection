@@ -1,0 +1,47 @@
+$kind: http-example
+name: |
+  Доступ запрещен.
+
+  Возможные коды ошибок:
+  - `access_denied` — доступ запрещён.
+request:
+  url: "{{baseUrl}}/purchase/:purchase-id"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    purchase-id: ""
+response:
+  statusCode: 403
+  statusText: Forbidden
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 4000

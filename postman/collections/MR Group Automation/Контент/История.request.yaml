@@ -1,0 +1,28 @@
+$kind: http-request
+description: Метод получения контента для блока История
+url: "{{baseUrl}}/content/history"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.year"
+        ],
+        types: {
+          "items": "array",
+          "items.*.year": "integer",
+          "items.*.title": "string",
+          "items.*.description": "string",
+          "items.*.image": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/История.resources/examples
+order: 8000

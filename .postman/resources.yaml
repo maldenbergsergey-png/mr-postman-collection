@@ -1,0 +1,12 @@
+workspace:
+  id: 6758ed0b-a0b4-4f2f-9788-4e22b1e8321a
+localResources:
+  collections:
+    - ../postman/collections/MR Group Automation
+cloudResources:
+  collections:
+    ../postman/collections/MR Group Automation: 17773037-f99d760b-38ef-40bd-8b67-a3982df5c134
+  environments:
+    ../postman/environments/PROD.environment.yaml: 17773037-5d4106b9-02b9-4b27-887d-fdb617c7e95d
+    ../postman/environments/DEV.environment.yaml: 17773037-b5f11293-e361-4168-86a0-243802ddc757
+    ../postman/environments/STAGE.environment.yaml: 17773037-ba642595-0803-4404-af65-16bffc1470bf

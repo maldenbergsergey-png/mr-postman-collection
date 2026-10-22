@@ -1,0 +1,47 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/construction-progress/projects"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      [
+        {
+          "id": "<integer>",
+          "name": "<string>",
+          "code": "<string>",
+          "metro": {
+            "color": "<string>",
+            "name": "<string>"
+          },
+          "metro_distance": "<integer>",
+          "movement_way": {
+            "icon": "<string>",
+            "name": "<string>"
+          },
+          "image": "<string>"
+        },
+        {
+          "id": "<integer>",
+          "name": "<string>",
+          "code": "<string>",
+          "metro": {
+            "color": "<string>",
+            "name": "<string>"
+          },
+          "metro_distance": "<integer>",
+          "movement_way": {
+            "icon": "<string>",
+            "name": "<string>"
+          },
+          "image": "<string>"
+        }
+      ]
+order: 1000

@@ -1,0 +1,127 @@
+$kind: http-request
+description: |
+  Получение информации по отделкам
+url: "{{baseUrl}}/decoration?project_code={{projectCodeDecaration}}&product_code={{objectCodeDecaration}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: project_code
+    value: "{{projectCodeDecaration}}"
+    description: Код проекта (не путать с фильтром по проекту). Параметр передается, если метод вызывается со страницы проекта
+  - key: product_code
+    value: "{{objectCodeDecaration}}"
+    description: Код ОН
+scripts:
+  - type: beforeRequest
+    code: |+
+      const decorations = ["MRBase", "MRReady", "WithDecoration", "WithoutDecoration"];
+      const randomDecoration = decorations[Math.floor(Math.random() * decorations.length)];
+      // Сохраняем выбранное значение в переменную окружения
+      pm.environment.set("decoration", randomDecoration);
+      console.log("Выбрано случайное значение decoration:", randomDecoration);
+
+      // URL метода, откуда берём проекты
+      const baseUrl = pm.environment.get("baseUrl")
+      //Формируем запрос 
+      const realtyObjects = `${baseUrl}/realty/objects?limit=1&category=flats&decoration[]=${randomDecoration}&page=1`;
+
+      // Выполняем запрос
+      pm.sendRequest({
+          url: realtyObjects,
+          method: "GET"
+      }, function (err, res) {
+          if (err) {
+              console.error("❌ Ошибка запроса:", err);
+              return;
+          }
+
+          // // Проверяем статус ответа
+          // if (res.code !== 200) {
+          //     console.warn(` Неправильный статус ответа: ${res.code}`);
+          //     return;
+          // }
+
+          let jsonData;
+          try {
+              jsonData = res.json();
+          } catch (e) {
+              console.error("❌ Ошибка парсинга JSON:", e.message);
+              return;
+          }
+
+          // Проверяем наличие items
+          if (!jsonData.items || jsonData.items.length === 0) {
+              console.warn("⚠️ В ответе нет элементов items");
+              return;
+          }
+
+          const firstItem = jsonData.items[0];
+
+          // 4️⃣ Сохраняем переменные окружения
+          if (firstItem.code) {
+              pm.environment.set("objectCodeDecaration", firstItem.code);
+              console.log("Сохранено objectCodeDecaration :", firstItem.code);
+          }
+
+          if (firstItem.project && firstItem.project.code) {
+              pm.environment.set("projectCodeDecaration", firstItem.project.code);
+              console.log("Сохранено projectCodeDecaration:", firstItem.project.code);
+          }
+
+      });
+
+
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+
+          "items.*.id",
+          "items.*.name",
+          "items.*.options",
+
+          "items.*.options.*.3d",
+          "items.*.options.*.booklet",
+          "items.*.options.*.description",
+          "items.*.options.*.id",
+          "items.*.options.*.image",
+          "items.*.options.*.image_pins",
+          "items.*.options.*.name",
+
+          "items.*.options.*.image_pins.*.label",
+          "items.*.options.*.image_pins.*.x",
+          "items.*.options.*.image_pins.*.y"
+        ],
+        types: {
+          "count": "integer",
+
+          "items": "array",
+          "items.*": "object",
+          "items.*.description": "string?",
+          "items.*.id": "integer",
+          "items.*.name": "string",
+          "items.*.options": "array",
+
+          "items.*.options.*": "object",
+          "items.*.options.*.3d": "string?",
+          "items.*.options.*.booklet": "string?",
+          "items.*.options.*.description": "string?",
+          "items.*.options.*.id": "integer",
+          "items.*.options.*.image": "string",
+          "items.*.options.*.image_pins": "array",
+          "items.*.options.*.image_pins.*": "object",
+          "items.*.options.*.image_pins.*.label": "string",
+          "items.*.options.*.image_pins.*.x": "number",
+          "items.*.options.*.image_pins.*.y": "number",
+          "items.*.options.*.name": "string"
+        }
+      });
+
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение информации по отделкам.resources/examples
+order: 1000

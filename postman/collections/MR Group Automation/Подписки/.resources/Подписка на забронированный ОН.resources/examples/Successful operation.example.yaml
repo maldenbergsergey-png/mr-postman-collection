@@ -1,0 +1,37 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/user/subscription/product-status"
+  method: POST
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "email": "<string>",
+        "meta": {
+          "consents": {
+            "consent_documents": [
+              "<string>",
+              "<string>"
+            ],
+            "phone": "+73775746335",
+            "email": "<string>"
+          }
+        },
+        "product_code": "<string>"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "success": "<boolean>",
+        "message": "<string>"
+      }
+order: 1000

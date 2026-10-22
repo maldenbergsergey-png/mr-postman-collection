@@ -1,0 +1,21 @@
+$kind: http-request
+name: Обновление данных по сделкам (внешний метод)
+url: https://rabbitmq-test.mr-group.ru:5117/api/v1/salescontracts/refresh
+method: POST
+headers:
+  x-correlation-id: b5ac8e52-5fc4-4e87-986a-0b0742374ea2
+  Host: rabbitmq-test.mr-group.ru:5117
+body:
+  type: json
+  content: |-
+    {
+        "data": {
+            "clientAppId": "392",
+            "clientCrmId": "baf2c7d0-070b-4f07-af50-30c581df7a58"
+        }
+    }
+settings:
+  disabledSystemHeaders:
+    - host
+    - user-agent
+order: 2000

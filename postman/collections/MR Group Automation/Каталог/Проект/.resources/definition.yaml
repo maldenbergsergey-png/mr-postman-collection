@@ -1,0 +1,76 @@
+$kind: collection
+scripts:
+  - type: http:beforeRequest
+    code: |-
+      // URL метода, откуда берём проекты
+      const baseUrl = pm.environment.get("baseUrl")
+
+      // Формируем полный URL запроса
+      const projectsUrl = `${baseUrl}/realty/projects`;
+
+      // Проверяем, есть ли сохранённый список проектов
+      let projectsArray = pm.environment.get("projectsArray");
+      let index = parseInt(pm.environment.get("index") || "0", 10);
+
+      // Если список уже сохранён — используем его без нового запроса
+      if (projectsArray) {
+          try {
+              projectsArray = JSON.parse(projectsArray);
+
+              if (Array.isArray(projectsArray) && projectsArray.length > 0) {
+                  if (index >= projectsArray.length) index = 0;
+                  const selectedCode = projectsArray[index];
+                  pm.environment.set("projectCode", selectedCode);
+                  pm.environment.set("index", (index + 1) % projectsArray.length);
+
+                  console.log(` Используем сохранённый проект: ${selectedCode}`);
+                  return; // Останавливаем скрипт, новый запрос не нужен
+              }
+          } catch (e) {
+              console.warn(" Ошибка при чтении projectsArray, запрашиваем заново");
+          }
+      }
+
+      // Если список не найден — делаем GET-запрос
+      console.log("Делаем запрос к API, чтобы получить список проектов");
+
+      pm.sendRequest({
+          url: projectsUrl,
+          method: "GET"
+      }, function (err, res) {
+          if (err) {
+              console.error("❌ Ошибка при запросе проектов:", err);
+              return;
+          }
+
+          if (res.code !== 200) {
+              console.error(`⚠️ API вернул статус ${res.code}`);
+              return;
+          }
+
+          const jsonData = res.json();
+
+          if (!jsonData.items || !Array.isArray(jsonData.items) || jsonData.items.length === 0) {
+              console.error("⚠️ Нет данных в ответе /realty/projects");
+              return;
+          }
+
+          // Собираем массив кодов проектов
+          const newProjectsArray = jsonData.items.map(p => p.code).filter(Boolean);
+
+          if (newProjectsArray.length === 0) {
+              console.error("⚠️ Не найдено ни одного project code");
+              return;
+          }
+
+          // Сохраняем массив и первый проект в окружение
+          pm.environment.set("projectsArray", JSON.stringify(newProjectsArray));
+
+          const selectedCode = newProjectsArray[0];
+          pm.environment.set("projectCode", selectedCode);
+          pm.environment.set("index", 1);
+
+          console.log(`Список проектов сохранён. Текущий проект: ${selectedCode}`);
+      });
+    language: text/javascript
+order: 2000

@@ -1,0 +1,55 @@
+$kind: http-request
+description: |
+  Получение информации по конкретному предложению MR Club
+url: "{{baseUrl}}/mrclub/offers/{{offerCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "ad_label",
+          "code",
+          "image",
+          "teaser",
+          "categories.*.code",
+          "categories.*.name",
+          "labels.*.text",
+          "steps.*.description",
+          "steps.*.name"
+        ],
+        types: {
+          "ad_label": "string?",
+          "categories": "array",
+          "categories.*": "object",
+          "categories.*.code": "string",
+          "categories.*.name": "string",
+          "code": "string",
+          "conditions": "string",
+          "description": "string",
+          "image": "string",
+          "labels": "array",
+          "labels.*": "object",
+          "labels.*.text": "string",
+          "name": "string",
+          "partner": "object",
+          "partner.code": "string",
+          "partner.description": "string",
+          "partner.logo": "string",
+          "partner.name": "string",
+          "partner.text": "string",
+          "steps": "array",
+          "steps.*": "object",
+          "steps.*.description": "string?",
+          "steps.*.name": "string",
+          "teaser": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Карточка предложения.resources/examples
+order: 3000

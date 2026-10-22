@@ -1,0 +1,52 @@
+$kind: http-request
+description: |
+  Метод получения списка избранного пользователя
+url: "{{baseUrl}}/user/favourites"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: commercials
+    disabled: true
+    description: Фильтр по типу ОН
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "categories",
+          "count",
+
+          "categories.*.category",
+          "categories.*.product_ids",
+
+          "categories.*.category.*.code",
+          "categories.*.category.*.id",
+          "categories.*.category.*.name"
+        ],
+        types: {
+          "categories": "array",
+          "categories.*": "object",
+
+          "categories.*.category": "object",
+          "categories.*.category.code": "string",
+          "categories.*.category.id": "integer",
+          "categories.*.category.name": "string",
+
+          "categories.*.product_ids": "array",
+          "categories.*.product_ids.*": "integer",
+
+          "count": "integer"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка избранных ОН.resources/examples
+order: 1000

@@ -1,0 +1,178 @@
+$kind: http-request
+name: Получение информации о доступных вариантах кухонь по идентификатору типа планировки кухни
+description: |
+  Получение информации о доступных вариантах кухонь по идентификатору типа планировки кухни
+url: "{{baseUrl}}/decoration/kitchen/options?layout_type_id={{kitchenLayout_type_id}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: layout_type_id
+    value: "{{kitchenLayout_type_id}}"
+    description: (Required) Идентификатор типа планировки кухни
+scripts:
+  - type: beforeRequest
+    code: |+
+      // URL метода, откуда берём проекты
+      const baseUrl = pm.environment.get("baseUrl")
+      //Формируем запрос 
+      const realtyObjects = `${baseUrl}/realty/objects?limit=1&category=flats&has_kitchen=true&page=1`;
+
+      // Выполняем запрос
+      pm.sendRequest({
+          url: realtyObjects,
+          method: "GET"
+      }, function (err, res) {
+          if (err) {
+              console.error("❌ Ошибка запроса:", err);
+              return;
+          }
+
+           let jsonData;
+          try {
+              jsonData = res.json();
+          } catch (e) {
+              console.error("❌ Ошибка парсинга JSON:", e.message);
+              return;
+          }
+
+          // Проверяем наличие items
+          if (!jsonData.items || jsonData.items.length === 0) {
+              console.warn("⚠️ В ответе нет элементов items");
+              return;
+          }
+
+          const firstItem = jsonData.items[0];
+
+          // 4️⃣ Сохраняем переменные окружения kitchen
+          if (firstItem.code) {
+              pm.environment.set("kitchenLayout_type_id", firstItem.kitchen.layout_type_id);
+              console.log("kitchenLayout_type_id :", firstItem.kitchen.layout_type_id);
+          }
+         
+      });
+
+
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "description",
+          "items",
+
+          "items.*.id",
+          "items.*.name",
+          "items.*.colors",
+
+          "items.*.colors.*.3d_layout",
+          "items.*.colors.*.elements",
+          "items.*.colors.*.file",
+          "items.*.colors.*.id",
+          "items.*.colors.*.image",
+          "items.*.colors.*.kitchen_partner",
+          "items.*.colors.*.name",
+
+          "items.*.colors.*.elements.*.description",
+          "items.*.colors.*.elements.*.image",
+          "items.*.colors.*.elements.*.label",
+          "items.*.colors.*.elements.*.name"
+        ],
+        types: {
+          "count": "integer",
+          "description": "string?",
+
+          "items": "array",
+          "items.*": "object",
+          "items.*.id": "integer",
+          "items.*.name": "string",
+
+          "items.*.colors": "array",
+          "items.*.colors.*": "object",
+
+          "items.*.colors.*.3d_layout": "string?",
+          "items.*.colors.*.additional_images": "array?",
+          "items.*.colors.*.additional_images.*": "object",
+          "items.*.colors.*.additional_images.*.details_placement": "string",
+          "items.*.colors.*.additional_images.*.image": "string",
+          "items.*.colors.*.additional_images.*.pins": "array",
+          "items.*.colors.*.additional_images.*.pins.*": "object",
+          "items.*.colors.*.additional_images.*.pins.*.details_description": "string?",
+          "items.*.colors.*.additional_images.*.pins.*.details_image": "string?",
+          "items.*.colors.*.additional_images.*.pins.*.details_placement": "string?",
+          "items.*.colors.*.additional_images.*.pins.*.label": "string",
+          "items.*.colors.*.additional_images.*.pins.*.replacement_image": "string?",
+          "items.*.colors.*.additional_images.*.pins.*.x": "number",
+          "items.*.colors.*.additional_images.*.pins.*.y": "number",
+          "items.*.colors.*.additional_images.*.slider_position": "number?",
+
+          "items.*.colors.*.elements": "array",
+          "items.*.colors.*.elements.*": "object",
+          "items.*.colors.*.elements.*.description": "string?",
+          "items.*.colors.*.elements.*.image": "string?",
+          "items.*.colors.*.elements.*.label": "string?",
+          "items.*.colors.*.elements.*.name": "string",
+
+          "items.*.colors.*.file": "string?",
+          "items.*.colors.*.id": "integer",
+
+          "items.*.colors.*.image": "object?",
+          "items.*.colors.*.image.details_placement": "string",
+          "items.*.colors.*.image.image": "string",
+          "items.*.colors.*.image.pins": "array",
+          "items.*.colors.*.image.pins.*": "object",
+          "items.*.colors.*.image.pins.*.details_description": "string?",
+          "items.*.colors.*.image.pins.*.details_image": "string?",
+          "items.*.colors.*.image.pins.*.details_placement": "string?",
+          "items.*.colors.*.image.pins.*.label": "string",
+          "items.*.colors.*.image.pins.*.replacement_image": "string?",
+          "items.*.colors.*.image.pins.*.x": "number",
+          "items.*.colors.*.image.pins.*.y": "number",
+          "items.*.colors.*.image.slider_position": "number?",
+
+          "items.*.colors.*.kitchen_partner": "object?",
+          "items.*.colors.*.kitchen_partner.logo": "string?",
+          "items.*.colors.*.kitchen_partner.name": "string",
+
+          "items.*.colors.*.name": "string"
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение информации о доступных в.resources/examples
+order: 2000

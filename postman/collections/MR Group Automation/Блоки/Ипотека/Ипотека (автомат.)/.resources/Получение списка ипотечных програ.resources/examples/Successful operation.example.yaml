@@ -1,0 +1,46 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mortgage/program"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "code": "<string>",
+            "short_name": "<string>",
+            "full_name": "<string>",
+            "rate": "<string>",
+            "amount": "<string>",
+            "initial_payment": "<string>",
+            "term": "<string>",
+            "note": "<string>",
+            "description": "<string>",
+            "background_color": "<string>",
+            "image": "<string>"
+          },
+          {
+            "code": "<string>",
+            "short_name": "<string>",
+            "full_name": "<string>",
+            "rate": "<string>",
+            "amount": "<string>",
+            "initial_payment": "<string>",
+            "term": "<string>",
+            "note": "<string>",
+            "description": "<string>",
+            "background_color": "<string>",
+            "image": "<string>"
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

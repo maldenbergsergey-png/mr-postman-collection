@@ -1,0 +1,209 @@
+$kind: http-request
+description: |
+  Возвращает список проектов с учётом фильтров.
+url: "{{baseUrl}}/realty/projects?completed=true"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: commercials
+    disabled: true
+    description: Фильтр по типу ОН
+  - key: completed
+    value: "true"
+    description: Признак завершённого проекта
+  - key: has_plans
+    value: <boolean>
+    disabled: true
+    description: Вернуть только проекты, у которых есть интерактивные планы.
+  - key: price_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин цене
+  - key: price_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс цене
+  - key: payment_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин платежу
+  - key: payment_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс платежу
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: area_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальной площади
+  - key: area_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальной площади
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: booked
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Забронирован"
+  - key: free
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Доступен"
+  - key: floor_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному этажу
+  - key: floor_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному этажу
+  - key: level_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному уровню
+  - key: level_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному уровню
+  - key: discount
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию скидки
+  - key: family
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Семейное"
+  - key: housing[]
+    value: Flat
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: housing[]
+    value: Apartment
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: assignment
+    value: <boolean>
+    disabled: true
+    description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+  - key: installments
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+  - key: private_filter
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку MR Private
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: ["category", "items"],
+        types: {
+          "category" : "string",
+          "items" : "array",
+          "items.*.brandbook": "string",
+          "items.*.business_unit": "string",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.is_countryside": "boolean",
+          "items.*.is_private": "boolean",
+          "items.*.marketing_images": "array",
+          "items.*.name": "string",
+          "items.*.title": "string?",
+          "items.*.air_3d": "string?",
+          "items.*.completion_date": "string?",
+          "items.*.external": "boolean",
+          "items.*.image": "string?",
+          "items.*.is_completed": "boolean",
+          "items.*.key_project": "boolean",
+          "items.*.latitude": "number",
+          "items.*.logo": "string?",
+          "items.*.longitude": "number",
+          "items.*.main_3d": "string?",
+          "items.*.max_discount": "number?",
+          "items.*.metro": "object?",
+          "items.*.metro_distance": "integer?",
+          "items.*.min_price": "number?",
+          "items.*.movement_way": "object?",
+          "items.*.partners": "array",
+          "items.*.price_table": "array",  
+          "items.*.project_usp": "array",
+          "items.*.queues": "object?",
+           // metroitems.*.
+          "items.*.metro.color": "string?",
+          "items.*.metro.name": "string",
+          // movement_way
+          "items.*.movement_way.icon": "string",
+          "items.*.movement_way.name": "string",
+          // partners[*]
+          "items.*.partners.logo": "string",
+          "items.*.partners.name": "string",
+          // object_types[*]
+          "items.*.price_table.*.filter": "integer",
+          "items.*.price_table.*.min_area": "number",
+          "items.*.price_table.*.min_price": "number",
+          "items.*.price_table.*.name": "string",
+          // project_usp[*]
+          "items.*.project_usp.*.icon": "string",
+          "items.*.project_usp.*.name": "string",
+          // queues — объект с произвольными ключами, значения — массивы строк
+          "items.*.queues": "object?",
+          "items.*.queues.": "array?",      
+          "items.*.queues.*": "array",
+          "items.*.queues.*.*": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список завершенных проектов.resources/examples
+order: 8000

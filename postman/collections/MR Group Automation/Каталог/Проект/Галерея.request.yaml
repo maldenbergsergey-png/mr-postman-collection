@@ -1,0 +1,38 @@
+$kind: http-request
+description: Метод получения галереи для проекта
+url: "{{baseUrl}}/project/{{projectCode}}/gallery"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [],
+        types: {
+          "*": "object",
+          "*.id": "integer",
+          "*.name": "string",
+          "*.items": "array",
+
+         "*.items.*.id": "integer",
+          "*.items.*.description": "string",
+          "*.items.*.hide_description": "boolean",
+          "*.items.*.image": "string",
+          "*.items.*.link_3d": "string?",     
+          "*.items.*.pins": "array",
+          "*.items.*.type": "string",
+          "*.items.*.video_link": "string?",
+
+           "*.items.*.pins.*.description": "string?", 
+           "*.items.*.pins.*.id": "integer", 
+           "*.items.*.pins.*.x": "number", 
+           "*.items.*.pins.*.y": "number"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Галерея.resources/examples
+order: 3000

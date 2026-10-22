@@ -1,0 +1,116 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/sale/plan/buildings?category=commercials&project=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: category
+      value: commercials
+      description: Фильтр по типу ОН
+    - key: project
+      value: <string>
+      description: Фильтр по коду проекта
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": "<integer>",
+            "crm_id": "<string>",
+            "code": "<string>",
+            "name": "<string>",
+            "deadline": "<string>",
+            "readiness": "<integer>",
+            "floors_number": "<integer>",
+            "apartments_count": "<integer>",
+            "min_area": "<number>",
+            "min_price": "<number>",
+            "max_discount": "<number>",
+            "min_payment": "<number>",
+            "plan": {
+              "background_image": "<string>",
+              "svg_markup": "<string>",
+              "level_plan": "building",
+              "floor": "<number>",
+              "object_types": [
+                "<string>",
+                "<string>"
+              ],
+              "compass_angle": "<number>"
+            },
+            "environment": {
+              "upper_side": "<string>",
+              "right_side": "<string>",
+              "lower_side": "<string>",
+              "left_side": "<string>"
+            },
+            "price_table": [
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              },
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              }
+            ]
+          },
+          {
+            "id": "<integer>",
+            "crm_id": "<string>",
+            "code": "<string>",
+            "name": "<string>",
+            "deadline": "<string>",
+            "readiness": "<integer>",
+            "floors_number": "<integer>",
+            "apartments_count": "<integer>",
+            "min_area": "<number>",
+            "min_price": "<number>",
+            "max_discount": "<number>",
+            "min_payment": "<number>",
+            "plan": {
+              "background_image": "<string>",
+              "svg_markup": "<string>",
+              "level_plan": "floor",
+              "floor": "<number>",
+              "object_types": [
+                "<string>",
+                "<string>"
+              ],
+              "compass_angle": "<number>"
+            },
+            "environment": {
+              "upper_side": "<string>",
+              "right_side": "<string>",
+              "lower_side": "<string>",
+              "left_side": "<string>"
+            },
+            "price_table": [
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              },
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

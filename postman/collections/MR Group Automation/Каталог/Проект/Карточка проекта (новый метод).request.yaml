@@ -1,0 +1,212 @@
+$kind: http-request
+description: |
+  Получение данных проекта по коду проекта
+url: "{{baseUrl}}/realty/projects/{{projectCode}}"
+method: GET
+headers:
+  - key: accept
+    value: application/json, text/plain, */*
+  - key: accept-language
+    value: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+  - key: authorization
+    value: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjV1E3bDdrRER1TWtvS21OUkYzQU9VdzJGUlJEVC1wa2VnaXI0ZUY3ZElFIn0.eyJleHAiOjE3NTg1NDkyOTcsImlhdCI6MTc1ODU0NTY5NywiYXV0aF90aW1lIjoxNzU4MTkxNzc5LCJqdGkiOiI5ZDMyYzBkNi1kNGVmLTQ4Y2YtYTVmMS1kZDk3MjU1YzNiYjciLCJpc3MiOiJodHRwczovL2tleWRldi5tci1ncm91cC5ydS9yZWFsbXMvc3RhZ2UiLCJzdWIiOiJkNzU0MjBlYi05YTQ4LTQ2NWMtYTU4My0yOTFkM2IyMDJkYmMiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsInNpZCI6IjQ2Yjg4MGUzLWU5NzItNDA2Yi04ODc4LTE0ZDk0NzdiZTU3MiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgcGhvbmUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwidXNlcl9pZCI6IjU4Iiwicm9sZXMiOlsiY2xpZW50Il0sIm5hbWUiOiLQodC10YDQs9C10Lkg0JrQuNGB0LXQu9C10LIiLCJwaG9uZV9udW1iZXIiOiIrNzk5NTExMDgzOTQiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiIxZWU4ZmMzZC02MThhLTQ0YTEtOTg3Yi0yMTIyYTJmMGRmY2IiLCJnaXZlbl9uYW1lIjoi0KHQtdGA0LPQtdC5IiwiZmFtaWx5X25hbWUiOiLQmtC40YHQtdC70LXQsiIsImVtYWlsIjoibWFsZGVuYmVyZ0BtYWlsLnJ1In0.Tw3VFtWRVe9Ddb1hXFd6kvqrxdHKb3aNEqCs-RaR6nkL88iD_Jy_HwjNZGv2vUdJNdbPBkyXXj9CNWadhyPdsYZ2r-EV9knHPpn8mVVNW8vvUeyd9fyWT29d2XRZW4Vrtxwc9Pgu7qhBBmmEBO5_8o5_eo2wCUO6wVSpbrCZJBdUTkcxbxYkmeSIKvchE6fu769PF6BCV0SNDlXUi-O-ZClq2fb7Azdph8EyP1LEOOHuMFs53GOWd8EarMxTe_-159_eRtca5fNiPlvlcP06B9eMg45Rp6NcM3SLaTWPb3jz-nZIPdy2BxS09rUhdDvxeBimxciIxQ9u0SGyWfxTQg
+  - key: baggage
+    value: sentry-environment=production,sentry-public_key=92aba965495d84b286ecfb5f960a3bae,sentry-trace_id=a4a9b0adb9f74428b4cfa48e871f8da4,sentry-sample_rate=1,sentry-transaction=%2Fprojects%2F%3Acode%2F,sentry-sampled=true
+  - key: dev-authorization
+    value: f5GaD8jxJ8KwEM
+  - key: priority
+    value: u=1, i
+  - key: referer
+    value: https://stage-superapp.mr-group.ru/projects/zhk-mira/
+  - key: sec-ch-ua
+    value: '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"'
+  - key: sec-ch-ua-mobile
+    value: ?1
+  - key: sec-ch-ua-platform
+    value: '"Android"'
+  - key: sec-fetch-dest
+    value: empty
+  - key: sec-fetch-mode
+    value: cors
+  - key: sec-fetch-site
+    value: same-origin
+  - key: sentry-trace
+    value: c87ef73aa3a045d383add8cc7aae812f-9ec717b671a1725f-1
+  - key: user-agent
+    value: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36
+  - key: Cookie
+    value: _ym_uid=171603766569483036; _ym_d=1758021068; _ga=GA1.1.801204973.1758021070; BITRIX_SM_UIDH=NdbtzuXcVaYLWP5McrkvJFKsYmmvy2Q2; BITRIX_SM_UIDL=chernova.ekaterina%40adv.ru; scbsid_old=2733650130; mindboxDeviceUUID=d4875f40-077d-4b02-a170-6e7d7739f24d; directCrm-session=%7B%22deviceGuid%22%3A%22d4875f40-077d-4b02-a170-6e7d7739f24d%22%7D; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; USE_COOKIE_CONSENT_STATE={%22session%22:true%2C%22persistent%22:true%2C%22necessary%22:true%2C%22preferences%22:true%2C%22statistics%22:true%2C%22marketing%22:true%2C%22firstParty%22:true%2C%22thirdParty%22:true}; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; SCBnotShow=-1; smFpId_old_values=%5B%2276fedb373a022ebcdf33fa87546779eb%22%2C%22e0c56b7a86816b3eda219ee38369ba26%22%2C%22efdc602f935bcdeb65f990199881f623%22%5D; _ym_isad=1; BITRIX_SM_SOUND_LOGIN_PLAYED=Y; sma_session_id=2434479241; PHPSESSID=66o2dbt2ihq1tmg846qsehki6d; _ym_visorc=b; sessionId=17585423168418969478; SCBstart=1758544485792; sma_postview_ready=1; _cmg_csstvfLiQ=1758544652; _comagic_idvfLiQ=10926532248.15271756338.1758544651; SCBporogAct=5000; sma_index_activity=120041; SCBindexAct=4984; _ga_H5S7YBLWM3=GS2.1.s17585423168418969478$o20$g1$t1758546217$j60$l0$h0; _ga_70ZZHDSCR6=GS2.1.s1758541850$o22$g1$t1758546217$j60$l0$h0
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: |
+      // === Tests: сохранить projectName из карточки проекта ===
+      let body;
+      try { body = pm.response.json(); }
+      catch { throw new Error("Ответ карточки проекта не JSON"); }
+
+      // Универсальный извлекатель name (корень/data/items[0]/[0])
+      const pickName = (j) => {
+        if (!j) return null;
+        if (typeof j.name === "string" && j.name.trim()) return j.name.trim();
+        if (j.data && typeof j.data.name === "string" && j.data.name.trim()) return j.data.name.trim();
+        if (Array.isArray(j.items) && j.items[0]?.name) return String(j.items[0].name).trim();
+        if (Array.isArray(j) && j[0]?.name) return String(j[0].name).trim();
+        return null;
+      };
+
+      const name = pickName(body);
+      pm.test("Карточка проекта содержит name", () => {
+        pm.expect(name, "name отсутствует в ответе").to.be.a("string").and.not.empty;
+      });
+
+      // Сохраняем имя проекта
+      pm.environment.set("projectName", name);
+
+      // (опционально) обновим карту code->name
+      const code = body?.code || body?.data?.code || pm.environment.get("projectCode") || null;
+      if (code) {
+        let map = {};
+        try { map = JSON.parse(pm.environment.get("projectsMap") || "{}"); } catch { /* noop */ }
+        map[code] = name;
+        pm.environment.set("projectsMap", JSON.stringify(map));
+      }
+
+      console.log(`✔ projectName="${name}" сохранён для последующего поиска (/realty/search)`);
+    language: text/javascript
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [],
+        types: {
+          "brandbook": "string",
+          "business_unit": "string",
+          "code": "string",
+          "id": "integer",
+          "is_countryside": "boolean",
+          "is_private": "boolean",
+          "marketing_images": "array",
+          "name": "string",
+          "title": "string?",
+          "air_3d": "string?",
+          "alternative_plan": "object?",
+          "apartments_count": "integer?",
+          "categories": "array",
+          "description": "string?",
+          "documentation": "string?",
+          "external": "boolean",
+          "is_completed": "boolean",
+          "latitude": "number",
+          "logo": "string?",
+          "longitude": "number",
+          "main_3d": "string?",
+          "main_plan": "object?",
+          "metro": "object?",
+          "metro_distance": "integer?",
+          "min_price": "number?",
+          "mobile_marketing_images": "array",
+          "movement_way": "object?",
+          "object_types": "array",
+          "queues": "object?",
+          "related_project": "object?",
+          "view_from_above_plan": "object?",
+
+          // alternative_plan
+          "alternative_plan.background_image": "string",
+          "alternative_plan.compass_angle": "number?",
+          "alternative_plan.floor": "number?",
+          "alternative_plan.items_level": "string?",
+          "alternative_plan.level": "string",
+          "alternative_plan.object_type": "string",
+          "alternative_plan.price_table_variant": "string",
+          "alternative_plan.svg_markup": "string",
+          "alternative_plan.level_plan": "string", //устаревшее название
+
+           //main_plan 
+          "main_plan.background_image": "string",
+          "main_plan.compass_angle": "number?",
+          "main_plan.floor": "number?",
+          "main_plan.items_level": "string?",
+          "main_plan.level": "string",
+          "main_plan.object_type": "string",
+          "main_plan.price_table_variant": "string",
+          "main_plan.svg_markup": "string",
+          "main_plan.level_plan": "string", //устаревшее название
+          
+           //view_from_above_plan
+          "view_from_above_plan.background_image": "string",
+          "view_from_above_plan.compass_angle": "number?",
+          "view_from_above_plan.floor": "number?",
+          "view_from_above_plan.items_level": "string?",
+          "view_from_above_plan.level": "string",
+          "view_from_above_plan.object_type": "string",
+          "view_from_above_plan.price_table_variant": "string",
+          "view_from_above_plan.svg_markup": "string",
+          "view_from_above_plan.level_plan": "string", //устаревшее название
+
+          // categories[*]
+          "categories.*.background_color": "string?",
+          "categories.*.code": "string?",
+          "categories.*.description": "string?",
+          "categories.*.image": "string?",
+          "categories.*.min_discounted_price": "object?",
+          "categories.*.min_meter_price": "number?",
+          "categories.*.min_price": "number?",
+          "categories.*.name": "string",
+          "categories.*.object_count": "integer?",
+          "categories.*.show_in": "object",
+
+          // categories.*.min_discounted_price
+          "categories.*.min_discounted_price.percentage_discount": "number",
+          "categories.*.min_discounted_price.price": "number",
+          "categories.*.min_discounted_price.type": "string",
+          "categories.*.min_discounted_price.meter_price": "number",
+          "categories.*.min_discounted_price.percentage_discount": "number",
+          "categories.*.min_discounted_price.absolute_discount": "number?",
+          "categories.*.min_discounted_price.description": "string?",
+
+          // show_in
+          "categories.*.show_in.catalog": "boolean?",
+
+          // metro
+          "metro.color": "string?",
+          "metro.name": "string",
+
+          // movement_way
+          "movement_way.icon": "string",
+          "movement_way.name": "string",
+
+          // object_types[*]
+          "object_types.*.background_color": "string?",
+          "object_types.*.code": "string",
+          "object_types.*.description": "string?",
+          "object_types.*.discounted_price": "object?",
+          "object_types.*.image": "string?",
+          "object_types.*.name": "string",
+          "object_types.*.price": "number?",
+
+          // object_types.*.discounted_price
+          "object_types.*.discounted_price.percentage_discount": "number",
+          "object_types.*.discounted_price.price": "number",
+          "object_types.*.discounted_price.type": "string",
+          "object_types.*.discounted_price.meter_price": "number",
+          "object_types.*.discounted_price.description": "string?",
+          "object_types.*.discounted_price.absolute_discount": "number?",
+
+          // related_project
+          "related_project.code": "string",
+          "related_project.marketing_images": "array",
+          "related_project.name": "string",
+
+          // queues — объект с произвольными ключами, значения — массивы строк
+          "queues.*": "array",
+          "queues.*.*": "string"
+
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Карточка проекта (новый метод).resources/examples
+order: 7000

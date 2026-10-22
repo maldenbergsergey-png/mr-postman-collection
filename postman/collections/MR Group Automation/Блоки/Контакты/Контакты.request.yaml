@@ -1,0 +1,32 @@
+$kind: http-request
+description: |
+  Получение контактов ЦКП (центра клиентской поддержки)
+url: "{{baseUrl}}/contacts/support"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.name",
+          "items.*.type",
+          "items.*.value"
+        ],
+        types: {
+          "items": "array",
+          "items.*": "object",
+          "items.*.icon": "string",
+          "items.*.name": "string",
+          "items.*.type": "string",
+          "items.*.value": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Контакты.resources/examples
+order: 1000

@@ -1,0 +1,153 @@
+$kind: http-request
+description: Метод возвращает информацию об ОН по ID CRM
+url: "{{baseUrl}}/realty/plan/objects/{{crmIdHasPlan}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |+
+      pm.variables.set("schema", {
+      required: [
+          "apartment_on_floor",
+          "area",
+          "assignment",
+          "booking_type",
+          "building",
+          "category",
+          "code",
+          "crm_id",
+          "decoration",
+          "discount",  
+          "family", 
+          "floor",  
+          "functional_layout",
+          "id",
+          "kitchen",
+          "meter_price",
+          "monthly_payment",
+          "name",
+          "number",
+          "plot", 
+          "price",
+          "project",   
+          "purchase_type",
+          "purchase_types",
+          "rooms_number",
+          "status",
+          "stop_sales",
+          "subtype",
+          "technical_layout",
+          "tier_quantity",
+      ],
+      types: {
+          "apartment_on_floor": "string?",
+          "area": "number?",
+          "booking_type": "string?", 
+          "assignment": "boolean", 
+
+          "building": "object?",
+          "building.code": "string",
+          "building.compass_angle": "number?",
+          "building.deadline": "string",
+          "building.floors_number": "integer?",
+          "building.id": "integer",
+          "building.readiness": "integer?",
+          "building.scheme": "string?",
+          "building.name": "string",
+
+          "category": "object",
+          "category.code" : "string",
+          "category.id" : "integer",
+          "category.name" : "string",
+
+         
+          "code": "string",
+          "crm_id": "string",
+
+          "decoration": "object?",
+          "decoration.code" : "string",
+          "decoration.name" : "string",
+
+          "discount": "object?",
+          "discount.absolute_discount" : "number",
+          "discount.description" : "string?",
+          "discount.meter_price" : "number",
+          "discount.percentage_discount" : "number",
+          "discount.price" : "number",
+          "discount.type" : "string",
+
+          "family" : "boolean", 
+          "floor" : "integer?",  
+          "functional_layout" : "string?",
+          "id" : "integer",
+          
+          "kitchen": "object?",
+          "kitchen.layout_type_id" : "string",
+
+         
+          "meter_price": "number",
+          "monthly_payment": "number?",
+          "name": "string", 
+          "number": "string?",
+
+          "plan": "object?",
+          "plan.background_image": "string",
+          "plan.svg_markup": "string",
+
+          "plot": "object?",
+          "plot.exists": "boolean",
+          "plot.size": "number?",
+
+          "price": "number?",
+
+          "project": "object",
+          "project.brandbook" : "string",
+          "project.business_unit" : "string",
+          "project.code" : "string",
+          "project.id" : "integer",
+          "project.image" : "string?",
+          "project.is_countryside" : "boolean",
+          "project.is_private" : "boolean",
+          "project.name" : "string",
+          "project.title" : "string?",
+          "project.description" : "string?",
+          "project.marketing_image" : "string?",
+          
+
+          "purchase_type": "string",
+
+          "purchase_types": "array",
+          "purchase_types.*.code" : "string",    
+          "purchase_types.*.discount" : "object?",
+          "purchase_types.*.discount.absolute_discount" : "number",
+          "purchase_types.*.discount.description" : "string?",
+          "purchase_types.*.discount.meter_price" : "number",
+          "purchase_types.*.discount.percentage_discount" : "number",
+          "purchase_types.*.discount.price" : "number",
+          "purchase_types.*.discount.type" : "string",
+          "purchase_types.*.name" : "string",
+
+          "rooms_number": "integer?",
+
+          "status": "object",
+          "status.code" : "string",
+          "status.name" : "string",
+
+          "stop_sales": "boolean?", //пока не реализовано
+
+          "subtype": "object",
+          "subtype.code": "string",
+          "subtype.description": "string",
+          "subtype.icon": "string?",
+          "subtype.name": "string",
+
+          "technical_layout": "string?",
+          "tier_quantity": "number?",  
+      }
+      });
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Сведения об ОН по ID CRM (новый метод).resources/examples
+order: 11000

@@ -1,0 +1,51 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/purchase/:purchase-id/documents/:document-id"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    purchase-id: ""
+    document-id: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "document": {
+          "id": "<number>",
+          "type": "letter_of_credit",
+          "name": "<string>",
+          "status": {
+            "code": "active",
+            "name": "Действующий"
+          },
+          "number": "<string>",
+          "file_id": "<integer>"
+        },
+        "attributes": [
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "value": "<string>",
+            "formatted_value": "<string>",
+            "extra_value": "<string>"
+          },
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "value": "<string>",
+            "formatted_value": "<string>",
+            "extra_value": "<string>"
+          }
+        ]
+      }
+order: 1000

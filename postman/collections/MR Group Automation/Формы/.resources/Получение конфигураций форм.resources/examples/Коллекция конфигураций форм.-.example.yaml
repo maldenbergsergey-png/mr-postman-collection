@@ -1,0 +1,68 @@
+$kind: http-example
+name: |
+  Коллекция конфигураций форм.
+request:
+  url: "{{baseUrl}}/forms/configs"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+    cache-control: ""
+  body:
+    type: json
+    content: |-
+      {
+        "data": [
+          {
+            "consents": [
+              {
+                "caption": "<string>",
+                "consent_document": {
+                  "id": "<string>",
+                  "url_name": "<string>"
+                },
+                "display_condition": "anonymous",
+                "required": "<boolean>"
+              },
+              {
+                "caption": "<string>",
+                "consent_document": {
+                  "id": "<string>",
+                  "url_name": "<string>"
+                },
+                "display_condition": "always",
+                "required": "<boolean>"
+              }
+            ],
+            "id": "phone_input"
+          },
+          {
+            "consents": [
+              {
+                "caption": "<string>",
+                "consent_document": {
+                  "id": "<string>",
+                  "url_name": "<string>"
+                },
+                "display_condition": "always",
+                "required": "<boolean>"
+              },
+              {
+                "caption": "<string>",
+                "consent_document": {
+                  "id": "<string>",
+                  "url_name": "<string>"
+                },
+                "display_condition": "anonymous",
+                "required": "<boolean>"
+              }
+            ],
+            "id": "phone_input"
+          }
+        ]
+      }
+order: 1000

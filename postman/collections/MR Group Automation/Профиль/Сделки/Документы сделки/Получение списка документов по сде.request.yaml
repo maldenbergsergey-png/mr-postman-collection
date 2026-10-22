@@ -1,0 +1,69 @@
+$kind: http-request
+name: Получение списка документов по сделке
+description: |
+  Метод, который позволяет получить список документов по сделке
+url: "{{baseUrl}}/purchase/{{idDeal}}/documents"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      let json;
+
+      try {
+          json = pm.response.json();
+      } catch (e) {
+          pm.expect.fail("Ответ не является корректным JSON");
+      }
+
+      // Проверяем, что есть items
+      pm.expect(json, "Нет поля items в ответе").to.have.property("items");
+      pm.expect(json.items, "items должен быть массивом").to.be.an("array").that.is.not.empty;
+
+      // Берём id первого документа (или любого другого по логике)
+      const documentId = json.items[0].id;
+
+      // Сохраняем в окружение
+      pm.environment.set("documentDeal", String(documentId));
+
+      console.log(`documentDeal сохранён: ${documentId}`);
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "items",
+
+          "items.*.file_id",
+          "items.*.id",
+          "items.*.name",
+          "items.*.number",
+          "items.*.status",
+          "items.*.status.*.code",
+          "items.*.status.*.name",
+          "items.*.type"
+        ],
+        types: {
+          "items": "array",
+
+          "items.*.file_id": "integer?",
+          "items.*.id": "number",
+          "items.*.name": "string",
+          "items.*.number": "string?",
+          "items.*.status": "object?",
+          "items.*.status.code": "string",
+          "items.*.status.name": "string",
+          "items.*.type": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка документов по сде.resources/examples
+order: 1000

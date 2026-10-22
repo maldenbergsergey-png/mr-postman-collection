@@ -1,0 +1,81 @@
+$kind: http-example
+name: |
+  Список баннеров.
+request:
+  url: "{{baseUrl}}/banners"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "active_btn_link": "<string>",
+            "active_btn_text": "<string>",
+            "active_color": "<string>",
+            "active_title": "<string>",
+            "ad_label": "<string>",
+            "desktop_big_picture": "<string>",
+            "desktop_normal_picture": "<string>",
+            "discount_amount": "<string>",
+            "id": "<integer>",
+            "mobile_picture": "<string>",
+            "preview_picture": "<string>",
+            "preview_title": "<string>",
+            "project": {
+              "metro": {
+                "color": "<string>",
+                "name": "<string>"
+              },
+              "metro_distance": "<integer>",
+              "min_price": "<number>",
+              "movement_way": {
+                "icon": "<string>",
+                "name": "<string>"
+              },
+              "price_from": "<number>"
+            },
+            "tablet_picture": "<string>",
+            "title": "<string>",
+            "type": "discount"
+          },
+          {
+            "active_btn_link": "<string>",
+            "active_btn_text": "<string>",
+            "active_color": "<string>",
+            "active_title": "<string>",
+            "ad_label": "<string>",
+            "desktop_big_picture": "<string>",
+            "desktop_normal_picture": "<string>",
+            "discount_amount": "<string>",
+            "id": "<integer>",
+            "mobile_picture": "<string>",
+            "preview_picture": "<string>",
+            "preview_title": "<string>",
+            "project": {
+              "metro": {
+                "color": "<string>",
+                "name": "<string>"
+              },
+              "metro_distance": "<integer>",
+              "min_price": "<number>",
+              "movement_way": {
+                "icon": "<string>",
+                "name": "<string>"
+              },
+              "price_from": "<number>"
+            },
+            "tablet_picture": "<string>",
+            "title": "<string>",
+            "type": "discount"
+          }
+        ]
+      }
+order: 1000

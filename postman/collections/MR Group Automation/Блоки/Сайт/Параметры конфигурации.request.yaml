@@ -1,0 +1,26 @@
+$kind: http-request
+description: |
+  Параметры конфигурации.
+url: "{{baseUrl}}/site/config"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [],
+        types: {
+          "address": "string",
+          "email_support": "string",
+          "footer_copyright": "string",
+          "phone_support": "string",
+          "reg_text": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Параметры конфигурации.resources/examples
+order: 1000

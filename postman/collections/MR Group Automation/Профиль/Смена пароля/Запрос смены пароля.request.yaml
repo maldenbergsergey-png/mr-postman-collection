@@ -1,0 +1,21 @@
+$kind: http-request
+description: |
+  Запрос на смену пароля для пользователя
+url: "{{baseUrl}}/user/password/change"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "new_password": "Dahunpao276"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Запрос смены пароля.resources/examples
+order: 1000

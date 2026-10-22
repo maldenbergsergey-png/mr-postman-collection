@@ -1,0 +1,29 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/hotline/form"
+  method: POST
+  headers:
+    - key: Captcha-Token
+      value: <string>
+      description: Токен, полученный после прохождения проверки пользователя во внешнем сервисе верификации запросов
+    - key: Device-Token
+      value: <string>
+      description: Константное значение, аналог Captcha-Token для моб. приложений для прохождения проверки (временное решение, будет отключено после разработки варианта проверки запросов на отправку роботом для мобильных приложений)
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "phone": "<string>",
+        "name": "<string>",
+        "email": "<string>",
+        "comment": "<string>"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: text
+    content: ""
+order: 1000

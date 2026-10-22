@@ -1,0 +1,66 @@
+$kind: http-example
+name: |-
+  Синтаксическая ошибка в запросе: неверный JSON, нет обязательного поля, недопустимый тип
+  значения и т.п.
+
+  Возможные коды ошибок:
+
+  - `invalid_value` — полученное значение не соответствует заданным ограничениям;
+  - `syntax_error` — синтаксическая ошибка в за
+request:
+  url: "{{baseUrl}}/tradein/form"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: json
+    content: |-
+      {
+        "phone": "<string>",
+        "name": "<string>",
+        "project_code": "<string>",
+        "comment": "<string>",
+        "realty": {
+          "address": "<string>",
+          "floor": "<integer>",
+          "area": "<number>",
+          "rooms_number": 0,
+          "price": "<number>"
+        }
+      }
+response:
+  statusCode: 400
+  statusText: Bad Request
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 2000

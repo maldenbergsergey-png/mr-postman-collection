@@ -1,0 +1,20 @@
+$kind: http-request
+description: |
+  Проверка значения кода подтверждения
+url: "{{baseUrl}}/code/check"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+        "type": "mail",
+        "phoneNumber": "+79935905959",
+        "mail": "test@mail.ru",
+        "code": 1111
+    }
+settings: {}
+examples: ./.resources/Проверка кода EMAIL.resources/examples
+order: 2000

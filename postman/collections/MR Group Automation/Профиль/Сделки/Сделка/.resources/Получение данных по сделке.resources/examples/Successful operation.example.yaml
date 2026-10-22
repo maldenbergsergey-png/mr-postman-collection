@@ -1,0 +1,299 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/purchase/:purchase-id"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    purchase-id: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "bills_qty": "<integer>",
+        "booking_payment": {
+          "amount": "<number>",
+          "debt": "<number>",
+          "unpaid_bills_count": "<integer>",
+          "unpaid_bills": [
+            {
+              "description": "<string>",
+              "amount": "<number>",
+              "payment_link": "<string>",
+              "expiration_dt": "<string>",
+              "status": {
+                "code": "new",
+                "name": "Оплачен"
+              }
+            },
+            {
+              "description": "<string>",
+              "amount": "<number>",
+              "payment_link": "<string>",
+              "expiration_dt": "<string>",
+              "status": {
+                "code": "canceled",
+                "name": "Отменен"
+              }
+            }
+          ]
+        },
+        "contact": {
+          "type": "support",
+          "manager": {
+            "name": "<string>",
+            "phone": "<string>"
+          },
+          "support": {
+            "phone": "<string>",
+            "email": "<string>"
+          },
+          "occupancy": {
+            "name": "<string>",
+            "address": "<string>",
+            "schedule": "<string>",
+            "phone": "<string>",
+            "email": "<string>",
+            "latitude": "<number>",
+            "longitude": "<number>"
+          }
+        },
+        "description": "<string>",
+        "digital_signature": {
+          "title": "<string>",
+          "description": "<string>",
+          "extra_title": "<string>",
+          "explanation": "<string>"
+        },
+        "documents_qty": "<integer>",
+        "escrow": {
+          "status": {
+            "code": "sent",
+            "name": "Не отправлена"
+          },
+          "sending_dt": "<string>",
+          "approval_dt": "<string>",
+          "logo": "<string>"
+        },
+        "escrow_dt": "<date>",
+        "expiration_dt": "<date>",
+        "explanation": "<string>",
+        "free_booking_dt": "<string>",
+        "inspection": {
+          "registration_state": "available",
+          "registration": {
+            "id": "<string>",
+            "visit_dt": "<string>",
+            "status": {
+              "code": "pre_completed",
+              "name": "Подтверждение завершения"
+            }
+          }
+        },
+        "lead_id": "<string>",
+        "letter_of_credit": {
+          "description": "<string>",
+          "amount": "<number>",
+          "explanation": "<string>"
+        },
+        "letter_of_credit_dt": "<date>",
+        "mortgage": {
+          "approved_offers_qty": "<integer>",
+          "mortgage_application": {
+            "id": "<integer>",
+            "lead_id": "<string>",
+            "number": "<string>",
+            "status": {
+              "code": "awaiting_approval",
+              "name": "<string>"
+            },
+            "project": {
+              "id": "<integer>",
+              "code": "<string>",
+              "name": "<string>"
+            },
+            "rate": "<number>",
+            "payment": "<number>",
+            "period": "<integer>",
+            "create_date": "<date>",
+            "link": "<string>",
+            "offers": [
+              {
+                "id": "<integer>",
+                "program": "<string>",
+                "bank": {
+                  "logo": "<string>",
+                  "name": "<string>",
+                  "code": "<string>"
+                },
+                "rate": "<number>",
+                "payment": "<number>",
+                "amount": "<number>",
+                "period": "<integer>",
+                "available": "<boolean>",
+                "status": {
+                  "code": "rejected",
+                  "name": "<string>"
+                }
+              },
+              {
+                "id": "<integer>",
+                "program": "<string>",
+                "bank": {
+                  "logo": "<string>",
+                  "name": "<string>",
+                  "code": "<string>"
+                },
+                "rate": "<number>",
+                "payment": "<number>",
+                "amount": "<number>",
+                "period": "<integer>",
+                "available": "<boolean>",
+                "status": {
+                  "code": "awaiting_approval",
+                  "name": "<string>"
+                }
+              }
+            ]
+          },
+          "manager": {
+            "name": "<string>",
+            "email": "<string>",
+            "phone": "<string>"
+          }
+        },
+        "notification": "<string>",
+        "phase": {
+          "code": "booking",
+          "name": "<string>",
+          "number": "<number>",
+          "phases_qty": "<number>"
+        },
+        "phase_document": {
+          "id": "<number>",
+          "type": "mortgage_approval",
+          "name": "<string>",
+          "status": {
+            "code": "signing",
+            "name": "Истек"
+          },
+          "explanation": "<string>",
+          "attributes": [
+            {
+              "code": "<string>",
+              "name": "<string>",
+              "value": "<string>",
+              "formatted_value": "<string>",
+              "extra_value": "<string>"
+            },
+            {
+              "code": "<string>",
+              "name": "<string>",
+              "value": "<string>",
+              "formatted_value": "<string>",
+              "extra_value": "<string>"
+            }
+          ],
+          "contract_type": {
+            "code": "dkp",
+            "name": "Договор долевого участия",
+            "abbreviation": "ПДДУ"
+          },
+          "file_id": "<string>",
+          "debt_amount": "<number>"
+        },
+        "phase_title": "<string>",
+        "products": [
+          {
+            "area": "<number>",
+            "building": {
+              "id": "<integer>",
+              "code": "<string>",
+              "name": "<string>",
+              "floors_number": "<integer>",
+              "deadline": "<string>",
+              "readiness": "<integer>",
+              "scheme": "<string>",
+              "compass_angle": "<number>"
+            },
+            "category": {
+              "id": "<integer>",
+              "code": "flats",
+              "name": "<string>"
+            },
+            "code": "<string>",
+            "floor": "<integer>",
+            "id": "<integer>",
+            "name": "<string>",
+            "number": "<string>",
+            "project": {
+              "code": "<string>",
+              "description": "<string>",
+              "id": "<integer>",
+              "marketing_image": "<string>",
+              "name": "<string>",
+              "title": "<string>",
+              "is_private": "<boolean>"
+            },
+            "rooms_number": 2,
+            "technical_layout": "<string>",
+            "contract_price": "<number>"
+          },
+          {
+            "area": "<number>",
+            "building": {
+              "id": "<integer>",
+              "code": "<string>",
+              "name": "<string>",
+              "floors_number": "<integer>",
+              "deadline": "<string>",
+              "readiness": "<integer>",
+              "scheme": "<string>",
+              "compass_angle": "<number>"
+            },
+            "category": {
+              "id": "<integer>",
+              "code": "flats",
+              "name": "<string>"
+            },
+            "code": "<string>",
+            "floor": "<integer>",
+            "id": "<integer>",
+            "name": "<string>",
+            "number": "<string>",
+            "project": {
+              "code": "<string>",
+              "description": "<string>",
+              "id": "<integer>",
+              "marketing_image": "<string>",
+              "name": "<string>",
+              "title": "<string>",
+              "is_private": "<boolean>"
+            },
+            "rooms_number": 4,
+            "technical_layout": "<string>",
+            "contract_price": "<number>"
+          }
+        ],
+        "purchase_type": {
+          "code": "mortgage",
+          "title": "Ипотека"
+        },
+        "status": {
+          "code": "canceled",
+          "name": "Отменена"
+        },
+        "step": "booking_canceled",
+        "title": "<string>",
+        "unilateral_act_dt": "<date>"
+      }
+order: 1000

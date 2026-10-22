@@ -1,0 +1,15 @@
+$kind: http-request
+description: |
+  Возвращает
+  [фид для новостроек](https://yandex.ru/support/realty/requirements/requirements-sale-new.html).
+
+  URL этого метода предназначен для передачи Яндексу.
+url: "{{baseUrl}}/yandex/realty/feeds/sale-new"
+method: GET
+headers:
+  - key: Accept
+    value: application/xml
+    disabled: true
+settings: {}
+examples: ./.resources/Фид новостроек.resources/examples
+order: 1000

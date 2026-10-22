@@ -1,0 +1,94 @@
+$kind: http-request
+description: |
+  Возвращает список
+  [конфигураций форм](https://wiki.adv.ru/pages/viewpage.action?pageId=307092923).
+
+  Главным образом метод предназначен для сокращения количества запросов к API в целях
+  повышения отзывчивости пользовательского интерфейса. Предполагается что клиентское
+  приложение (мобильное или сайт) может разом запросить конфигурации всех форм и сохранить их
+  в кэше. Это позволит не запрашивать конфигурацию каждой формы перед её показом.
+
+  - [Обзорное описание получения согласий пользователя](https://wiki.adv.ru/pages/viewpage.action?pageId=307094741)
+  - [Описание метода API для бэкенда](https://wiki.adv.ru/pages/viewpage.action?pageId=307093539)
+url: "{{baseUrl}}/forms/configs"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      let data;
+      try {
+        data = pm.response.json().data;
+      } catch (e) {
+        pm.expect.fail("Ответ не является корректным JSON");
+      }
+
+      // Проверяем что вернулся массив форм
+      pm.expect(data, "Нет массива data").to.be.an("array");
+
+      // Забираем текущую карту formCode -> consentIds из ENV (или создаём новую)
+      let formsConsentsMap = {};
+      try {
+        formsConsentsMap = JSON.parse(pm.environment.get("formsConsentsMap") || "{}");
+      } catch (e) {
+        formsConsentsMap = {};
+      }
+
+      // Проходим по каждой форме
+      data.forEach(form => {
+        pm.expect(form, "У формы нет id").to.have.property("id");
+
+        const codeForm = form.id;
+        const consentIds = Array.isArray(form.consents)
+          ? form.consents
+              .filter(c => c.consent_document && c.consent_document.id)
+              .map(c => c.consent_document.id)
+          : [];
+
+        // Записываем в карту вида formCode -> [ consentDocumentIds ]
+        formsConsentsMap[codeForm] = consentIds;
+
+        console.log(`Форма ${codeForm} → ${consentIds.length} consent_ids`);
+      });
+
+      // Записываем КАРТУ в окружение
+      pm.environment.set("formsConsentsMap", JSON.stringify(formsConsentsMap, null, 2));
+
+      console.log("Записано в окружение formsConsentsMap:");
+      console.log(formsConsentsMap);
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "data",
+          "data.*.consents",
+          "data.*.id",
+          "data.*.consents.*.caption",
+          "data.*.consents.*.consent_document",
+          "data.*.consents.*.display_condition",
+          "data.*.consents.*.required",
+          "data.*.consents.*.consent_document.*.id",
+          "data.*.consents.*.consent_document.*.name",
+          "data.*.consents.*.consent_document.*.url_name"
+        ],
+        types: {
+          "data": "array",
+          "data.*.id": "string",
+          "data.*.consents": "array",
+          "data.*.consents.*.caption": "string",
+          "data.*.consents.*.consent_document": "object",
+          "data.*.consents.*.consent_document.id": "string",
+          "data.*.consents.*.consent_document.name": "string",
+          "data.*.consents.*.consent_document.url_name": "string",
+          "data.*.consents.*.display_condition": "string",
+          "data.*.consents.*.required": "boolean"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение конфигураций форм.resources/examples
+order: 1000

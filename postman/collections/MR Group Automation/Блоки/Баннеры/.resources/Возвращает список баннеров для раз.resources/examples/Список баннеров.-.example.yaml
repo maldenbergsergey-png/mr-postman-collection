@@ -1,0 +1,99 @@
+$kind: http-example
+name: |
+  Список баннеров.
+request:
+  url: "{{baseUrl}}/private/banners"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "active_btn_link": "<string>",
+            "active_btn_text": "<string>",
+            "active_color": "<string>",
+            "active_title": "<string>",
+            "ad_label": "<string>",
+            "content_type": "image",
+            "discount_amount": "<string>",
+            "id": "<integer>",
+            "image": {
+              "desktop_big_picture": "<string>",
+              "desktop_normal_picture": "<string>",
+              "mobile_picture": "<string>",
+              "tablet_picture": "<string>"
+            },
+            "preview_picture": "<string>",
+            "preview_title": "<string>",
+            "project": {
+              "metro": {
+                "color": "<string>",
+                "name": "<string>"
+              },
+              "metro_distance": "<integer>",
+              "min_price": "<number>",
+              "movement_way": {
+                "icon": "<string>",
+                "name": "<string>"
+              },
+              "price_from": "<number>"
+            },
+            "title": "<string>",
+            "type": "discount",
+            "video": {
+              "image_preview_desktop": "<string>",
+              "image_preview_mobile": "<string>",
+              "video_desktop": "<string>",
+              "video_mobile": "<string>"
+            }
+          },
+          {
+            "active_btn_link": "<string>",
+            "active_btn_text": "<string>",
+            "active_color": "<string>",
+            "active_title": "<string>",
+            "ad_label": "<string>",
+            "content_type": "image",
+            "discount_amount": "<string>",
+            "id": "<integer>",
+            "image": {
+              "desktop_big_picture": "<string>",
+              "desktop_normal_picture": "<string>",
+              "mobile_picture": "<string>",
+              "tablet_picture": "<string>"
+            },
+            "preview_picture": "<string>",
+            "preview_title": "<string>",
+            "project": {
+              "metro": {
+                "color": "<string>",
+                "name": "<string>"
+              },
+              "metro_distance": "<integer>",
+              "min_price": "<number>",
+              "movement_way": {
+                "icon": "<string>",
+                "name": "<string>"
+              },
+              "price_from": "<number>"
+            },
+            "title": "<string>",
+            "type": "project",
+            "video": {
+              "image_preview_desktop": "<string>",
+              "image_preview_mobile": "<string>",
+              "video_desktop": "<string>",
+              "video_mobile": "<string>"
+            }
+          }
+        ]
+      }
+order: 1000

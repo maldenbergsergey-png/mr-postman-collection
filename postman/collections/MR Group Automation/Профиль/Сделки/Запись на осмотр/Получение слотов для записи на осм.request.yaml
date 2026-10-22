@@ -1,0 +1,40 @@
+$kind: http-request
+name: Получение слотов для записи на осмотр
+description: |
+  Метод, который позволяет получить список слотов для записи на осмотр ОН
+url: "{{baseUrl}}/purchase/:purchase-id/schedule/:product-id"
+method: GET
+headers:
+  Accept: application/json
+pathVariables:
+  - key: purchase-id
+    value: <string>
+    description: (Required) Внутренний идентификатор сделки
+  - key: product-id
+    value: <string>
+    description: (Required) Внутренний идентификатор ОН
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА: Schedule
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.date",
+          "items.*.id"
+        ],
+
+        types: {
+          "items": "array",
+          "items.*.date": "string",
+          "items.*.id": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение слотов для записи на осм.resources/examples
+order: 1000

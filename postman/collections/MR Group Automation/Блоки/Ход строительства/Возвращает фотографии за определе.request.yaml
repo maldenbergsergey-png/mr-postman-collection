@@ -1,0 +1,73 @@
+$kind: http-request
+name: Возвращает фотографии за определенный месяц для блока Ход строительства
+description: Возвращает фотографии за определенный месяц для блока Ход строительства
+url: "{{baseUrl}}/project/{{projectCode}}/construction-progress/photo?month={{randProjectMonth}}&year={{randProjectYear}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: month
+    value: "{{randProjectMonth}}"
+    description: "(Required) "
+  - key: year
+    value: "{{randProjectYear}}"
+    description: "(Required) "
+scripts:
+  - type: beforeRequest
+    code: |-
+      const projectsCodes = pm.collectionVariables.get("construction-progress/projectCodes");
+
+      const rpc = projectsCodes[Math.floor(Math.random() * projectsCodes.length)]
+
+      pm.environment.set("projectCode", rpc)
+
+      const rtl = pm.collectionVariables.get(`construction-progress/projectCodes/construction-progress/timelines/${rpc}`);
+
+
+      pm.environment.set("projectCode", rpc)
+      pm.environment.set("randProjectMonth", rtl.month)
+      pm.environment.set("randProjectYear", rtl.year)
+
+      for (const code of projectsCodes) {
+          const projectTimeline = pm.collectionVariables.get(`construction-progress/projectCodes/construction-progress/timelines/${code}`);
+          const month = projectTimeline.month;
+          const year = projectTimeline.year;
+
+          pm.sendRequest({
+              url: pm.environment.get("baseUrl") + "/project/" + code + `/construction-progress/photo?month=${month}&year=${year}`,
+              method: 'GET',
+              header: {
+                  'Accept': 'application/json',
+              },
+          }, (err) => {
+              if (err) {
+                  console.error('Ошибка получения фото для', err);
+                  return;
+              }
+          })
+      }
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+
+          "month",
+          "photo",
+          "year",
+
+        ],
+        types: { //проверка типов данных
+
+        "." : "object?",
+        ".month" : "integer",
+        ".photo" : "array",
+        ".photo" : "string",
+        ".year" : "integer",
+
+        }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Возвращает фотографии за определе.resources/examples
+order: 3000

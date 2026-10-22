@@ -1,0 +1,24 @@
+$kind: http-example
+name: |
+  Итерация закрыта.
+request:
+  url: "{{baseUrl}}/code/check"
+  method: POST
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "type": "<string>",
+        "code": "<integer>",
+        "phoneNumber": "<string>",
+        "mail": "<string>"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: text
+    content: ""
+order: 1000

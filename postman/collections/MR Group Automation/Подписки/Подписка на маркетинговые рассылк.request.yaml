@@ -1,0 +1,75 @@
+$kind: http-request
+name: Подписка на маркетинговые рассылки
+description: |
+  Оформляет подписку пользователя на маркетинговую рассылку. Метод можно использовать как для
+  аутентифицированного пользователя, так и для неаутентифицированного.
+url: "{{baseUrl}}/user/subscription/marketing"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+        "email": "maldenberg@mail.ru",
+        "form": "{{formCode}}",
+        "meta": {
+            "consents": {
+                "consent_documents": {{consentIds}},
+                "phone": "",
+                "email": "maldenberg@mail.ru",
+                "device_info": [
+                    {
+                        "name": "Время, часовой пояс",
+                        "value": "{{timestamp}}"
+                    }
+                ]
+            }
+        }
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Загружаем сохранённую карту
+      let raw = pm.environment.get("formsConsentsMap") || "{}";
+      let formsConsentsMap = {};
+
+      try {
+        formsConsentsMap = JSON.parse(raw);
+      } catch (e) {
+        pm.expect.fail("formsConsentsMap повреждён — вызови /forms/configs снова");
+      }
+
+      // Только разрешённые формы
+      const allowedForms = ["subscription_marketing", "subscription_news"];
+      const available = allowedForms.filter(f => formsConsentsMap[f]);
+
+      pm.expect(available, "Нет ни одной подписочной формы в formsConsentsMap")
+        .to.be.an("array")
+        .that.is.not.empty;
+
+      // Рандомный выбор формы
+      const formCode = available[Math.floor(Math.random() * available.length)];
+      console.log(`Случайно выбрана форма подписки: ${formCode}`);
+
+      // Берём связанные consent_ids
+      const consentIds = formsConsentsMap[formCode] || [];
+      pm.expect(consentIds, `Для формы '${formCode}' нет consent_ids`)
+        .to.be.an("array")
+        .that.is.not.empty;
+
+      // Сохраняем для Body
+      pm.environment.set("formCode", formCode);
+      pm.environment.set("consentIds", JSON.stringify(consentIds));
+
+      console.log(` ${formCode} → ${consentIds.length} consent_ids:`, consentIds);
+
+      // timestamp
+      pm.environment.set("timestamp", new Date().toISOString());
+    language: text/javascript
+settings: {}
+examples: ./.resources/Подписка на маркетинговые рассылк.resources/examples
+order: 1000

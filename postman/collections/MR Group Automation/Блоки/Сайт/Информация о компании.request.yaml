@@ -1,0 +1,44 @@
+$kind: http-request
+description: |
+  Информация о компании.
+url: "{{baseUrl}}/site/company"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "files.*.src"
+        ],
+        types: {
+          "block_main": "object",
+          "block_main.button_link": "string",
+          "block_main.button_text": "string",
+          "block_main.text": "string",
+          "block_main.title": "string",
+
+          "block1": "object",
+          "block1.accent_text": "string",
+          "block1.additional_text": "string",
+
+          "block2": "object",
+          "block2.accent_text": "string",
+          "block2.additional_text": "string",
+
+          "block3": "object",
+          "block3.accent_text": "string",
+          "block3.additional_text": "string",
+
+          "files": "array",
+          "files.*.src": "string",
+          "files.*.description": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Информация о компании.resources/examples
+order: 2000

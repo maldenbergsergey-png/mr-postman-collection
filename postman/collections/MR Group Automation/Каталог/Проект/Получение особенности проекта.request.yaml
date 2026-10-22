@@ -1,0 +1,50 @@
+$kind: http-request
+description: Метод получения списка особенностей проекта
+url: "{{baseUrl}}/project/{{projectCode}}/features/{{current_id}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      // console.log(`Проверен ID: ${pm.environment.get("current_id")} для проекта ${pm.environment.get("projectCode")}`);
+
+      pm.test("Статус код 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      // После выполнения — переход к следующему проекту
+      let projectsArray = JSON.parse(pm.environment.get("projectsArray"));
+      let index = parseInt(pm.environment.get("index") || "0", 10);
+      index = (index + 1) % projectsArray.length;
+      pm.environment.set("index", index);
+
+      console.log(`🔄 Следующий проект будет: ${projectsArray[index]}`);
+
+      // --- Добавляем паузу перед следующей итерацией ---
+      const delayMs = 2000; // 2 секунды
+      console.log(`⏳ Ожидание ${delayMs / 1000} секунд перед следующей итерацией...`);
+
+      function sleep(ms) {
+          const end = Date.now() + ms;
+          while (Date.now() < end) {} // блокирующая пауза
+      }
+
+      sleep(delayMs);
+    language: text/javascript
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [],
+        types: {
+          "content": "string?",
+          "title": "string",
+          "video": "string?"       
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение особенности проекта.resources/examples
+order: 5000

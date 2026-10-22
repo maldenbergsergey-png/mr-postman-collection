@@ -1,0 +1,85 @@
+$kind: http-request
+url: "{{baseUrl}}/realty/projects?completed=false&category={{categoryForMrAndPrivate}}"
+method: GET
+queryParams:
+  completed: "false"
+  category: "{{categoryForMrAndPrivate}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Список возможных категорий
+      let categories = ["boxrooms", "commercials", "flats", "offices", "parkings"];
+
+      // Выбираем случайную категорию
+      let randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+      // Сохраняем в переменную окружения
+      pm.environment.set("categoryForMrAndPrivate", randomCategory);
+
+      console.log(`Выбрана случайная категория: ${randomCategory}`);
+
+
+      // КОНТРАКТЫ
+
+
+      pm.variables.set("schema", {
+        required: ["category", "items"],
+        types: {
+          "category": "string",
+          "items": "array",
+
+          "items.*.brandbook": "string",
+          "items.*.business_unit": "string",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.is_countryside": "boolean",
+          "items.*.is_private": "boolean",
+          "items.*.name": "string",
+          "items.*.title": "string?",
+          "items.*.air_3d": "string?",
+          "items.*.completion_date": "string?",
+          "items.*.external": "boolean",
+          "items.*.image": "string?",
+          "items.*.is_completed": "boolean",
+          "items.*.key_project": "boolean",
+          "items.*.latitude": "number",
+          "items.*.logo": "string?",
+          "items.*.longitude": "number",
+          "items.*.main_3d": "string?",
+          "items.*.max_discount": "number?",
+          "items.*.metro": "object?",
+          "items.*.metro_distance": "integer?",
+          "items.*.min_price": "number?",
+          "items.*.movement_way": "object?",
+          "items.*.partners": "array",
+          "items.*.price_table": "array",
+          "items.*.project_usp": "array",
+
+          "items.*.metro.color": "string?",
+          "items.*.metro.name": "string",
+
+          "items.*.movement_way": "object?",
+          "items.*.movement_way.icon": "string",
+          "items.*.movement_way.name": "string",
+
+          "items.*.partners.*.logo": "string?",
+          "items.*.partners.*.name": "string",
+
+          "items.*.price_table.*.filter": "integer",
+          "items.*.price_table.*.min_area": "number",
+          "items.*.price_table.*.min_price": "number",
+          "items.*.price_table.*.name": "string",
+
+          "items.*.project_usp.*.icon": "string",
+          "items.*.project_usp.*.name": "string",
+
+          "items.*.queues": "object?",
+          "items.*.queues.": "array?",      
+          "items.*.queues.*": "array",
+          "items.*.queues.*.*": "string"
+        
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 11000

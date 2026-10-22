@@ -1,0 +1,182 @@
+$kind: http-request
+description: |
+  Получение данных проекта по коду проекта
+url: "{{baseUrl}}/sale/projects/{{projectCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+      required: [],
+      types: {
+          "brandbook": "string",
+          "business_unit": "string",
+          "code": "string",
+          "id": "integer",
+          "is_countryside": "boolean",
+          "is_private": "boolean",
+          "marketing_images": "array",
+          "name": "string",
+          "title": "string?",
+          "air_3d": "string?",
+          "alternative_plan": "object?",
+          "apartments_count": "integer?",
+          "categories": "array",
+          "description": "string?",
+          "documentation": "string?",
+          "external": "boolean",
+          "is_completed": "boolean",
+          "latitude": "number",
+          "logo": "string?",
+          "longitude": "number",
+          "main_3d": "string?",
+          "main_plan": "object?",
+          "metro": "object?",
+          "metro_distance": "integer?",
+          "min_price": "number?",
+          "mobile_marketing_images": "array",
+          "movement_way": "object?",
+          "object_types": "array",
+          "queues": "object?",
+          "related_project": "object?",
+          "view_from_above_plan": "object?",
+
+          // alternative_plan
+          "alternative_plan.background_image": "string",
+          "alternative_plan.compass_angle": "number?",
+          "alternative_plan.floor": "number?",
+          "alternative_plan.items_level": "string?",
+          "alternative_plan.level": "string",
+          "alternative_plan.object_type": "string",
+          "alternative_plan.price_table_variant": "string",
+          "alternative_plan.svg_markup": "string",
+          "alternative_plan.level_plan": "string", //устаревшее название
+
+           //main_plan
+          "main_plan.background_image": "string",
+          "main_plan.compass_angle": "number?",
+          "main_plan.floor": "number?",
+          "main_plan.items_level": "string?",
+          "main_plan.level": "string",
+          "main_plan.object_type": "string",
+          "main_plan.price_table_variant": "string",
+          "main_plan.svg_markup": "string",
+          "main_plan.level_plan": "string", //устаревшее название
+          
+           //view_from_above_plan
+          "view_from_above_plan.background_image": "string",
+          "view_from_above_plan.compass_angle": "number?",
+          "view_from_above_plan.floor": "number?",
+          "view_from_above_plan.items_level": "string?",
+          "view_from_above_plan.level": "string",
+          "view_from_above_plan.object_type": "string",
+          "view_from_above_plan.price_table_variant": "string",
+          "view_from_above_plan.svg_markup": "string",
+          "view_from_above_plan.level_plan": "string", //устаревшее название
+
+          // categories[*]
+          "categories.*.background_color": "string?",
+          "categories.*.code": "string?",
+          "categories.*.description": "string?",
+          "categories.*.image": "string?",
+          "categories.*.min_discounted_price": "object?",
+          "categories.*.min_meter_price": "number?",
+          "categories.*.min_price": "number?",
+          "categories.*.name": "string",
+          "categories.*.object_count": "integer?",
+          "categories.*.show_in": "object",
+
+          // categories.*.min_discounted_price
+          "categories.*.min_discounted_price.percentage_discount": "number",
+          "categories.*.min_discounted_price.price": "number",
+          "categories.*.min_discounted_price.type": "string",
+          "categories.*.min_discounted_price.meter_price": "number",
+          "categories.*.min_discounted_price.percentage_discount": "number",
+          "categories.*.min_discounted_price.absolute_discount": "number?",
+          "categories.*.min_discounted_price.description": "string?",
+
+          // show_in
+          "categories.*.show_in.catalog": "boolean",
+
+          // metro
+          "metro.color": "string?",
+          "metro.name": "string",
+
+          // movement_way
+          "movement_way.icon": "string",
+          "movement_way.name": "string",
+
+          // object_types[*]
+          "object_types.*.background_color": "string?",
+          "object_types.*.code": "string",
+          "object_types.*.description": "string?",
+          "object_types.*.discounted_price": "object?",
+          "object_types.*.image": "string?",
+          "object_types.*.name": "string",
+          "object_types.*.price": "number?",
+
+          // object_types.*.discounted_price
+          "object_types.*.discounted_price.percentage_discount": "number",
+          "object_types.*.discounted_price.price": "number",
+          "object_types.*.discounted_price.type": "string",
+          "object_types.*.discounted_price.meter_price": "number",
+          "object_types.*.discounted_price.description": "string?",
+          "object_types.*.discounted_price.absolute_discount": "number?",
+
+          // related_project
+          "related_project.code": "string",
+          "related_project.marketing_images": "array",
+          "related_project.name": "string",
+
+          // queues — объект 
+
+          "queues": "object?",
+          "queues.*": "array",
+          "queues.*.*": "string"
+
+      }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |
+      // === Tests: вытянуть имя проекта и сохранить в окружение ===
+      let body;
+      try { body = pm.response.json(); }
+      catch { throw new Error("Ответ карточки проекта не JSON"); }
+
+      // Универсальный поиск name: корень, data, items[0], [0]
+      const pickName = (j) => {
+        if (!j) return null;
+        if (typeof j.name === "string" && j.name.trim()) return j.name.trim();
+        if (j.data && typeof j.data.name === "string" && j.data.name.trim()) return j.data.name.trim();
+        if (Array.isArray(j.items) && j.items[0]?.name) return String(j.items[0].name).trim();
+        if (Array.isArray(j) && j[0]?.name) return String(j[0].name).trim();
+        return null;
+      };
+
+      const name = pickName(body);
+      pm.test("Карточка проекта содержит name", function () {
+        pm.expect(name, "name отсутствует в ответе").to.be.a("string").and.not.empty;
+      });
+
+      // Сохраняем имя проекта
+      pm.environment.set("projectName", name);
+
+      // (Опционально) сохраняем ещё карту code->name
+      const code = body?.code || body?.data?.code || null;
+      if (code) {
+        let map = {};
+        try { map = JSON.parse(pm.environment.get("projectsMap") || "{}"); } catch {_=>{}}
+        map[code] = name;
+        pm.environment.set("projectsMap", JSON.stringify(map));
+      }
+
+      console.log(`✔ projectName="${name}" сохранён для последующего поиска`);
+    language: text/javascript
+settings: {}
+examples: ./.resources/Карточка проекта.resources/examples
+order: 6000

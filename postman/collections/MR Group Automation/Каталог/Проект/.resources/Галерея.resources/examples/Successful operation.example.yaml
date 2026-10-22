@@ -1,0 +1,69 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/project/:project-code/gallery"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    project-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "<integer>",
+        "name": "<string>",
+        "items": [
+          {
+            "description": "<string>",
+            "hide_description": "<boolean>",
+            "id": "<integer>",
+            "image": "<string>",
+            "link_3d": "<string>",
+            "type": "3D",
+            "video_link": "<string>",
+            "pins": [
+              {
+                "description": "<string>",
+                "id": "<integer>",
+                "x": "<number>",
+                "y": "<number>"
+              },
+              {
+                "description": "<string>",
+                "id": "<integer>",
+                "x": "<number>",
+                "y": "<number>"
+              }
+            ]
+          },
+          {
+            "description": "<string>",
+            "hide_description": "<boolean>",
+            "id": "<integer>",
+            "image": "<string>",
+            "link_3d": "<string>",
+            "type": "3D",
+            "video_link": "<string>",
+            "pins": [
+              {
+                "description": "<string>",
+                "id": "<integer>",
+                "x": "<number>",
+                "y": "<number>"
+              },
+              {
+                "description": "<string>",
+                "id": "<integer>",
+                "x": "<number>",
+                "y": "<number>"
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

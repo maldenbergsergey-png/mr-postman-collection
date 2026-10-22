@@ -1,0 +1,138 @@
+$kind: http-example
+name: |
+  Сервер не готов обработать запрос.
+
+  Возможные коды ошибок:
+
+  - `service_unavailable` — приложение временно недоступно.
+request:
+  url: "{{baseUrl}}/sale/products?ids[]=<integer>&category=commercials&page=<integer>&limit=<integer>&sort=<string>&price_min=<integer>&price_max=<integer>&payment_min=<integer>&payment_max=<integer>&rooms[]=<integer>&release[]=<string>&area_min=<integer>&area_max=<integer>&place[]=<string>&project[]=<string>&building[]=<string>&booked=<boolean>&free=<boolean>&floor_min=<integer>&floor_max=<integer>&level_min=<integer>&level_max=<integer>&discount=<boolean>&family=<boolean>&ventilation=<boolean>&housing[]=Apartment&decoration[]=<string>&has_kitchen=<boolean>&assignment=<boolean>&installments=<boolean>&private_filter=<boolean>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: ids[]
+      value: <integer>
+      description: Фильтр по идентификаторам ОН
+    - key: category
+      value: commercials
+      description: Фильтр по типу ОН
+    - key: page
+      value: <integer>
+      description: Номер страницы для пагинации (по умолчанию = 1)
+    - key: limit
+      value: <integer>
+      description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+    - key: sort
+      value: <string>
+      description: |
+        Код способа сортировки (по умолчанию default)\
+        Способы сортировки описаны тут - https://wiki.adv.ru/pages/viewpage.action?pageId=273666894
+    - key: price_min
+      value: <integer>
+      description: Фильтр по мин цене
+    - key: price_max
+      value: <integer>
+      description: Фильтр по макс цене
+    - key: payment_min
+      value: <integer>
+      description: Фильтр по мин платежу
+    - key: payment_max
+      value: <integer>
+      description: Фильтр по макс платежу
+    - key: rooms[]
+      value: <integer>
+      description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+    - key: release[]
+      value: <string>
+      description: Фильтр по сроку сдачи
+    - key: area_min
+      value: <integer>
+      description: Фильтр по минимальной площади
+    - key: area_max
+      value: <integer>
+      description: Фильтр по максимальной площади
+    - key: place[]
+      value: <string>
+      description: Фильтр по станции метро
+    - key: project[]
+      value: <string>
+      description: Фильтр по коду проектов
+    - key: building[]
+      value: <string>
+      description: Фильтр по корпусу
+    - key: booked
+      value: <boolean>
+      description: Фильтр по признаку "Забронирован"
+    - key: free
+      value: <boolean>
+      description: Фильтр по признаку "Доступен"
+    - key: floor_min
+      value: <integer>
+      description: Фильтр по минимальному этажу
+    - key: floor_max
+      value: <integer>
+      description: Фильтр по максимальному этажу
+    - key: level_min
+      value: <integer>
+      description: Фильтр по минимальному уровню
+    - key: level_max
+      value: <integer>
+      description: Фильтр по максимальному уровню
+    - key: discount
+      value: <boolean>
+      description: Фильтр по наличию скидки
+    - key: family
+      value: <boolean>
+      description: Фильтр по признаку "Семейное"
+    - key: ventilation
+      value: <boolean>
+      description: Фильтр по признаку "Технологическая вентиляция"
+    - key: housing[]
+      value: Apartment
+      description: Фильтр по типу жилого помещения
+    - key: decoration[]
+      value: <string>
+      description: Фильтр по типу отделки
+    - key: has_kitchen
+      value: <boolean>
+      description: Фильтр по наличию кухни
+    - key: assignment
+      value: <boolean>
+      description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+    - key: installments
+      value: <boolean>
+      description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+    - key: private_filter
+      value: <boolean>
+      description: Фильтр по признаку MR Private
+response:
+  statusCode: 503
+  statusText: Service Unavailable
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 3000

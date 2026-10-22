@@ -1,0 +1,76 @@
+$kind: http-request
+name: Получение списка предложений MR Club для категории.
+description: |
+  Получение списка предложений MR Club для категории
+url: "{{baseUrl}}/mrclub/offers/category/{{categoryCodeMrClub}}?page=1&limit=12"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: page
+    value: "1"
+    description: Номер страницы для пагинации (по умолчанию = 1)
+  - key: limit
+    value: "12"
+    description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+scripts:
+  - type: afterResponse
+    code: |-
+      let jsonData;
+      jsonData = pm.response.json();
+
+      // --- Извлекаем все codes из categories ---
+      const codes = jsonData.items.map(cat => cat.code);
+
+      // --- Сохраняем все коды в переменную окружения ---
+      pm.environment.set("offersCodeArray", JSON.stringify(codes));
+      console.log("Сохранён список предложений в выбранной категорий MrClub:", codes);
+
+      // --- Выбираем случайный код ---
+      const randomIndex = Math.floor(Math.random() * codes.length);
+      const randomOfferCodeMrClub = codes[randomIndex];
+
+      // --- Сохраняем выбранный код в окружение ---
+      pm.environment.set("offerCode", randomOfferCodeMrClub);
+      console.log("Выбрана случайная категория из выбранной категории предложений MR Club:", randomOfferCodeMrClub);
+
+      // --- Проверка, что переменная записана ---
+      pm.test("Переменная offerCode успешно сохранена", function () {
+          pm.expect(pm.environment.get("offerCode")).to.eql(randomOfferCodeMrClub);
+      });
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+          "items.*.code",
+          "items.*.image",
+          "limit",
+          "page",
+          "page_count"
+        ],
+        types: {
+          "count": "integer",
+          "limit": "integer",
+          "page": "integer",
+          "page_count": "integer",
+
+          "items": "array",
+          "items.*": "object",
+          "items.*.code": "string",
+          "items.*.image": "string",
+          "items.*.labels": "array",
+          "items.*.labels.*": "object",
+          "items.*.labels.*.text": "string",
+          "items.*.name": "string",
+          "items.*.teaser": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка предложений MR Club.resources/examples
+order: 2000

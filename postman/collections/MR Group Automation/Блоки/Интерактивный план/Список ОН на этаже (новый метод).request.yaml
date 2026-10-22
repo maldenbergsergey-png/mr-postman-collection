@@ -1,0 +1,24 @@
+$kind: http-request
+description: |
+  Метод возвращает список ОН на этаже.
+url: "{{baseUrl}}/realty/plan/floor/objects?category={{categoryHasPlan}}&building={{buildingHasPlan}}&floor={{floorNumberHasPlan}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: "{{categoryHasPlan}}"
+    description: (Required) Код корпуса
+  - key: building
+    value: "{{buildingHasPlan}}"
+    description: Код корпуса
+  - key: floor
+    value: "{{floorNumberHasPlan}}"
+    description: (Required) Номер этажа
+  - key: section
+    value: <integer>
+    disabled: true
+    description: ID секции
+settings: {}
+examples: ./.resources/Список ОН на этаже (новый метод).resources/examples
+order: 5000

@@ -1,0 +1,65 @@
+$kind: http-request
+description: |
+  Возвращает одну новость.
+url: "{{baseUrl}}/news/{{newsCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      const code = pm.environment.get("newsCode");
+      pm.test("Проверка наличия переменной newsCode", function () {
+          pm.expect(code, "Переменная 'newsCode' отсутствует. Сначала нужно выполнить запрос получения списка новостей.")
+              .to.be.a("string").and.not.empty;
+      });
+
+      // КОНТРАКТЫ МЕТОДА: NewsContent (все поля обязательны)
+
+      pm.variables.set("schema",{
+        required: [
+          "description",
+          "ad_label",
+          "code",
+          "date",
+          "image",
+          "teaser",
+          "text",
+          "title",
+          "project",
+          "project.*.brandbook",
+          "project.*.business_unit",
+          "project.*.code",
+          "project.*.id",
+          "project.*.image",
+          "project.*.is_private",
+          "project.*.name",
+          "project.*.title"
+        ],
+        types: {
+          // Корневые поля
+          "description": "string",
+          "ad_label": "string?",
+          "code": "string",
+          "date": "string",
+          "image": "string?",          
+          "teaser": "string",
+          "text": "string",
+          "title": "string",
+          // project — массив объектов
+          "project": "array",         
+          // Поля внутри каждого project[]
+          "project.*.brandbook": "string",
+          "project.*.business_unit": "string",
+          "project.*.code": "string",
+          "project.*.id": "integer",
+          "project.*.image": "string?",        
+          "project.*.is_private": "boolean",
+          "project.*.name": "string",
+          "project.*.title": "string?"         
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение отдельной новости.resources/examples
+order: 2000

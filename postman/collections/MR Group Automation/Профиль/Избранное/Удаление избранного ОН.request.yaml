@@ -1,0 +1,223 @@
+$kind: http-request
+description: |
+  Удаление избранного ОН\
+  Метод можно вызвать как для авторизованного пользователя, так и для неавторизованного\
+  От этого зависят проверки входных данных
+url: "{{baseUrl}}/user/favourites/{{product_code}}"
+method: DELETE
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      const baseUrl = pm.environment.get("baseUrl");
+      const token = pm.environment.get("bearerToken");
+      const onlyCategoryCode = pm.environment.get("favCategoryCode") || ""; // необязательный фильтр
+
+      if (!baseUrl) throw new Error("baseUrl не задан");
+      if (!token) throw new Error("bearerToken не задан");
+
+      // Переопределяемые через окружение (строки с ';' как разделителем)
+      const batchResolversEnv = pm.environment.get("favBatchResolvers"); // напр.: `${baseUrl}/sale/products?{ids_query};${baseUrl}/realty/objects?{ids_query}`
+      const itemResolversEnv  = pm.environment.get("favItemResolvers");  // напр.: `${baseUrl}/sale/products/{id};${baseUrl}/realty/objects/{id}`
+
+      // Значения по умолчанию
+      const defaultBatchResolvers = [
+        `${baseUrl}/sale/products?{ids_query}`,
+        `${baseUrl}/realty/objects?{ids_query}`
+      ];
+      const defaultItemResolvers = [
+        `${baseUrl}/sale/products/{id}`,
+        `${baseUrl}/realty/objects/{id}`
+      ];
+
+      const batchResolvers = (batchResolversEnv ? String(batchResolversEnv).split(";").map(s => s.trim()).filter(Boolean) : defaultBatchResolvers);
+      const itemResolvers  = (itemResolversEnv  ? String(itemResolversEnv ).split(";").map(s => s.trim()).filter(Boolean) : defaultItemResolvers);
+
+      // Утилиты
+      function httpGet(url, cb) {
+        pm.sendRequest({
+          url,
+          method: "GET",
+          header: { "Authorization": `Bearer ${token}`, "Accept": "application/json" }
+        }, (err, res) => {
+          if (err) return cb(err);
+          if (res.code < 200 || res.code >= 300) return cb(new Error(`GET ${url} -> HTTP ${res.code}`));
+          let json;
+          try { json = res.json(); } catch { return cb(new Error(`GET ${url} -> не JSON`)); }
+          cb(null, json);
+        });
+      }
+
+      function extractArrayCandidates(data) {
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data.items)) return data.items;
+        if (Array.isArray(data.data)) return data.data;
+        if (Array.isArray(data.results)) return data.results;
+        // Иногда объект с полем 'products' или 'objects'
+        if (Array.isArray(data.products)) return data.products;
+        if (Array.isArray(data.objects)) return data.objects;
+        return [];
+      }
+
+      function extractId(item) {
+        return item?.id ?? item?.product_id ?? item?.productId ?? item?.data?.id ?? null;
+      }
+
+      function extractCode(item) {
+        return item?.code
+            ?? item?.product_code
+            ?? item?.productCode
+            ?? item?.data?.code
+            ?? item?.product?.code
+            ?? null;
+      }
+
+      function unique(arr) {
+        return Array.from(new Set(arr));
+      }
+
+      function shuffle(a) {
+        for (let i=a.length-1;i>0;i--) {
+          const j = Math.floor(Math.random()*(i+1));
+          [a[i],a[j]] = [a[j],a[i]];
+        }
+        return a;
+      }
+
+      // 1) Получаем избранное
+      httpGet(`${baseUrl}/user/favourites`, (err, fav) => {
+        if (err) throw new Error("Ошибка получения избранных: " + err.message);
+        if (!fav || !Array.isArray(fav.categories)) throw new Error("Ответ /user/favourites не содержит categories");
+
+        const filtered = onlyCategoryCode
+          ? fav.categories.filter(c => c?.category?.code === onlyCategoryCode)
+          : fav.categories;
+
+        const ids = unique(
+          filtered.flatMap(c => Array.isArray(c.product_ids) ? c.product_ids : [])
+                  .map(n => Number(n))
+                  .filter(n => Number.isFinite(n))
+        );
+
+        if (!ids.length) {
+          throw new Error(onlyCategoryCode ? `В избранном пусто для категории "${onlyCategoryCode}"` : "В избранном нет объектов");
+        }
+
+        // Пытаемся батч-резолвом получить map id->code
+        function tryBatchResolvers(allIds, done) {
+          let idx = 0;
+          const idToCode = new Map();
+
+          (function next() {
+            if (idx >= batchResolvers.length) return done(null, idToCode);
+            const tpl = batchResolvers[idx++];
+
+            // Формируем ids_query вида "ids[]=1&ids[]=2&ids[]=3"
+            const idsQuery = allIds.map(id => `ids[]=${encodeURIComponent(String(id))}`).join("&");
+            const url = tpl.replace("{ids_query}", idsQuery);
+
+            httpGet(url, (e, json) => {
+              if (!e && json) {
+                const arr = extractArrayCandidates(json);
+                for (const it of arr) {
+                  const id = extractId(it);
+                  const code = extractCode(it);
+                  if (id != null && code) idToCode.set(Number(id), String(code));
+                }
+              }
+              next();
+            });
+          })();
+        }
+
+        // Фоллбэк: поштучный резолв
+        function resolveOneByItems(id, cb) {
+          let j = 0;
+          (function step() {
+            if (j >= itemResolvers.length) return cb(null, null);
+            const url = itemResolvers[j++].replace("{id}", encodeURIComponent(String(id)));
+            httpGet(url, (e, json) => {
+              if (!e && json) {
+                const code = extractCode(json);
+                if (code) return cb(null, String(code));
+              }
+              step();
+            });
+          })();
+        }
+
+        function resolveCodes(allIds, knownMap, cb) {
+          const unresolved = allIds.filter(id => !knownMap.has(id));
+          if (!unresolved.length) return cb(null, knownMap);
+
+          let k = 0;
+          (function loop() {
+            if (k >= unresolved.length) return cb(null, knownMap);
+            const id = unresolved[k++];
+            resolveOneByItems(id, (e, code) => {
+              if (!e && code) knownMap.set(id, code);
+              loop();
+            });
+          })();
+        }
+
+        tryBatchResolvers(ids, (e1, map1) => {
+          if (e1) throw new Error("Ошибка батч-резолва product_code: " + e1.message);
+          resolveCodes(ids, map1, (e2, finalMap) => {
+            if (e2) throw new Error("Ошибка резолва product_code: " + e2.message);
+
+            const candidates = ids.filter(id => finalMap.has(id));
+            if (!candidates.length) {
+              const sample = ids.slice(0, 10).join(", ");
+              throw new Error(
+                "Не удалось сопоставить product_id → product_code ни по одному резолверу. " +
+                "Проверьте корректность favBatchResolvers/favItemResolvers или верните код в батч-эндпоинтах. " +
+                `Примеры id из избранного: [${sample}]`
+              );
+            }
+
+            const pickedId = shuffle(candidates)[0];
+            const productCode = finalMap.get(pickedId);
+
+            pm.environment.set("product_code", String(productCode));
+            const newUrl = pm.request.url.toString().replace("{{product_code}}", encodeURIComponent(String(productCode)));
+            pm.request.url.update(newUrl);
+
+            console.log(`Готово. Выбран id=${pickedId}, product_code=${productCode}`);
+          });
+        });
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Получаем тело и тип контента
+      const body = pm.response.text().trim();
+      const contentType = pm.response.headers.get("Content-Type") || "";
+
+      // Если тело пустое — просто логируем и выходим
+      if (!body) {
+          console.log("⚠️ Тело отсутствует (204 или delete без ответа)");
+          return;
+      }
+
+      // Если тело JSON — проверяем корректность
+      if (/json/i.test(contentType)) {
+          pm.test("Ответ содержит корректный JSON", function () {
+              let parsed = null;
+              try { parsed = pm.response.json(); } catch (e) {}
+              pm.expect(parsed, "Некорректный JSON в ответе").to.exist;
+          });
+      }
+      // Если тело не JSON — просто сообщаем тип
+      else {
+          console.log("ℹ️ Ответ не JSON, Content-Type:", contentType);
+      }
+    language: text/javascript
+settings: {}
+examples: ./.resources/Удаление избранного ОН.resources/examples
+order: 3000

@@ -1,0 +1,44 @@
+$kind: http-request
+name: Список баннеров для разводящей страницы MR Private
+description: |
+  Получение списка баннеров для страницы MR Private
+url: "{{baseUrl}}/banners/private"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "count",
+          "items"
+
+        ],
+        types: { //проверка типов данных
+        "count": "integer",
+        "items": "array?",
+        "items.*.id": "integer",
+        "items.*.name": "string",
+        "items.*.type": "string",
+
+        "items.*.image": "object?",
+        "items.*.image.image_desktop": "string",
+        "items.*.image.image_desktop_big": "string?",
+        "items.*.image.image_mobile": "string",
+        "items.*.image.image_tablet": "string?",
+
+        "items.*.video": "object?",
+        "items.*.video.image_preview_desktop": "string",
+        "items.*.video.image_preview_mobile": "string",
+        "items.*.video.video_desktop": "string",
+        "items.*.video.video_mobile": "string",
+
+          }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список баннеров для разводящей стр.resources/examples
+order: 4000

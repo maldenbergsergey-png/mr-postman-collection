@@ -1,0 +1,62 @@
+$kind: http-example
+name: |-
+  Данные запроса не могут быть обработаны.
+
+  Возможные коды ошибок:
+
+  - `unprocessable_entity` — логическая ошибка, из-за которой невозможно произвести операцию над ресурсом.
+  - `not_available_time` — запрашиваемое время недоступно
+  - `already_created` — запраш
+request:
+  url: "{{baseUrl}}/user/subscription/marketing"
+  method: POST
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "email": "<string>",
+        "form": "registration",
+        "meta": {
+          "consents": {
+            "consent_documents": [
+              "<string>",
+              "<string>"
+            ],
+            "phone": "+79004130845",
+            "email": "<string>"
+          }
+        }
+      }
+response:
+  statusCode: 422
+  statusText: Unprocessable Entity (WebDAV) (RFC 4918)
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 3000

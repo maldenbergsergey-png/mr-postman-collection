@@ -1,0 +1,84 @@
+$kind: http-example
+name: |
+  Список новостей.
+request:
+  url: "{{baseUrl}}/news?project[]=<string>&dateFrom=<date>&dateTo=<date>&tags[]=<string>&page=<integer>&limit=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: project[]
+      value: <string>
+      description: Фильтр по коду проектов
+    - key: dateFrom
+      value: <date>
+      description: |
+        Фильтр по дате новости, ОТ (включительно).
+    - key: dateTo
+      value: <date>
+      description: |
+        Фильтр по дате новости, ДО (включительно).
+    - key: tags[]
+      value: <string>
+      description: |
+        Вернуть только те новости, у которых есть **хотя бы одна** из перечисленных меток.
+    - key: page
+      value: <integer>
+      description: Номер страницы для пагинации (по умолчанию = 1)
+    - key: limit
+      value: <integer>
+      description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "count": "<integer>",
+        "items": [
+          {
+            "date": "<date>",
+            "code": "<string>",
+            "image": "<string>",
+            "title": "<string>",
+            "teaser": "<string>",
+            "project": [
+              {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>"
+              },
+              {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>"
+              }
+            ]
+          },
+          {
+            "date": "<date>",
+            "code": "<string>",
+            "image": "<string>",
+            "title": "<string>",
+            "teaser": "<string>",
+            "project": [
+              {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>"
+              },
+              {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>"
+              }
+            ]
+          }
+        ],
+        "page": "<integer>",
+        "page_count": "<integer>"
+      }
+order: 1000

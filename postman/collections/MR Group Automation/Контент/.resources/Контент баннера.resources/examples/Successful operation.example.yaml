@@ -1,0 +1,44 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/content/banners/:code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "main_title": "<string>",
+        "items": [
+          {
+            "title": {
+              "text": "<string>",
+              "font_size": "<integer>"
+            },
+            "description": "<string>",
+            "font_color": "<string>",
+            "background_color": "<string>",
+            "image": "<string>",
+            "icon": "<string>"
+          },
+          {
+            "title": {
+              "text": "<string>",
+              "font_size": "<integer>"
+            },
+            "description": "<string>",
+            "font_color": "<string>",
+            "background_color": "<string>",
+            "image": "<string>",
+            "icon": "<string>"
+          }
+        ]
+      }
+order: 1000

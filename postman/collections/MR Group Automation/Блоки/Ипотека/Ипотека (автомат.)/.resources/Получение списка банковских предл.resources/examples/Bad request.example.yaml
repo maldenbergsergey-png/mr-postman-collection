@@ -1,0 +1,30 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mortgage/calc/offer?project-code=<string>&price=<number>&initial-payment=<number>&period=<number>&banks=<string>&subtype-code=<string>"
+  method: GET
+  queryParams:
+    - key: project-code
+      value: <string>
+      description: (Required) Код проекта
+    - key: price
+      value: <number>
+      description: (Required) Стоимость ОН
+    - key: initial-payment
+      value: <number>
+      description: (Required) Сумма первоначального взноса
+    - key: period
+      value: <number>
+      description: (Required) Срок кредита в годах
+    - key: banks
+      value: <string>
+      description: Массив кодов банков, выбранных в фильтре по банкам (параметр "Код" сущности Банк)
+    - key: subtype-code
+      value: <string>
+      description: (Required) Символьный код подтипа ОН
+response:
+  statusCode: 400
+  statusText: Bad Request
+  body:
+    type: text
+    content: ""
+order: 2000

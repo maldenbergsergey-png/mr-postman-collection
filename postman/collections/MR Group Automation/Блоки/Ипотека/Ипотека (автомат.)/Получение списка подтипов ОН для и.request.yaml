@@ -1,0 +1,45 @@
+$kind: http-request
+name: Получение списка подтипов ОН для ипотечного калькулятора
+description: |
+  Получение списка подтипов ОН для ипотечного калькулятора
+url: "{{baseUrl}}/mortgage/calc/category?project-code={{projectCode}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: project-code
+    value: "{{projectCode}}"
+    description: Код проекта
+  - key: product-code
+    value: <string>
+    disabled: true
+    description: Код ОН
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА: MortgageCalcCategoryList
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+
+          "items.*.code",
+          "items.*.name",
+          "items.*.min_price",
+          "items.*.max_price"
+        ],
+
+        types: {
+          "count": "integer",
+          "items": "array",
+
+          "items.*.code": "string",
+          "items.*.name": "string",
+          "items.*.min_price": "number",
+          "items.*.max_price": "number"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка подтипов ОН для и.resources/examples
+order: 3000

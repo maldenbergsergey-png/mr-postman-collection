@@ -1,0 +1,48 @@
+$kind: http-request
+description: Метод получения контента для блоков Ключевые факты
+url: "{{baseUrl}}/content/facts/{{factCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      const factsList = ["company", "vacancy"]
+
+      pm.environment.set("factCode", factsList[Math.floor(Math.random() * factsList.length)])
+
+
+      for (const facts of factsList) {
+           pm.sendRequest({
+              url: pm.environment.get("baseUrl") + "/content/facts/" + facts,
+              method: 'GET',
+              header: {
+                  'Accept': 'application/json',
+              },
+          }, (err) => {
+              if (err) {
+                  console.error(`Error fetching data for template code ${code}: ${err}`)
+                  return;
+              }
+          })
+      }
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "facts",
+          "facts.*.title"
+        ],
+        types: {
+          "facts": "array",
+          "facts.*.title": "string",
+          "facts.*.description": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение факта.resources/examples
+order: 7000

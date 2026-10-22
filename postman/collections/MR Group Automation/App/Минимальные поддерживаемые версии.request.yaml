@@ -1,0 +1,27 @@
+$kind: http-request
+name: Минимальные поддерживаемые версии мобильных приложений
+description: |
+  Возвращает минимальные версии мобильных приложений, которые поддерживаются в данный момент.
+url: "{{baseUrl}}/app/version"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "android",
+          "ios"
+        ],
+        types: {
+          "android": "string",
+          "ios": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Минимальные поддерживаемые версии.resources/examples
+order: 2000

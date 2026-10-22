@@ -1,0 +1,60 @@
+$kind: http-example
+name: |
+  Сервер не готов обработать запрос.
+
+  Возможные коды ошибок:
+
+  - `service_unavailable` — приложение временно недоступно.
+request:
+  url: "{{baseUrl}}/user/subscription/marketing"
+  method: POST
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "email": "<string>",
+        "form": "registration",
+        "meta": {
+          "consents": {
+            "consent_documents": [
+              "<string>",
+              "<string>"
+            ],
+            "phone": "+79004130845",
+            "email": "<string>"
+          }
+        }
+      }
+response:
+  statusCode: 503
+  statusText: Service Unavailable
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 5000

@@ -1,0 +1,44 @@
+$kind: http-example
+name: |
+  Сервер не готов обработать запрос.
+
+  Возможные коды ошибок:
+
+  - `service_unavailable` — приложение временно недоступно.
+request:
+  url: "{{baseUrl}}/sale/product/:code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    code: ""
+response:
+  statusCode: 503
+  statusText: Service Unavailable
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 4000

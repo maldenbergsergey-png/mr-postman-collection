@@ -1,0 +1,111 @@
+$kind: http-request
+name: Возвращает список баннеров для разводящей страницы MR Private
+description: |
+  Возвращает список баннеров для разводящей страницы MR Private.
+url: "{{baseUrl}}/private/banners"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      let dataNew;
+      try {
+          dataNew = pm.response.json();
+      } catch (e) {
+          console.error("❌ Ответ не является корректным JSON");
+          return; // дальше смысла нет
+      }
+
+      // Проверяем наличие и содержимое items (без тестов)
+      if (!dataNew.items || !Array.isArray(dataNew.items) || dataNew.items.length === 0) {
+          console.warn("⚠️ 'items' отсутствует или пуст — projectPrivateCode не будет сохранён");
+          return;
+      }
+
+      // Собираем все project.code
+      const projects = dataNew.items
+          .filter(it => it?.project?.code)
+          .map(it => it.project.code);
+
+      if (projects.length === 0) {
+          console.warn("⚠️ Не найдено ни одного project.code");
+          return;
+      }
+
+      // Берём случайный project.code
+      const randomCode = projects[Math.floor(Math.random() * projects.length)];
+
+      // Сохраняем в окружение
+      pm.environment.set("projectPrivateCode", randomCode);
+
+      // Лог
+      console.log(`💾 Сохранён projectPrivateCode: ${randomCode}`);
+    language: text/javascript
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "items"
+
+        ],
+        types: { //проверка типов данных
+
+        "items": "array?",
+        "items.*.active_btn_link": "string?",
+        "items.*.active_btn_text": "string?",
+        "items.*.active_color": "string",
+        "items.*.active_title": "string",
+        "items.*.ad_label": "string?",
+        "items.*.content_type": "string",
+        "items.*.discount_amount": "string?",
+        "items.*.id": "integer",
+        "items.*.preview_picture": "string",
+        "items.*.preview_title": "string",
+        "items.*.title": "string",
+        "items.*.type": "string",
+
+        "items.*.image": "object?",
+        "items.*.image.desktop_big_picture": "string?",
+        "items.*.image.desktop_normal_picture": "string?",
+        "items.*.image.mobile_picture": "string?",
+        "items.*.image.tablet_picture": "string?",
+
+        "items.*.project": "object?",
+        "items.*.project.brandbook": "string",
+        "items.*.project.business_unit": "string",
+        "items.*.project.code": "string",
+        "items.*.project.id": "integer",
+        "items.*.project.image": "string?",
+        "items.*.project.is_private": "boolean",
+        "items.*.project.name": "string",
+        "items.*.project.title": "string?",
+        "items.*.project.logo": "string?",
+        "items.*.project.metro_distance": "integer?",
+        "items.*.project.min_price": "number?",
+        "items.*.project.price_from": "number?",
+        "items.*.project.is_countryside": "boolean",
+
+        "items.*.project.metro": "object?",
+        "items.*.project.metro.color": "string?",
+        "items.*.project.metro.name": "string",
+
+        "items.*.project.movement_way": "object?",
+        "items.*.project.movement_way.icon": "string",
+        "items.*.project.movement_way.name": "string",
+
+        "items.*.video": "object?",
+        "items.*.video.image_preview_desktop": "string",
+        "items.*.video.image_preview_mobile": "string",
+        "items.*.video.video_desktop": "string",
+        "items.*.video.video_mobile": "string",
+
+
+            }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Возвращает список баннеров для раз.resources/examples
+order: 5000

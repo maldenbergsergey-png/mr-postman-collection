@@ -1,0 +1,66 @@
+$kind: http-example
+name: |-
+  Данные запроса не могут быть обработаны.
+
+  Возможные коды ошибок:
+
+  - `unprocessable_entity` — логическая ошибка, из-за которой невозможно произвести операцию над ресурсом.
+  - `not_available_time` — запрашиваемое время недоступно
+  - `already_created` — запраш
+request:
+  url: "{{baseUrl}}/tradein/form"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: json
+    content: |-
+      {
+        "phone": "<string>",
+        "name": "<string>",
+        "project_code": "<string>",
+        "comment": "<string>",
+        "realty": {
+          "address": "<string>",
+          "floor": "<integer>",
+          "area": "<number>",
+          "rooms_number": 0,
+          "price": "<number>"
+        }
+      }
+response:
+  statusCode: 422
+  statusText: Unprocessable Entity (WebDAV) (RFC 4918)
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 6000

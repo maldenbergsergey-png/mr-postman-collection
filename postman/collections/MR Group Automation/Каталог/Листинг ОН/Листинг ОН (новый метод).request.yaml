@@ -1,0 +1,355 @@
+$kind: http-request
+description: |
+  Получение списка ОН с учётом фильтров.
+url: "{{baseUrl}}/realty/objects?category={{category}}&page=1&limit=1"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: ids[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по идентификаторам ОН
+  - key: ids[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по идентификаторам ОН
+  - key: category
+    value: "{{category}}"
+    description: Фильтр по типу ОН
+  - key: page
+    value: "1"
+    description: Номер страницы для пагинации (по умолчанию = 1)
+  - key: limit
+    value: "1"
+    description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+  - key: sort
+    value: <string>
+    disabled: true
+    description: |
+      Код способа сортировки (по умолчанию default)\
+      Способы сортировки описаны тут - https://wiki.adv.ru/pages/viewpage.action?pageId=273666894
+  - key: price_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин цене
+  - key: price_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс цене
+  - key: payment_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин платежу
+  - key: payment_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс платежу
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: area_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальной площади
+  - key: area_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальной площади
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: booked
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Забронирован"
+  - key: free
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Доступен"
+  - key: floor_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному этажу
+  - key: floor_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному этажу
+  - key: level_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному уровню
+  - key: level_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному уровню
+  - key: discount
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию скидки
+  - key: family
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Семейное"
+  - key: ventilation
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Технологическая вентиляция"
+  - key: housing[]
+    value: Flat
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: housing[]
+    value: Apartment
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: has_kitchen
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию кухни
+  - key: assignment
+    value: <boolean>
+    disabled: true
+    description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+  - key: installments
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+  - key: private_filter
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку MR Private
+  - key: null
+    value: ""
+    disabled: true
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Список доступных категорий
+      const categories = ["commercials", "flats", "offices", ];
+
+      // Выбираем случайную категорию
+      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+      // Сохраняем её в окружение
+      pm.environment.set("category", randomCategory);
+
+      console.log(`Выбрана категория: ${randomCategory}`);
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+      required: ["category","items", "limit","page", "page_count", "sort"],
+      types: {
+          "category" : "string?",
+          "items" : "array",
+          "limit" : "integer",
+          "page" : "integer",
+          "page_count" : "integer",
+          "sort" : "object",
+
+      //items[]
+      "items.*.assignment": "boolean",
+      "items.*.apartment_on_floor": "string?",
+      "items.*.area": "number?",
+      "items.*.booking_type": "string?", 
+      "items.*.building": "object?",
+      "items.*.category": "object",
+      "items.*.code": "string",
+      "items.*.crm_id": "string",
+      "items.*.decoration": "object?",
+      "items.*.discount": "object?",
+      "items.*.family": "boolean",
+      "items.*.floor": "integer?",
+      "items.*.functional_layout": "string?",
+      "items.*.id": "integer",
+      "items.*.kitchen": "object?",
+      "items.*.meter_price": "number",
+      "items.*.monthly_payment": "number?",
+      "items.*.name": "string",
+      "items.*.number": "string?",
+      "items.*.plan": "object?",
+      "items.*.background_image": "string",
+      "items.*.svg_markup": "string",
+      "items.*.plot": "object?",
+      "items.*.price": "number?",
+      "items.*.project": "object",
+      "items.*.brandbook": "string",
+      "items.*.business_unit": "string",
+      "items.*.image": "string?",
+      "items.*.is_countryside": "boolean",
+      "items.*.is_private": "boolean",
+      "items.*.title": "string?",
+      "items.*.description": "string?",
+      "items.*.marketing_image": "string?",
+      "items.*.purchase_type": "string",
+      "items.*.purchase_types": "array",
+      "items.*.rooms_number": "integer?",
+      "items.*.status": "object",
+      "items.*.stop_sales": "boolean?", //установил так какеще не реализован данный параметр
+      "items.*.subtype": "object",
+      "items.*.technical_layout": "string?",
+      "items.*.tier_quantity": "integer?",
+      //building{}
+      "items.*.building.code": "string",
+      "items.*.building.compass_angle": "number?",
+      "items.*.building.deadline": "string",
+      "items.*.building.floors_number": "integer?",
+      "items.*.building.id": "integer",
+      "items.*.building.name": "string",
+      "items.*.building.readiness": "integer?",
+      "items.*.building.scheme": "string?",
+      //category{}
+      "items.*.category.code": "string",
+      "items.*.category.id": "integer",
+      "items.*.category.name": "string",
+      //decoration{}
+      "items.*.decoration.code": "string",
+      "items.*.decoration.name": "string",
+      //discount{}
+      "items.*.discount.absolute_discount": "number",
+      "items.*.discount.description": "string?",
+      "items.*.discount.meter_price": "number",
+      "items.*.discount.percentage_discount": "number",
+      "items.*.discount.price": "number",
+      "items.*.discount.type": "string",
+      //kitchen{}
+      "items.*.kitchen.layout_type_id": "string",
+      //plan{}
+      "items.*.plan.exists": "boolean",
+      "items.*.plan.size": "number?",
+      //plot{}
+      "items.*.plot.exists": "boolean",
+      "items.*.plot.size": "number?",
+      //project{}
+      "items.*.project.brandbook": "string",
+      "items.*.project.business_unit": "string",
+      "items.*.project.code": "string",
+      "items.*.project.id": "integer",
+      "items.*.project.image": "string?",
+      "items.*.project.is_countryside": "boolean",
+      "items.*.project.is_private": "boolean",
+      "items.*.project.name": "string",
+      "items.*.project.title": "string?",
+      "items.*.project.description": "string?",
+      "items.*.project.marketing_image": "string?",
+      //purchase_types[]
+      "items.*.purchase_types.*.code": "string",
+      "items.*.purchase_types.*.discount": "object?",
+      "items.*.purchase_types.*.name": "string",
+      //"items.*.purchase_types.*.discount"{}
+      "items.*.purchase_types.*.discount.absolute_discount": "number",
+      "items.*.purchase_types.*.discount.description": "string?",
+      "items.*.purchase_types.*.discount.meter_price": "number",
+      "items.*.purchase_types.*.discount.percentage_discount": "number",
+      "items.*.purchase_types.*.discount.price": "number",
+      "items.*.purchase_types.*.discount.type": "string",
+      //status{}
+      "items.*.status.code": "string",
+      "items.*.status.name": "string",
+      //subtype
+      "items.*.subtype.code": "string",
+      "items.*.subtype.description": "string",
+      "items.*.subtype.icon": "string?",
+      "items.*.subtype.name": "string",
+      //sort{}
+      "sort.code": "string",
+      "sort.name": "string",
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Пытаемся распарсить JSON; если не получилось — фиксируем ошибку и прекращаем дальнейшие проверки
+      let jsonData;
+      try {
+          jsonData = pm.response.json();
+      } catch (e) {
+          pm.test("Ответ является валидным JSON", function () {
+              throw new Error("Ответ не является JSON: " + e.message);
+          });
+          // останавливаем дальнейшее выполнение
+          return;
+      }
+
+      // Проверяем наличие массива items
+      pm.test("Ответ содержит массив items (не пустой)", function () {
+          pm.expect(jsonData).to.have.property("items");
+          pm.expect(jsonData.items).to.be.an("array");
+          pm.expect(jsonData.items.length).to.be.above(0);
+      });
+
+      // Берём первый элемент
+      const firstItem = Array.isArray(jsonData.items) && jsonData.items.length > 0 ? jsonData.items[0] : null;
+
+      if (!firstItem) {
+          console.warn("items пустой — дальнейшие проверки пропущены");
+          return;
+      }
+
+      // Сохраняем поле code в окружение, если оно есть
+      if (firstItem.code) {
+          pm.environment.set("product_code", firstItem.code);
+          pm.test("Сохранён product_code", function () {
+              pm.expect(pm.environment.get("product_code")).to.eql(firstItem.code);
+          });
+          console.log("💾 product_code =", firstItem.code);
+      } else {
+          pm.test("В первом элементе есть поле code", function () {
+              throw new Error("Поле 'code' отсутствует в items[0]");
+          });
+      }
+
+      // Доп. проверка: category в ответе совпадает с запрошенной категорией (если она задана)
+      const requestedCategory = pm.environment.get("category");
+      if (requestedCategory) {
+          pm.test("Категория в ответе совпадает с запрошенной", function () {
+              pm.expect(jsonData.category).to.eql(requestedCategory);
+          });
+      }
+    language: text/javascript
+settings: {}
+examples: ./.resources/Листинг ОН (новый метод).resources/examples
+order: 5000

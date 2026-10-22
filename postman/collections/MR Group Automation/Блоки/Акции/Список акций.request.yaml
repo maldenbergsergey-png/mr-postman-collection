@@ -1,0 +1,56 @@
+$kind: http-request
+description: Получение списка акций
+url: "{{baseUrl}}/promo?projectCode={{projectCodePromo}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: projectCode
+    value: "{{projectCodePromo}}"
+    description: Код проекта
+  - key: tags[]
+    value: <string>
+    disabled: true
+    description: |
+      Вернуть только те акции, у которых есть **хотя бы одна** из перечисленных меток.
+  - key: tags[]
+    value: <string>
+    disabled: true
+    description: |
+      Вернуть только те акции, у которых есть **хотя бы одна** из перечисленных меток.
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          // Корень — массив, каждый элемент — объект с обязательными полями
+          "0.code",
+          "0.title",
+          "0.subtitle",
+          "0.promo_expires",
+          "0.promo_image",
+          "0.background_color"
+          // Если всегда хотя бы 1 элемент — можно добавить "0.*"
+          // Если может быть пусто — убрать
+        ],
+        types: {
+          // Корень — массив
+          "": "array",  // "" — значит сам ответ — массив
+
+          // Поля внутри каждого элемента
+          "*.code": "string",
+          "*.title": "string",
+          "*.subtitle": "string",
+          "*.promo_expires": "string?",
+          "*.promo_image": "string?",
+          "*.background_color": "string|null?",
+          "*.gradient": "boolean?",     
+          "*.white_text": "boolean?"    
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список акций.resources/examples
+order: 2000

@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{baseUrl}}/purchases:refresh"
+method: POST
+headers:
+  Content-Type: application/json
+  Cookie: PHPSESSID=q06fathootnm7sllt42vpdra32; spid=1733742436025_6cb76cb9dfb143bdd398e7d161236687_d4wk4t02bbbu4e0r; spsc=1741778399047_5e6f301e314389cee0c0fceb04c49f62_d59e1ab55d060b29d0aaf89e2d568e73; spid=1734421543330_5c3f57f8588ede80b53fa2bd24b4d129_2fpxmd7xg2xq59t1; spsc=1734421543330_523493e798e807499029b37f9bf97744_86072290ac14b79035acac92a3210c54
+  User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36
+body:
+  type: json
+  content: "{}"
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings:
+  disabledSystemHeaders:
+    - user-agent
+order: 1000

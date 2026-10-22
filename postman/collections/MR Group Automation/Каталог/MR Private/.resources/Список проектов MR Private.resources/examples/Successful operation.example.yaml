@@ -1,0 +1,39 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/sale/projects/private"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "name": "<string>",
+            "title": "<string>",
+            "marketing_image": "<string>",
+            "phone": "<string>",
+            "link": "<string>",
+            "video": "<string>"
+          },
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "name": "<string>",
+            "title": "<string>",
+            "marketing_image": "<string>",
+            "phone": "<string>",
+            "link": "<string>",
+            "video": "<string>"
+          }
+        ]
+      }
+order: 1000

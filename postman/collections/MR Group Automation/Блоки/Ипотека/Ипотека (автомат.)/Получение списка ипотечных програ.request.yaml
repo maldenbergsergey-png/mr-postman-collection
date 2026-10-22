@@ -1,0 +1,49 @@
+$kind: http-request
+name: Получение списка ипотечных программ
+description: |
+  Получение списка ипотечных программ
+url: "{{baseUrl}}/mortgage/program"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА
+
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+          "items.*.amount",
+          "items.*.background_color",
+          "items.*.code",
+          "items.*.description",
+          "items.*.full_name",
+          "items.*.image",
+          "items.*.initial_payment",
+          "items.*.note",
+          "items.*.rate",
+          "items.*.short_name",
+          "items.*.term"
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*.amount": "string",
+          "items.*.background_color": "string",
+          "items.*.code": "string",
+          "items.*.description": "string",
+          "items.*.full_name": "string",
+          "items.*.image": "string",
+          "items.*.initial_payment": "string",
+          "items.*.note": "string",
+          "items.*.rate": "string",
+          "items.*.short_name": "string",
+          "items.*.term": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка ипотечных програ.resources/examples
+order: 1000

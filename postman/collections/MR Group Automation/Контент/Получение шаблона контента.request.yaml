@@ -1,0 +1,122 @@
+$kind: http-request
+description: Метод получения данных для универсальных блоков контентных страниц
+url: "{{baseUrl}}/content/template/{{templateCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      const templatesArray = ["brokeram", "vacancy", "installments", "tradein", "our-people", "referral"];
+
+      pm.environment.set("templateCode", templatesArray[Math.floor(Math.random() * templatesArray.length)])
+
+
+      for (const template of templatesArray) {
+           pm.sendRequest({
+              url: pm.environment.get("baseUrl") + "/content/template/" + template,
+              method: 'GET',
+              header: {
+                  'Accept': 'application/json',
+              },
+          }, (err) => {
+              if (err) {
+                  console.error(`Error fetching data for template code ${code}: ${err}`)
+                  return;
+              }
+          })
+      }
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "main_title"
+        ],
+        types: {
+          "faq_linked_section": "array?",
+          "main_button": "object?",
+          "main_description": "string?",
+          "main_image_desk": "string?",
+          "main_image_mob": "string?",
+          "main_title": "string",
+          "second_description": "string?",
+          "second_title": "string?",
+          "steps_block_code": "string?",
+          "main_button.link_app": "string?",
+          "main_button.link_web": "string?",
+          "main_button.text": "string?"
+          
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |+
+      // === TEMPLATE → extract steps codes (skip null/empty) ===
+      let body;
+      try { body = pm.response.json(); }
+      catch { throw new Error("Ответ /content/template не JSON"); }
+
+      const isValidCode = (v) =>
+        typeof v === "string" &&
+        v.trim().length > 0 &&
+        !["null","undefined"].includes(v.trim().toLowerCase());
+
+      const found = new Set();
+      const add = (v) => { if (isValidCode(v)) found.add(v.trim()); };
+
+      // прямые поля
+      add(body?.steps_block_code);
+      add(body?.data?.steps_block_code);
+
+      // из blocks
+      const blocks = body?.blocks || body?.data?.blocks;
+      if (Array.isArray(blocks)) {
+        for (const b of blocks) {
+          const type = String(b?.type || "").toLowerCase();
+          if (type.includes("steps")) {
+            add(b?.code);
+            add(b?.params?.code);
+            add(b?.data?.code);
+            add(b?.props?.code);
+          }
+        }
+      }
+
+      // глубокий поиск (только валидные строки; null/undefined/"" игнорим)
+      (function deepScan(o) {
+        if (!o || typeof o !== "object") return;
+        if (Object.prototype.hasOwnProperty.call(o, "steps_block_code")) add(o.steps_block_code);
+        if (Array.isArray(o.blocks)) for (const x of o.blocks) deepScan(x);
+        for (const k of Object.keys(o)) {
+          const v = o[k];
+          if (v && typeof v === "object") deepScan(v);
+        }
+      })(body);
+
+      // итог: фильтр уже сделал add; просто развернём Set
+      const codes = [...found];
+
+      pm.test("Найден хотя бы один валидный steps_block_code", () => {
+        pm.expect(codes.length, "codes not found").to.be.above(0);
+      });
+
+      // сохраним очередь и выберем случайный валидный код
+      pm.environment.set("stepsCodesQueue", JSON.stringify(codes));
+
+      const prev = pm.environment.get("stepsCode") || "";
+      let pick = codes[Math.floor(Math.random() * codes.length)];
+      if (codes.length > 1) {
+        let guard = 10;
+        while (pick === prev && guard--) pick = codes[Math.floor(Math.random() * codes.length)];
+      }
+
+      pm.environment.set("stepsCode", pick);
+
+      console.log("✔ stepsCodesQueue:", codes, "→ выбран:", pick);
+
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение шаблона контента.resources/examples
+order: 3000

@@ -1,0 +1,19 @@
+$kind: http-request
+description: |
+  Проверка значения кода подтверждения
+url: "{{baseUrl}}/code/check"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+        "type": "sms",
+        "phoneNumber": "+79935905959",
+        "code": 1111
+    }
+settings: {}
+examples: ./.resources/Проверка кода СМС.resources/examples
+order: 1000

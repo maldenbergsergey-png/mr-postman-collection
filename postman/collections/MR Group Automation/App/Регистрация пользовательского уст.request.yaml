@@ -1,0 +1,31 @@
+$kind: http-request
+name: Регистрация пользовательского устройства
+description: |
+  Регистрирует новое устройство. Аутентификация не обязательна, но при её наличии устройство
+  связывается с пользователем.
+url: "{{baseUrl}}/app/device"
+method: PUT
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "device_id": "<string>",
+      "install_id": "<string>",
+      "device_type": "android_google",
+      "token": "<string>",
+      "active": "<boolean>",
+      "meta": {
+        "source": {
+          "platform": "web",
+          "context": "<string>"
+        }
+      }
+    }
+auth:
+  type: noauth
+settings: {}
+examples: ./.resources/Регистрация пользовательского уст.resources/examples
+order: 1000

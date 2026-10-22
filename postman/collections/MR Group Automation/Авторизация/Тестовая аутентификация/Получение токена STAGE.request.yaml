@@ -1,0 +1,35 @@
+$kind: http-request
+url: http://stagetest.mr-group.ru:8080/api/v1/jwt
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "payload": {
+            "sub": "d75420eb-9a48-465c-a583-291d3b202dbc",
+            "iat": 1761660000,
+            "exp": 1764252000,
+            "user_id": "58",
+            "phone_number": "+79951108394",
+            "roles": [
+                "client"
+            ]
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: |
+      const jwtToken = pm.response.json().jwt;
+
+      if (!pm.environment.has('bearerToken')) {
+          pm.environment.set('bearerToken', jwtToken);
+          console.log("Переменная окружения 'bearerToken' создана и значение установлено:", jwtToken);
+      } else {
+          pm.environment.set('bearerToken', jwtToken);
+          console.log("Значение переменной окружения 'bearerToken' обновлено:", jwtToken);
+      }
+    language: text/javascript
+settings: {}
+order: 2000

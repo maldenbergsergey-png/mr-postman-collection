@@ -1,0 +1,67 @@
+$kind: http-request
+name: Список заявок на ипотеку и заявок в банк клиента
+description: |
+  Возвращает список заявок на ипотеку и заявок в банк клиента.
+url: "{{baseUrl}}/mortgage/application"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          // "items.*.create_date",
+          // "items.*.id",
+          // "items.*.link",
+          // "items.*.number",
+          // "items.*.offers",
+          // "items.*.payment",
+          // "items.*.project",
+          // "items.*.project.code",
+          // "items.*.project.id",
+          // "items.*.project.name",
+          // "items.*.project.brandbook",
+          // "items.*.project.is_private",
+          // "items.*.project.image",
+          // "items.*.project.title",
+          // "items.*.status",
+          // "items.*.status.code",
+          // "items.*.status.name"
+        ],
+        types: {
+          "items": "array",
+          "items.*.create_date": "string",
+          "items.*.id": "integer",
+          "items.*.link": "string",
+          "items.*.number": "string",
+          "items.*.offers": "array",
+          "items.*.payment": "number",
+          "items.*.period": "integer?",    
+          "items.*.rate": "number?", 
+          "items.*.lead_id": "string?",      
+          "items.*.project": "object",
+          "items.*.project.code": "string",
+          "items.*.project.id": "integer",
+          "items.*.project.name": "string",
+          "items.*.project.brandbook": "string",
+          "items.*.project.is_private": "boolean",
+          "items.*.project.image": "string?",
+          "items.*.project.title": "string?",
+          "items.*.project.business_unit": "string", 
+
+          "items.*.status": "object",
+          "items.*.status.code": "string",
+          "items.*.status.name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список заявок на ипотеку и заявок в.resources/examples
+order: 6000

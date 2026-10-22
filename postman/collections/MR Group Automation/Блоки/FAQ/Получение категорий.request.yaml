@@ -1,0 +1,78 @@
+$kind: http-request
+description: |
+  Получение всех категорий FAQ
+url: "{{baseUrl}}/faq/category"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Ответ: корректный JSON и есть categories", function () {
+        let data;
+        try { data = pm.response.json(); }
+        catch { pm.expect.fail("Ответ не является корректным JSON"); }
+
+        pm.expect(data, "Нет ключа 'categories'").to.have.property("categories");
+        pm.expect(data.categories, "'categories' должен быть непустым массивом")
+          .to.be.an("array").that.is.not.empty;
+
+        // Собираем кандидатов: коды категорий + подкатегорий (если есть)
+        const codes = [];
+        data.categories.forEach(cat => {
+          if (cat && typeof cat.code === "string" && cat.code.trim()) {
+            codes.push(cat.code.trim());
+          }
+          if (Array.isArray(cat.subcategories)) {
+            cat.subcategories.forEach(sc => {
+              if (sc && typeof sc.code === "string" && sc.code.trim()) {
+                codes.push(sc.code.trim());
+              }
+            });
+          }
+        });
+
+        pm.expect(codes, "Не найдено ни одного кода категории/подкатегории").to.have.lengthOf.above(0);
+
+        // Берём случайный код
+        const chosen = codes[Math.floor(Math.random() * codes.length)];
+        pm.environment.set("faqCategoryCode", chosen);
+
+        pm.test(`Сохранён faqCategoryCode = ${chosen}`, function () {
+          pm.expect(pm.environment.get("faqCategoryCode")).to.be.a("string").and.not.empty;
+        });
+      });
+    language: text/javascript
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "categories",
+          "categories.*.code",
+          "categories.*.name",
+          "categories.*.subcategories.*.code",
+          "categories.*.subcategories.*.name",
+
+        ],
+        types: { //проверка типов данных
+
+        "categories" : "array",
+        "categories.*.code" : "string",
+        "categories.*.image" : "string",
+        "categories.*.name" : "string",
+
+        "categories.*.subcategories" : "array",
+        "categories.*.subcategories.*.code" : "string",
+        "categories.*.subcategories.*.image" : "string",
+        "categories.*.subcategories.*.name" : "string",
+
+       
+
+        }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение категорий.resources/examples
+order: 1000

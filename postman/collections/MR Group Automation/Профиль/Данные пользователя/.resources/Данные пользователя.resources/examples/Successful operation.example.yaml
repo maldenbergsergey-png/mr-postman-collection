@@ -1,0 +1,32 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/user"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "<integer>",
+        "client_id": "<string>",
+        "phone": "<string>",
+        "name": "<string>",
+        "lastName": "<string>",
+        "email": "<string>",
+        "booking_count": "<integer>",
+        "favourite_count": "<integer>",
+        "purchase_count": "<integer>",
+        "loyalty_card": "<string>",
+        "mortgage_count": "<integer>"
+      }
+order: 1000

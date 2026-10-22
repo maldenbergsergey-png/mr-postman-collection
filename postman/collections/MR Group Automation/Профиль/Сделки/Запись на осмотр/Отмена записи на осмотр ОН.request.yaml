@@ -1,0 +1,21 @@
+$kind: http-request
+description: |
+  Метод отмены записи на осмотр.
+url: "{{baseUrl}}/purchase/:purchase-id/inspections/:inspection-id/cancel"
+method: POST
+headers:
+  Accept: application/json
+pathVariables:
+  - key: purchase-id
+    value: <string>
+    description: (Required) Внутренний идентификатор сделки
+  - key: inspection-id
+    value: <string>
+    description: (Required) Внешний идентификатор осмотра
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Отмена записи на осмотр ОН.resources/examples
+order: 3000

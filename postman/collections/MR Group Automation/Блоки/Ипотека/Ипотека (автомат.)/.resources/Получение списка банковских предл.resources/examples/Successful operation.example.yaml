@@ -1,0 +1,257 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mortgage/calc/offer?project-code=<string>&price=<number>&initial-payment=<number>&period=<number>&banks=<string>&subtype-code=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: project-code
+      value: <string>
+      description: (Required) Код проекта
+    - key: price
+      value: <number>
+      description: (Required) Стоимость ОН
+    - key: initial-payment
+      value: <number>
+      description: (Required) Сумма первоначального взноса
+    - key: period
+      value: <number>
+      description: (Required) Срок кредита в годах
+    - key: banks
+      value: <string>
+      description: Массив кодов банков, выбранных в фильтре по банкам (параметр "Код" сущности Банк)
+    - key: subtype-code
+      value: <string>
+      description: (Required) Символьный код подтипа ОН
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "psk_description": "<string>",
+        "mortgage_types": [
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "offers_qty": "<integer>",
+            "rates": [
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "offers_qty": "<integer>",
+                "payment": "<integer>",
+                "period_max": "<integer>",
+                "period_min": "<integer>",
+                "amount": "<integer>",
+                "initial_payment_percent": "<number>",
+                "initial_payment": "<number>",
+                "offers": [
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  },
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  }
+                ]
+              },
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "offers_qty": "<integer>",
+                "payment": "<integer>",
+                "period_max": "<integer>",
+                "period_min": "<integer>",
+                "amount": "<integer>",
+                "initial_payment_percent": "<number>",
+                "initial_payment": "<number>",
+                "offers": [
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  },
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "offers_qty": "<integer>",
+            "rates": [
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "offers_qty": "<integer>",
+                "payment": "<integer>",
+                "period_max": "<integer>",
+                "period_min": "<integer>",
+                "amount": "<integer>",
+                "initial_payment_percent": "<number>",
+                "initial_payment": "<number>",
+                "offers": [
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  },
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  }
+                ]
+              },
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "offers_qty": "<integer>",
+                "payment": "<integer>",
+                "period_max": "<integer>",
+                "period_min": "<integer>",
+                "amount": "<integer>",
+                "initial_payment_percent": "<number>",
+                "initial_payment": "<number>",
+                "offers": [
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  },
+                  {
+                    "payment": "<number>",
+                    "rate": "<number>",
+                    "subsidized_flag": "<boolean>",
+                    "bank": {
+                      "logo": "<string>",
+                      "name": "<string>",
+                      "code": "<string>"
+                    },
+                    "subsidized_payment": "<number>",
+                    "subsidized_rate": "<number>",
+                    "subsidized_months": "<integer>",
+                    "economy": "<number>",
+                    "description": "<number>",
+                    "period_max": "<integer>",
+                    "period_min": "<integer>",
+                    "psk_min": "<number>",
+                    "psk_max": "<number>"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

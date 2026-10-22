@@ -1,0 +1,123 @@
+$kind: http-example
+name: |
+  При обработке запроса на сервере произошла внутренняя ошибка.
+
+  Возможные коды ошибок:
+  - `internal_error` — внутренняя ошибка приложения.
+request:
+  url: "{{baseUrl}}/sale/projects?category=commercials&completed=<boolean>&has_plans=<boolean>&price_min=<integer>&price_max=<integer>&payment_min=<integer>&payment_max=<integer>&rooms[]=<integer>&release[]=<string>&area_min=<integer>&area_max=<integer>&place[]=<string>&project[]=<string>&building[]=<string>&booked=<boolean>&free=<boolean>&floor_min=<integer>&floor_max=<integer>&level_min=<integer>&level_max=<integer>&discount=<boolean>&family=<boolean>&housing[]=Apartment&decoration[]=<string>&assignment=<boolean>&installments=<boolean>&private_filter=<boolean>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: category
+      value: commercials
+      description: Фильтр по типу ОН
+    - key: completed
+      value: <boolean>
+      description: Признак завершённого проекта
+    - key: has_plans
+      value: <boolean>
+      description: Вернуть только проекты, у которых есть интерактивные планы.
+    - key: price_min
+      value: <integer>
+      description: Фильтр по мин цене
+    - key: price_max
+      value: <integer>
+      description: Фильтр по макс цене
+    - key: payment_min
+      value: <integer>
+      description: Фильтр по мин платежу
+    - key: payment_max
+      value: <integer>
+      description: Фильтр по макс платежу
+    - key: rooms[]
+      value: <integer>
+      description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+    - key: release[]
+      value: <string>
+      description: Фильтр по сроку сдачи
+    - key: area_min
+      value: <integer>
+      description: Фильтр по минимальной площади
+    - key: area_max
+      value: <integer>
+      description: Фильтр по максимальной площади
+    - key: place[]
+      value: <string>
+      description: Фильтр по станции метро
+    - key: project[]
+      value: <string>
+      description: Фильтр по коду проектов
+    - key: building[]
+      value: <string>
+      description: Фильтр по корпусу
+    - key: booked
+      value: <boolean>
+      description: Фильтр по признаку "Забронирован"
+    - key: free
+      value: <boolean>
+      description: Фильтр по признаку "Доступен"
+    - key: floor_min
+      value: <integer>
+      description: Фильтр по минимальному этажу
+    - key: floor_max
+      value: <integer>
+      description: Фильтр по максимальному этажу
+    - key: level_min
+      value: <integer>
+      description: Фильтр по минимальному уровню
+    - key: level_max
+      value: <integer>
+      description: Фильтр по максимальному уровню
+    - key: discount
+      value: <boolean>
+      description: Фильтр по наличию скидки
+    - key: family
+      value: <boolean>
+      description: Фильтр по признаку "Семейное"
+    - key: housing[]
+      value: Apartment
+      description: Фильтр по типу жилого помещения
+    - key: decoration[]
+      value: <string>
+      description: Фильтр по типу отделки
+    - key: assignment
+      value: <boolean>
+      description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+    - key: installments
+      value: <boolean>
+      description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+    - key: private_filter
+      value: <boolean>
+      description: Фильтр по признаку MR Private
+response:
+  statusCode: 500
+  statusText: Internal Server Error
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 2000

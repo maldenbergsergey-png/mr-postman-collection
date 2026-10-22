@@ -1,0 +1,45 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/site/company"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "block_main": {
+          "title": "<string>",
+          "text": "<string>",
+          "button_link": "<string>",
+          "button_text": "<string>"
+        },
+        "block1": {
+          "accent_text": "<string>",
+          "additional_text": "<string>"
+        },
+        "block2": {
+          "accent_text": "<string>",
+          "additional_text": "<string>"
+        },
+        "block3": {
+          "accent_text": "<string>",
+          "additional_text": "<string>"
+        },
+        "files": [
+          {
+            "src": "<string>",
+            "description": "<string>"
+          },
+          {
+            "src": "<string>",
+            "description": "<string>"
+          }
+        ]
+      }
+order: 1000

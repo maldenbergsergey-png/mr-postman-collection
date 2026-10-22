@@ -1,0 +1,33 @@
+$kind: http-request
+name: Получение списка банков для ипотечного калькулятора
+description: |
+  Получение списка банков для ипотечного калькулятора
+url: "{{baseUrl}}/mortgage/calc/bank"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА
+
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+          "items.*.code",
+          "items.*.logo",
+          "items.*.name"
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*.code": "string",
+          "items.*.logo": "string",
+          "items.*.name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка банков для ипотеч.resources/examples
+order: 2000

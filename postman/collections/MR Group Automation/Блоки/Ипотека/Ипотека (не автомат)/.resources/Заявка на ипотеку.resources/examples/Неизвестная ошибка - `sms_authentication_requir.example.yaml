@@ -1,0 +1,60 @@
+$kind: http-example
+name: |
+  Неизвестная ошибка \
+  * `sms_authentication_required` - Пользователю отправлено смс, \
+  * `sms_code_invalid` - Неправильный код,
+  Необходимо вызвать метод повторно с параметром code
+request:
+  url: "{{baseUrl}}/mortgage/application"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: json
+    content: |-
+      {
+        "project": "<string>",
+        "code": "<string>",
+        "rate": "<number>",
+        "payment": "<number>",
+        "period_max": "<number>",
+        "initial_payment": "<number>",
+        "price": "<number>",
+        "purchase_id": "<number>"
+      }
+response:
+  statusCode: 422
+  statusText: Unprocessable Entity (WebDAV) (RFC 4918)
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 4000

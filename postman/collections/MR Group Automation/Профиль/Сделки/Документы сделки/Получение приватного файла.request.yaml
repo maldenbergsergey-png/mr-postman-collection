@@ -1,0 +1,14 @@
+$kind: http-request
+description: |
+  Метод возвращает файл из приватного хранилища, предваритально проверяя наличие доступа к файлу
+url: "{{baseUrl}}/private-file/{{documentDeal}}"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Получение приватного файла.resources/examples
+order: 3000

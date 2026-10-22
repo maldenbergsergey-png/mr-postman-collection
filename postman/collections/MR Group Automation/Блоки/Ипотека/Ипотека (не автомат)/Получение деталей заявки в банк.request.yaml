@@ -1,0 +1,17 @@
+$kind: http-request
+description: Получить детали заявки в банк
+url: "{{baseUrl}}/mortgage/offer/:offer-id"
+method: GET
+headers:
+  Accept: application/json
+pathVariables:
+  - key: offer-id
+    value: <integer>
+    description: (Required) Внутренний ID заявки в банк
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Получение деталей заявки в банк.resources/examples
+order: 2000

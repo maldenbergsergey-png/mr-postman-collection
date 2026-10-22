@@ -1,0 +1,18 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/content/media_articles?page=<integer>&limit=<integer>"
+  method: GET
+  queryParams:
+    - key: page
+      value: <integer>
+      description: Номер страницы для пагинации (по умолчанию = 1)
+    - key: limit
+      value: <integer>
+      description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+response:
+  statusCode: 404
+  statusText: Not Found
+  body:
+    type: text
+    content: ""
+order: 2000

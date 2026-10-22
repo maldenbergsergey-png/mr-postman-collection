@@ -1,0 +1,204 @@
+$kind: http-request
+name: Получение списка банковских предложений по ипотеке
+description: |
+  Получение списка банковских предложений по ипотеке
+url: "{{baseUrl}}/mortgage/calc/offer?project-code={{projectCode}}&price={{priceForSelectedSubtapeCode}}&initial-payment={{initialPaymentMortgage}}&period={{periodMortgage}}&subtype-code={{sybtypeCodeMortgage}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: project-code
+    value: "{{projectCode}}"
+    description: (Required) Код проекта
+  - key: price
+    value: "{{priceForSelectedSubtapeCode}}"
+    description: (Required) Стоимость ОН
+  - key: initial-payment
+    value: "{{initialPaymentMortgage}}"
+    description: (Required) Сумма первоначального взноса
+  - key: period
+    value: "{{periodMortgage}}"
+    description: (Required) Срок кредита в годах
+  - key: subtype-code
+    value: "{{sybtypeCodeMortgage}}"
+  - key: banks
+    value: <string>
+    disabled: true
+    description: Массив кодов банков, выбранных в фильтре по банкам (параметр "Код" сущности Банк)
+  - key: banks
+    value: <string>
+    disabled: true
+    description: Массив кодов банков, выбранных в фильтре по банкам (параметр "Код" сущности Банк)
+scripts:
+  - type: beforeRequest
+    code: |
+      // --- Проверяем наличие базовых переменных ---
+      const baseUrl = pm.environment.get("baseUrl");
+      const projectCode = pm.environment.get("projectCode");
+
+      if (!baseUrl || !projectCode) {
+          throw new Error("❌ Не заданы переменные окружения baseUrl или projectCode");
+      }
+
+      // --- Формируем URL ---
+      const url = `${baseUrl}/realty/objects?category=flats&project[]=${projectCode}&sort=price_asc&limit=3`;
+
+      console.log("🚀 Выполняем Pre-request GET:", url);
+
+      pm.sendRequest({
+          url: url,
+          method: 'GET'
+      }, function (err, res) {
+          if (err) {
+              console.error("❌ Ошибка запроса:", err);
+              throw new Error("Ошибка при вызове API: " + err.message);
+          }
+
+          let jsonData;
+          try {
+              jsonData = res.json();
+          } catch (e) {
+              console.error("❌ Ошибка парсинга JSON:", e);
+              throw new Error("Ошибка парсинга JSON: " + e.message);
+          }
+
+          // --- Проверяем, что есть поле items ---
+          if (!jsonData || !Array.isArray(jsonData.items)) {
+              console.warn("⚠️ Поле items отсутствует или не массив. Ответ:", jsonData);
+              throw new Error("Ответ не содержит корректного массива items");
+          }
+
+          const items = jsonData.items;
+
+          if (!items.length) {
+              console.warn("⚠️ Массив items пуст. Ответ:", jsonData);
+              throw new Error("Ответ содержит пустой массив items");
+          }
+
+          // --- Выбираем случайный элемент ---
+          const randomIndex = Math.floor(Math.random() * items.length);
+          const selectedItem = items[randomIndex];
+
+          if (!selectedItem.subtype.code || !selectedItem.price) {
+              console.warn("⚠️ У выбранного элемента нет поля subtype.code или price:", selectedItem);
+              throw new Error("Отсутствуют нужные поля subtype.code или price в выбранном элементе");
+          }
+
+          // --- Сохраняем значения в окружение ---
+          pm.environment.set("sybtypeCodeMortgage", selectedItem.subtype.code);
+          pm.environment.set("priceForSelectedSubtapeCode", selectedItem.price);
+
+          console.log("✅ Установлены переменные из pre-request:");
+          console.log("sybtypeCodeMortgage:", selectedItem.subtype.code);
+          console.log("priceForSelectedSubtapeCode:", selectedItem.price);
+
+         // === 🧮 Расчёт initialPaymentMortgage ===
+              const initialPaymentMortgage = selectedItem.price * 0.2;
+              pm.environment.set("initialPaymentMortgage", initialPaymentMortgage);
+
+              console.log(`💰 Расчёт initialPaymentMortgage = ${selectedItem.price} * 0.2 = ${initialPaymentMortgage}`);
+
+          // === 🎲 Генерация случайного периода от 5 до 30 ===
+          const periodMortgage = Math.floor(Math.random() * (30 - 5 + 1)) + 5;
+          pm.environment.set("periodMortgage", periodMortgage);
+
+          console.log(`📆 Случайный период кредита: ${periodMortgage} лет`);
+
+          // --- Проверки ---
+          pm.test("Переменные окружения успешно установлены", function () {
+              pm.expect(pm.environment.get("sybtypeCodeMortgage")).to.eql(selectedItem.subtype.code);
+              pm.expect(Number(pm.environment.get("priceForSelectedSubtapeCode"))).to.eql(selectedItem.price);
+          });
+      });
+
+
+      // КОНТРАКТЫ МЕТОДА: MortgageCalcResultList
+      pm.variables.set("schema", {
+        required: [
+          "mortgage_types",
+
+          "mortgage_types.*.code",
+          "mortgage_types.*.name",
+          "mortgage_types.*.offers_qty",
+          "mortgage_types.*.rates",
+
+          "mortgage_types.*.rates.*.amount",
+          "mortgage_types.*.rates.*.code",
+          "mortgage_types.*.rates.*.initial_payment",
+          "mortgage_types.*.rates.*.initial_payment_percent",
+          "mortgage_types.*.rates.*.name",
+          "mortgage_types.*.rates.*.offers",
+          "mortgage_types.*.rates.*.offers_qty",
+          "mortgage_types.*.rates.*.payment",
+          "mortgage_types.*.rates.*.period_max",
+          "mortgage_types.*.rates.*.period_min",
+
+          "mortgage_types.*.rates.*.offers.*.bank",
+          "mortgage_types.*.rates.*.offers.*.bank.code",
+          "mortgage_types.*.rates.*.offers.*.bank.logo",
+          "mortgage_types.*.rates.*.offers.*.bank.name",
+
+          "mortgage_types.*.rates.*.offers.*.description",
+          "mortgage_types.*.rates.*.offers.*.economy",
+          "mortgage_types.*.rates.*.offers.*.payment",
+          "mortgage_types.*.rates.*.offers.*.period_max",
+          "mortgage_types.*.rates.*.offers.*.period_min",
+          "mortgage_types.*.rates.*.offers.*.psk_max",
+          "mortgage_types.*.rates.*.offers.*.psk_min",
+          "mortgage_types.*.rates.*.offers.*.rate",
+          "mortgage_types.*.rates.*.offers.*.subsidized_flag",
+          "mortgage_types.*.rates.*.offers.*.subsidized_months",
+          "mortgage_types.*.rates.*.offers.*.subsidized_payment",
+          "mortgage_types.*.rates.*.offers.*.subsidized_rate",
+
+          // поле верхнего уровня (nullable)
+          "psk_description"
+        ],
+
+        types: {
+          "mortgage_types": "array",
+
+          "mortgage_types.*.code": "string",
+          "mortgage_types.*.name": "string",
+          "mortgage_types.*.offers_qty": "integer",
+          "mortgage_types.*.rates": "array",
+
+          "mortgage_types.*.rates.*.amount": "integer",
+          "mortgage_types.*.rates.*.code": "string",
+          "mortgage_types.*.rates.*.initial_payment": "number",
+          "mortgage_types.*.rates.*.initial_payment_percent": "number",
+          "mortgage_types.*.rates.*.name": "string",
+
+          "mortgage_types.*.rates.*.offers": "array",
+          "mortgage_types.*.rates.*.offers_qty": "integer",
+          "mortgage_types.*.rates.*.payment": "integer",
+          "mortgage_types.*.rates.*.period_max": "integer",
+          "mortgage_types.*.rates.*.period_min": "integer",
+
+          "mortgage_types.*.rates.*.offers.*.bank": "object",
+          "mortgage_types.*.rates.*.offers.*.bank.code": "string",
+          "mortgage_types.*.rates.*.offers.*.bank.logo": "string",
+          "mortgage_types.*.rates.*.offers.*.bank.name": "string",
+
+          // nullable поля оффера
+          "mortgage_types.*.rates.*.offers.*.description": "number?",
+          "mortgage_types.*.rates.*.offers.*.economy": "number?",
+          "mortgage_types.*.rates.*.offers.*.payment": "number",
+          "mortgage_types.*.rates.*.offers.*.period_max": "integer?",
+          "mortgage_types.*.rates.*.offers.*.period_min": "integer?",
+          "mortgage_types.*.rates.*.offers.*.psk_max": "number?",
+          "mortgage_types.*.rates.*.offers.*.psk_min": "number?",
+          "mortgage_types.*.rates.*.offers.*.rate": "number?",
+          "mortgage_types.*.rates.*.offers.*.subsidized_flag": "boolean",
+          "mortgage_types.*.rates.*.offers.*.subsidized_months": "integer?",
+          "mortgage_types.*.rates.*.offers.*.subsidized_payment": "number?",
+          "mortgage_types.*.rates.*.offers.*.subsidized_rate": "number?",
+
+          // nullable верхнего уровня
+          "psk_description": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка банковских предл.resources/examples
+order: 4000

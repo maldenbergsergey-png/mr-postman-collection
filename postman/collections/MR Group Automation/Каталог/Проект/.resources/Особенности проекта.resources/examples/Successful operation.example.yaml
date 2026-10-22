@@ -1,0 +1,33 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/project/:project-code/features"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    project-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "title": "<string>",
+            "id": "<string>",
+            "description": "<string>",
+            "image": "<string>"
+          },
+          {
+            "title": "<string>",
+            "id": "<string>",
+            "description": "<string>",
+            "image": "<string>"
+          }
+        ]
+      }
+order: 1000

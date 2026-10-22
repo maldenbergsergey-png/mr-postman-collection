@@ -1,0 +1,89 @@
+$kind: http-request
+description: |
+  Добавление в избранное ОН\
+  Метод можно вызвать как для авторизованного пользователя, так и для неавторизованного\
+  От этого зависят проверки входных данных
+url: "{{baseUrl}}/user/favourites/{{product_code}}"
+method: POST
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: flats
+    disabled: true
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // Мини-Pre-request: выбрать ОН не из избранного и проставить переменные
+      const baseUrl = pm.environment.get("baseUrl");
+      const token   = pm.environment.get("bearerToken");
+      let   category= pm.environment.get("category");
+      if (!baseUrl) throw new Error("baseUrl не задан в окружении");
+      if (!token)   throw new Error("bearerToken не задан в окружении");
+
+      if (!category) {
+        const pool = ["commercials", "flats", "offices"];
+        category = pool[Math.floor(Math.random()*pool.length)];
+        pm.environment.set("category", category);
+      }
+
+      function getJson(url, cb) {
+        pm.sendRequest({
+          url, method: "GET",
+          header: { Authorization: `Bearer ${token}`, Accept: "application/json" }
+        }, (e, r) => {
+          if (e) return cb(e);
+          if (r.code === 204) return cb(null, { data: null });
+          const ct = (r.headers.get("Content-Type") || "").toLowerCase();
+          if (ct.indexOf("application/json") === -1) return cb(new Error("Ожидался JSON"));
+          try { cb(null, { data: r.json() }); }
+          catch (err) { cb(new Error("Невалидный JSON: " + err.message)); }
+        });
+      }
+
+      const favURL  = `${baseUrl}/user/favourites`;
+      const listURL = `${baseUrl}/sale/products?category=${encodeURIComponent(category)}&page=1&limit=50`;
+
+      getJson(favURL, (fe, fav) => {
+        if (fe) { postman.setNextRequest(null); throw new Error("Не удалось получить избранное: " + fe.message); }
+
+        // Соберём множество уже добавленных product_id
+        const favIds = new Set();
+        const catBlocks = fav.data && Array.isArray(fav.data.categories) ? fav.data.categories : [];
+        for (let i=0; i<catBlocks.length; i++) {
+          const ids = Array.isArray(catBlocks[i].product_ids) ? catBlocks[i].product_ids : [];
+          for (let j=0; j<ids.length; j++) favIds.add(Number(ids[j]));
+        }
+
+        getJson(listURL, (le, list) => {
+          if (le) { postman.setNextRequest(null); throw new Error("Не удалось получить листинг: " + le.message); }
+
+          const items = list.data && Array.isArray(list.data.items) ? list.data.items : [];
+          if (items.length === 0) { postman.setNextRequest(null); throw new Error("Листинг пуст"); }
+
+          // Найти первый ОН, которого нет в избранном
+          let candidate = null;
+          for (let k=0; k<items.length; k++) {
+            const it = items[k];
+            if (it && typeof it.id === "number" && !favIds.has(Number(it.id))) { candidate = it; break; }
+          }
+          if (!candidate) { postman.setNextRequest(null); throw new Error("Все из листинга уже в избранном"); }
+          if (!candidate.code) { postman.setNextRequest(null); throw new Error("У найденного ОН нет поля code"); }
+
+          // Проставляем переменные для текущего запроса
+          pm.environment.set("product_code", candidate.code);
+          pm.environment.set("product_id", String(candidate.id));
+          if (candidate.project && candidate.project.code) pm.environment.set("projectCode", candidate.project.code);
+
+          // Тело ответа на добавление может быть пустым (204/200 без JSON)
+          pm.variables.set("EXPECT_JSON", "0");
+        });
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Добавление ОН в избранное.resources/examples
+order: 2000

@@ -1,0 +1,96 @@
+$kind: http-request
+name: Получение сведений об этажах и плане, который следует открыть
+description: |
+  Метод возвращает информацию об этажах и план, который следует открыть
+url: "{{baseUrl}}/sale/plan/floors?category={{categoryHasPlan}}&building={{buildingHasPlan}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: "{{categoryHasPlan}}"
+    description: Фильтр по типу ОН
+  - key: building
+    value: "{{buildingHasPlan}}"
+    description: Код корпуса
+  - key: section
+    value: <integer>
+    disabled: true
+    description: ID секции
+scripts:
+  - type: afterResponse
+    code: |+
+      let jsonData;
+      jsonData = pm.response.json();
+
+      // --- Извлекаем все все code корпусов ---
+      const floorNumber = jsonData.map(cat => cat.floor_number);
+
+      // --- Сохраняем все номера этажей---
+      pm.environment.set("floorNumberArray", JSON.stringify(floorNumber));
+      console.log("Сохранён список корпусов по выбранному проекту", floorNumber);
+
+      // --- Выбираем случайный этаж ---
+      const randomIndex = Math.floor(Math.random() * floorNumber.length);
+      const randomFloorNumber = floorNumber[randomIndex];
+
+      // --- Сохраняем выбранный код в окружение ---
+      pm.environment.set("floorNumberHasPlan", randomFloorNumber);
+      console.log("Выбрана случайная категория из выбранной категории предложений MR Club:", randomFloorNumber);
+
+      // --- Проверка, что переменная записана ---
+      pm.test("Переменная floorNumberHasPlan успешно сохранена", function () {
+          pm.expect(pm.environment.get("floorNumberHasPlan")).to.eql(randomFloorNumber);
+      });
+
+
+
+
+
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      pm.variables.set("schema", {
+      required: [
+          "*.apartments_count",
+          "*.floor_number",
+          "*.max_discount",
+          "*.min_area",
+          "*.min_payment",
+          "*.min_price",
+          "*.plan",
+          "*.price_table", 
+         
+      ],
+      types: {
+          "*.apartments_count": "integer",
+          "*.floors_number": "integer",    
+          "*.max_discount": "number?",
+          "*.min_area": "number",
+          "*.min_payment": "number?",
+          "*.min_price": "number?",  
+          "*.plan": "object?",
+          "*.plan.background_image": "string",
+          "*.plan.compass_angle": "number?",
+          "*.plan.floor": "number?",
+          "*.plan.items_level": "string?",
+          "*.plan.level": "string",
+          "*.plan.level_plan": "string",//устаревшее 
+          "*.plan.object_type": "string",
+          "*.plan.price_table_variant": "string",
+          "*.plan.svg_markup": "string",
+          "*.price_table": "array?",
+          "*.price_table.*.min_area": "number",
+          "*.price_table.*.min_price": "number",
+          "*.price_table.*.object_count": "integer",
+          "*.price_table.*.filter": "integer",
+          "*.price_table.*.min_area": "number",
+          "*.price_table.*.min_price": "number",
+          "*.price_table.*.name": "string",   
+
+      }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение сведений об этажах и пла.resources/examples
+order: 4000

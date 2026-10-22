@@ -1,0 +1,26 @@
+$kind: http-request
+url: https://stageproxy.mr-group.ru/internal/api/core/fcm/v1/domopult/messages:send
+method: POST
+headers:
+  Content-Type: application/json
+  Cookie: PHPSESSID=ohacekjjdq2lj1roo9bnjrg0n1
+body:
+  type: json
+  content: |-
+    {
+        "messages": [
+            {
+                "tokens": [
+                    "58"
+                ],
+                "notification": null,
+                "data": {
+                    "entityUuid": null,
+                    "entityId": null,
+                    "type": "TICKET_MESSAGE"
+                }
+            }
+        ]
+    }
+settings: {}
+order: 3000

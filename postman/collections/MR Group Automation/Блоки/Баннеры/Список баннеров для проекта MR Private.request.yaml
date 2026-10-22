@@ -1,0 +1,53 @@
+$kind: http-request
+description: |
+  Возвращает список баннеров для проекта бренда MR Private.
+url: "{{baseUrl}}/private/{{projectPrivateCode}}/banners"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      const code = pm.environment.get("projectPrivateCode");
+
+      if (!code) {
+        console.warn("⚠️ Переменная окружения 'projectPrivateCode' пуста — сначала нужно выполнить запрос /private/banners");
+      } else {
+        console.log("✅ Используем сохранённый projectPrivateCode:", code);
+      }
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "count",
+          "items"
+
+        ],
+        types: { //проверка типов данных
+      "count" : "integer",
+      "items": "array",
+      "items.*.id": "integer",
+
+      "items.*.image": "object?",
+      "items.*.image.image_desktop": "string",
+      "items.*.image.image_desktop_big": "string?",
+      "items.*.image.image_mobile": "string",
+      "items.*.image.image_tablet": "string?",
+
+      "items.*.name": "string",
+      "items.*.type": "string",
+
+      "items.*.video": "object?",
+      "items.*.video.image_preview_desktop": "string",
+      "items.*.video.image_preview_mobile": "string",
+      "items.*.video.video_desktop": "string",
+      "items.*.video.video_mobile": "string",
+
+
+        }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список баннеров для проекта MR Private.resources/examples
+order: 6000

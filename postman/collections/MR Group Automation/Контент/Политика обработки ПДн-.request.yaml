@@ -1,0 +1,29 @@
+$kind: http-request
+name: Политика обработки ПДн.
+description: |
+  Получение данных для контентной политики обработки ПДн.
+url: "{{baseUrl}}/content/agreement"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "name"
+        ],
+        types: {
+          "name": "string",
+          "description": "string?",
+          "note": "string?",
+          "title": "string?",
+          "document": "string?" // в контрактах нет данного параметра, есть в требованиях
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Политика обработки ПДн-.resources/examples
+order: 1000

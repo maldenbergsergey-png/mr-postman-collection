@@ -1,0 +1,60 @@
+$kind: http-request
+description: |
+  Метод, который позволяет получить реквизиты документа в сделке
+url: "{{baseUrl}}/purchase/{{idDeal}}/documents/{{documentDeal}}"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "attributes",
+          "document",
+
+          "attributes.*.code",
+          "attributes.*.extra_value",
+          "attributes.*.formatted_value",
+          "attributes.*.name",
+          "attributes.*.value",
+
+          "document.file_id",
+          "document.id",
+          "document.name",
+          "document.number",
+          "document.status",
+          "document.status.code",
+          "document.status.name",
+          "document.type"
+        ],
+        types: {
+          "attributes": "array",
+          "document": "object",
+
+          "attributes.*.code": "string",
+          "attributes.*.extra_value": "string?",
+          "attributes.*.formatted_value": "string",
+          "attributes.*.name": "string",
+          "attributes.*.value": "string|number|integer",
+
+          "document.file_id": "integer?",
+          "document.id": "number",
+          "document.name": "string",
+          "document.number": "string?",
+          "document.status": "object?",
+          "document.status.code": "string",
+          "document.status.name": "string",
+          "document.type": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение документа по сделке.resources/examples
+order: 2000

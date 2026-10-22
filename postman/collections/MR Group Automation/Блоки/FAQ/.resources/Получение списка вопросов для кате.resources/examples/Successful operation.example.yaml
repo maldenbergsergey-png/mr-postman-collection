@@ -1,0 +1,33 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/faq/category/:category-code/questions"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    category-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "name": "<string>",
+        "questions": [
+          {
+            "id": "<number>",
+            "question": "<string>",
+            "answer": "<string>"
+          },
+          {
+            "id": "<number>",
+            "question": "<string>",
+            "answer": "<string>"
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

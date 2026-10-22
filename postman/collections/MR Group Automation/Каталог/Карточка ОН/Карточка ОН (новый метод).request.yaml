@@ -1,0 +1,217 @@
+$kind: http-request
+url: "{{baseUrl}}/realty/objects/{{product_code}}"
+method: GET
+headers:
+  accept: application/json, text/plain, */*
+  accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+  authorization: Basic bXJzdXBlcmFwcDpqRjJ4VDc3YmZHcXJDbw==
+  baggage: sentry-environment=current,sentry-public_key=52fb7a292bbd47ac8a68fb240911e874,sentry-trace_id=7993328c751e4a3ba3a3fad7323bf75b,sentry-sample_rate=1,sentry-transaction=%2Fcatalog%2Fapartments%2F%3Aslug%2F,sentry-sampled=true
+  dev-authorization: f5GaD8jxJ8KwEM
+  priority: u=1, i
+  referer: https://mrsuperapp.adv.ru/catalog/apartments/st-1-1-k-1-4-4-104022/
+  sec-ch-ua: '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"'
+  sec-ch-ua-mobile: ?1
+  sec-ch-ua-platform: '"Android"'
+  sec-fetch-dest: empty
+  sec-fetch-mode: cors
+  sec-fetch-site: same-origin
+  sentry-trace: 8c5ee26412204bdda01c4c728fd9c298-974435bdec9aaca4-1
+  user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36
+  Cookie: popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; BITRIX_SM_SALE_UID=25000; BITRIX_SM_LOGIN=kiselev.sergey%40adv.ru; adrcid=AJOsenZzsKD607kjJx_dJDQ; acs_3=%7B%22hash%22%3A%22768a608b20ce960ff29026da95a81203ec583ad1%22%2C%22nextSyncTime%22%3A1733920842195%2C%22syncLog%22%3A%7B%22224%22%3A1733834442195%2C%221228%22%3A1733834442195%2C%221230%22%3A1733834442195%7D%7D; adrdel=1733834442462; BITRIX_SM_UIDH=zeglQEjRCnyWyKIRFgixAev3lQDcfh7r; BITRIX_SM_UIDL=kiselev.sergey%40adv.ru; _ymab_param=Vhe3Wv53kD6Sy0T1TtAiMzE_hXTZ77iOWHRW5CXiYK5ns58B9gX_VodyA64QbC3jXSGhPZ66suJRICSlLfIPZ9aUa5U; tmr_lvid=5ac6c7356e39cb55531a50c52dfdfe03; tmr_lvidTS=1726827200570; _ym_uid=1716037707661273768; _ym_d=1752566596; _ga_CKXT59P7EH=GS2.1.s1753788373$o1$g0$t1753788585$j60$l0$h0; mindboxDeviceUUID=ce343409-a364-4ab6-838f-51a291696cb1; directCrm-session=%7B%22deviceGuid%22%3A%22ce343409-a364-4ab6-838f-51a291696cb1%22%7D; USE_COOKIE_CONSENT_STATE={%22session%22:true%2C%22persistent%22:true%2C%22necessary%22:true%2C%22preferences%22:true%2C%22statistics%22:true%2C%22marketing%22:true%2C%22firstParty%22:true%2C%22thirdParty%22:true}; _ga_0Q4Q8N1F0J=GS2.1.s1757057242$o50$g0$t1757057242$j60$l0$h0; _ga_JKT5T6JWJ2=GS2.1.s1757057242$o50$g0$t1757057242$j60$l0$h0; _ga=GA1.1.1438437172.1752234131; PHPSESSID=vqt7par1obqecd033sqsfu0u9m; BITRIX_SM_SOUND_LOGIN_PLAYED=Y; _ym_isad=1; _ym_visorc=b; sessionId=17587996697082630715; _ga_H5S7YBLWM3=GS2.1.s17587996697082630715$o35$g1$t1758799743$j60$l0$h0; _ga_70ZZHDSCR6=GS2.1.s1758799669$o35$g1$t1758799743$j60$l0$h0
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА: RealtyObjectDetailsResponse
+      pm.variables.set("schema", {
+        required: [
+          "product",
+
+          "product.category",
+          "product.category.code",
+          "product.category.id",
+          "product.category.name",
+
+          "product.code",
+          "product.crm_id",
+          "product.id",
+          "product.name",
+
+          "product.status",
+          "product.status.code",
+          "product.status.name",
+
+          "product.meter_price",
+
+          "product.price",
+
+          "product.project",
+          "product.project.brandbook",
+          "product.project.business_unit",
+          "product.project.code",
+          "product.project.id",
+          "product.project.name",
+
+          "product.purchase_type",
+          "product.purchase_types",
+          "product.purchase_types.*.code",
+          "product.purchase_types.*.name",
+
+          "product.stop_sales",
+          "product.ventilation"
+        ],
+
+        types: {
+          "product": "object",
+
+          "product.category": "object",
+          "product.category.code": "string",
+          "product.category.id": "integer",
+          "product.category.name": "string",
+
+          "product.code": "string",
+          "product.crm_id": "string",
+          "product.floor": "integer?",
+          "product.id": "integer",
+          "product.name": "string",
+          "product.number": "string?",
+
+          "product.plot": "object?",
+          "product.plot.exists": "boolean",
+          "product.plot.size": "number?",
+
+          "product.rooms_number": "integer?",
+
+          "product.status": "object",
+          "product.status.code": "string",
+          "product.status.name": "string",
+
+          "product.tier_quantity": "integer?",
+          "product.title": "string?",
+          "product.apartment_on_floor": "string?",
+          "product.area": "number?",
+          "product.article": "string?",
+
+          "product.booking_type": "string?",
+
+          "product.building": "object?",
+          "product.building.code": "string",
+          "product.building.compass_angle": "number?",
+          "product.building.deadline": "string?",
+          "product.building.floors_number": "integer?",
+          "product.building.id": "integer?",
+          "product.building.name": "string",
+          "product.building.readiness": "integer?",
+          "product.building.scheme": "string?",
+          "product.building.shadow_map": "object?",
+          "product.building.shadow_map.direction": "string?",
+          "product.building.shadow_map.sunrise_angle": "integer?",
+          "product.building.shadow_map.sunset_angle": "integer?",
+
+          "product.ceiling_height": "number?",
+
+          "product.decoration": "object?",
+          "product.decoration.code": "string",
+          "product.decoration.name": "string",
+
+          "product.environment": "object?",
+          "product.environment.left_side": "string?",
+          "product.environment.lower_side": "string?",
+          "product.environment.right_side": "string?",
+          "product.environment.upper_side": "string?",
+
+          "product.functional_layout": "string?",
+
+          "product.kitchen": "object?",
+          "product.kitchen.layout_type_id": "string",
+
+          "product.layout_3d": "string?",
+          "product.layout_3d_image": "string?",
+          "product.layout_3d_tour": "string?",
+
+          "product.meter_price": "number",
+
+          "product.metro": "object?",
+          "product.metro.color": "string?",
+          "product.metro.name": "string",
+
+          "product.metro_distance": "integer?",
+          "product.monthly_payment": "number?",
+          "product.movement_way": "object?",
+          "product.movement_way.icon": "string",
+          "product.movement_way.name": "string",
+
+          "product.object_types": "array?",
+          "product.object_types.*.background_color": "string?",
+          "product.object_types.*.code": "string",
+          "product.object_types.*.description": "string?",
+          "product.object_types.*.discounted_price": "object?",
+          "product.object_types.*.discounted_price.percentage_discount": "number",
+          "product.object_types.*.discounted_price.price": "number",
+          "product.object_types.*.discounted_price.type": "string",
+          "product.object_types.*.image": "string?",
+          "product.object_types.*.name": "string",
+          "product.object_types.*.price": "number?",
+
+          "product.price": "number?",
+
+          "product.project": "object",
+          "product.project.brandbook": "string",
+          "product.project.business_unit": "string",
+          "product.project.code": "string",
+          "product.project.id": "integer",
+          "product.project.image": "string?",
+          "product.project.is_countryside": "boolean",
+          "product.project.is_private": "boolean",
+          "product.project.name": "string",
+          "product.project.title": "string?",
+          "product.project.description": "string?",
+          "product.project.marketing_image": "string?",
+          "product.project.publish_presentation": "boolean",
+
+          "product.purchase_type": "string",
+          "product.purchase_types": "array",
+          "product.purchase_types.*.app_link": "string?",
+          "product.purchase_types.*.code": "string",
+          "product.purchase_types.*.description": "string?",
+          "product.purchase_types.*.discount": "object?",
+          "product.purchase_types.*.discount.absolute_discount": "number",
+          "product.purchase_types.*.discount.description": "string?",
+          "product.purchase_types.*.discount.meter_price": "number",
+          "product.purchase_types.*.discount.percentage_discount": "number",
+          "product.purchase_types.*.discount.price": "number",
+          "product.purchase_types.*.discount.type": "string",
+          "product.purchase_types.*.image": "string?",
+          "product.purchase_types.*.name": "string",
+          "product.purchase_types.*.title": "string?",
+          "product.purchase_types.*.web_link": "string?",
+
+          "product.section": "object?",
+          "product.section.building_id": "integer",
+          "product.section.description": "string?",
+          "product.section.external_id": "string",
+          "product.section.floor_quantity": "integer?",
+          "product.section.full_description": "string?",
+          "product.section.id": "integer",
+          "product.section.marketing_name": "string?",
+          "product.section.name": "string?",
+
+          "product.stop_sales": "boolean",
+
+          "product.technical_layout": "string?",
+          "product.ventilation": "boolean",
+
+          "product.view_from_window": "object?",
+          "product.view_from_window.angle": "number?",
+          "product.view_from_window.back_segment": "boolean",
+          "product.view_from_window.front_segment": "boolean",
+          "product.view_from_window.image": "string",
+          "product.view_from_window.left_segment": "boolean",
+          "product.view_from_window.right_segment": "boolean",
+          "product.view_from_window.size": "string",
+          "product.view_from_window.x": "number",
+          "product.view_from_window.y": "number"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 3000

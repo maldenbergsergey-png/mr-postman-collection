@@ -1,0 +1,6 @@
+$kind: collection
+description: |-
+  [POST /purchases:refresh](https://confluence.mr-group.ru/pages/viewpage.action?pageId=74075197)
+
+  [BE → CRM: Обновление данных по сделкам](https://confluence.mr-group.ru/pages/viewpage.action?pageId=74065735)
+order: 2000

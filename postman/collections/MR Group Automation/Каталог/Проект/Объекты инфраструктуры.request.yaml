@@ -1,0 +1,52 @@
+$kind: http-request
+description: Метод возвращает объекты инфраструктуры, категории инфраструктуры и данные проекта для карты
+url: "{{baseUrl}}/project/{{projectCode}}/infrastructure"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "project",
+          "categories"
+        ],
+        types: {
+          "categories": "array",
+          "items": "array",
+          "project": "object",
+
+          "categories.*.icon_app": "string",
+          "categories.*.icon_web": "string",
+          "categories.*.id": "integer",
+          "categories.*.name": "string",
+
+          "items.*.address": "string",
+          "items.*.availabilities": "string?",
+          "items.*.category_id": "integer",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.latitude": "number",
+          "items.*.longitude": "number",
+          "items.*.name": "string",
+
+          "project.brandbook": "string",
+          "project.business_unit": "string",            
+          "project.code": "string",            
+          "project.id": "integer",            
+          "project.image": "string?",            
+          "project.is_private": "boolean",            
+          "project.name": "string",            
+          "project.title": "string?",            
+          "project.latitude": "number",  
+          "project.longitude": "number"    
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Объекты инфраструктуры.resources/examples
+order: 1000

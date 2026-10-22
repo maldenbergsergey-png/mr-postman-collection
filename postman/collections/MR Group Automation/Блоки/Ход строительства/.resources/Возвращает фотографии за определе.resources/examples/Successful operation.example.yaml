@@ -1,0 +1,32 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/project/:project-code/construction-progress/photo?month=<integer>&year=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: month
+      value: <integer>
+      description: "(Required) "
+    - key: year
+      value: <integer>
+      description: "(Required) "
+  pathVariables:
+    project-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "photo": [
+          "<string>",
+          "<string>"
+        ],
+        "month": "<integer>",
+        "year": "<integer>"
+      }
+order: 1000

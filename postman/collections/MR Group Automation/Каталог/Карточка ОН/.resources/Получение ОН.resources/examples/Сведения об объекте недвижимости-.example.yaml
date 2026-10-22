@@ -1,0 +1,172 @@
+$kind: http-example
+name: Сведения об объекте недвижимости.
+request:
+  url: "{{baseUrl}}/sale/product/:code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "<integer>",
+        "code": "<string>",
+        "name": "<string>",
+        "project": {
+          "code": "<string>",
+          "description": "<string>",
+          "id": "<integer>",
+          "is_private": "<boolean>",
+          "marketing_image": "<string>",
+          "name": "<string>",
+          "publish_presentation": "<boolean>",
+          "title": "<string>"
+        },
+        "status": {
+          "code": "booked",
+          "name": "<string>"
+        },
+        "category": {
+          "id": "<integer>",
+          "code": "boxrooms",
+          "name": "<string>"
+        },
+        "decoration": {
+          "code": "<string>",
+          "name": "<string>"
+        },
+        "object_types": [
+          {
+            "code": "boxrooms",
+            "name": "<string>",
+            "image": "<string>",
+            "background_color": "<string>",
+            "description": "<string>",
+            "price": "<number>",
+            "discounted_price": {
+              "percentage_discount": "<number>",
+              "price": "<number>",
+              "type": "percent"
+            }
+          },
+          {
+            "code": "boxrooms",
+            "name": "<string>",
+            "image": "<string>",
+            "background_color": "<string>",
+            "description": "<string>",
+            "price": "<number>",
+            "discounted_price": {
+              "percentage_discount": "<number>",
+              "price": "<number>",
+              "type": "absolute"
+            }
+          }
+        ],
+        "purchase_types": [
+          {
+            "app_link": "<string>",
+            "code": "<string>",
+            "description": "<string>",
+            "discount": {
+              "price": "<number>",
+              "meter_price": "<number>",
+              "type": "absolute",
+              "percentage_discount": "<number>",
+              "absolute_discount": "<number>",
+              "description": "<string>"
+            },
+            "image": "<string>",
+            "name": "<string>",
+            "title": "<string>",
+            "web_link": "<string>"
+          },
+          {
+            "app_link": "<string>",
+            "code": "<string>",
+            "description": "<string>",
+            "discount": {
+              "price": "<number>",
+              "meter_price": "<number>",
+              "type": "percent",
+              "percentage_discount": "<number>",
+              "absolute_discount": "<number>",
+              "description": "<string>"
+            },
+            "image": "<string>",
+            "name": "<string>",
+            "title": "<string>",
+            "web_link": "<string>"
+          }
+        ],
+        "kitchen": {
+          "layout_type_id": "<string>"
+        },
+        "article": "<string>",
+        "stop_sales": "<boolean>",
+        "booking_type": "not_available",
+        "price": "<number>",
+        "meter_price": "<number>",
+        "monthly_payment": "<number>",
+        "area": "<number>",
+        "number": "<string>",
+        "ceiling_height": "<number>",
+        "rooms_number": 4,
+        "floor": "<integer>",
+        "room_type": "<string>",
+        "functional_layout": "<string>",
+        "technical_layout": "<string>",
+        "apartment_on_floor": "<string>",
+        "layout_3d": "<string>",
+        "metro": {
+          "color": "<string>",
+          "name": "<string>"
+        },
+        "metro_distance": "<integer>",
+        "movement_way": {
+          "icon": "<string>",
+          "name": "<string>"
+        },
+        "building": {
+          "id": "<integer>",
+          "code": "<string>",
+          "name": "<string>",
+          "floors_number": "<integer>",
+          "deadline": "<string>",
+          "readiness": "<integer>",
+          "scheme": "<string>",
+          "compass_angle": "<number>",
+          "shadow_map": {
+            "sunrise_angle": "<integer>",
+            "sunset_angle": "<integer>",
+            "direction": "counterclockwise"
+          }
+        },
+        "environment": {
+          "upper_side": "<string>",
+          "right_side": "<string>",
+          "lower_side": "<string>",
+          "left_side": "<string>"
+        },
+        "view_from_window": {
+          "image": "<string>",
+          "x": "<number>",
+          "y": "<number>",
+          "angle": "<number>",
+          "size": "medium. large",
+          "front_segment": "<boolean>",
+          "left_segment": "<boolean>",
+          "right_segment": "<boolean>",
+          "back_segment": "<boolean>"
+        },
+        "purchase_type": "<string>",
+        "ventilation": "<boolean>"
+      }
+order: 1000

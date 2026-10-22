@@ -1,0 +1,34 @@
+$kind: http-request
+description: |
+  Получение списка предложений Trade in
+url: "{{baseUrl}}/tradein/offers"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+
+          "offers"
+
+        ],
+        types: { //проверка типов данных
+
+        "offers" : "array",
+        "offers.*.background_color" : "string",
+        "offers.*.description" : "string",
+        "offers.*.font_color" : "string",
+        "offers.*.image" : "string?",
+        "offers.*.note" : "string",
+        "offers.*.title" : "string",
+
+        }
+        });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список предложений.resources/examples
+order: 1000

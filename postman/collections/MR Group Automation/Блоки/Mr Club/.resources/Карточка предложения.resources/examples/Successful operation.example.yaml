@@ -1,0 +1,61 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mrclub/offers/:offer-code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    offer-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "<string>",
+        "image": "<string>",
+        "teaser": "<string>",
+        "ad_label": "<string>",
+        "categories": [
+          {
+            "code": "<string>",
+            "name": "<string>"
+          },
+          {
+            "code": "<string>",
+            "name": "<string>"
+          }
+        ],
+        "name": "<string>",
+        "description": "<string>",
+        "labels": [
+          {
+            "text": "<string>"
+          },
+          {
+            "text": "<string>"
+          }
+        ],
+        "conditions": "<string>",
+        "partner": {
+          "code": "<string>",
+          "name": "<string>",
+          "logo": "<string>",
+          "description": "<string>",
+          "text": "<string>"
+        },
+        "steps": [
+          {
+            "name": "<string>",
+            "description": "<string>"
+          },
+          {
+            "name": "<string>",
+            "description": "<string>"
+          }
+        ]
+      }
+order: 1000

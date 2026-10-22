@@ -1,0 +1,31 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/content/history"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "year": "<integer>",
+            "title": "<string>",
+            "description": "<string>",
+            "image": "<string>"
+          },
+          {
+            "year": "<integer>",
+            "title": "<string>",
+            "description": "<string>",
+            "image": "<string>"
+          }
+        ]
+      }
+order: 1000

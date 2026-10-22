@@ -1,0 +1,90 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/project/:project-code/construction-progress"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    project-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "project": {
+          "id": "<integer>",
+          "code": "<string>",
+          "name": "<string>"
+        },
+        "construction_dynamics": {
+          "video_link": "<string>",
+          "video_preview": "<string>",
+          "month_update": "<integer>",
+          "year_update": "<integer>"
+        },
+        "timeline": [
+          {
+            "count": "<integer>",
+            "month": "<integer>",
+            "year": "<integer>"
+          },
+          {
+            "count": "<integer>",
+            "month": "<integer>",
+            "year": "<integer>"
+          }
+        ],
+        "last_month": {
+          "photo": [
+            "<string>",
+            "<string>"
+          ],
+          "month": "<integer>",
+          "year": "<integer>"
+        },
+        "streams": [
+          {
+            "building": {
+              "id": "<integer>",
+              "name": "<string>"
+            },
+            "cameras_count": "<integer>",
+            "cameras": [
+              {
+                "link": "<string>",
+                "preview": "<string>",
+                "description": "<string>"
+              },
+              {
+                "link": "<string>",
+                "preview": "<string>",
+                "description": "<string>"
+              }
+            ]
+          },
+          {
+            "building": {
+              "id": "<integer>",
+              "name": "<string>"
+            },
+            "cameras_count": "<integer>",
+            "cameras": [
+              {
+                "link": "<string>",
+                "preview": "<string>",
+                "description": "<string>"
+              },
+              {
+                "link": "<string>",
+                "preview": "<string>",
+                "description": "<string>"
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

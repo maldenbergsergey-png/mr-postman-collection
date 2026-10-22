@@ -1,0 +1,15 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/offices/projects?project=<string>"
+  method: GET
+  queryParams:
+    - key: project
+      value: <string>
+      description: Фильтр по коду проекта
+response:
+  statusCode: 500
+  statusText: Internal Server Error
+  body:
+    type: text
+    content: ""
+order: 2000

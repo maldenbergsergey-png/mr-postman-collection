@@ -1,0 +1,15 @@
+$kind: http-request
+name: Ознакомление с договором приобретения ОН
+description: |
+  Метод, который позволяет отправить подтверждение ознакомления с договором в процессе сделки
+url: "{{baseUrl}}/purchase/{{idDeal}}/documents/{{documentDeal}}/acceptance"
+method: POST
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Ознакомление с договором приобрет.resources/examples
+order: 4000

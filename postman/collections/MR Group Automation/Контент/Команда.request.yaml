@@ -1,0 +1,27 @@
+$kind: http-request
+description: Метод получения данных объектов сущности Участник команды
+url: "{{baseUrl}}/content/team"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "items"
+        ],
+        types: {
+          "items": "array",
+          "items.*.name": "string?",
+          "items.*.surname": "string?",
+          "items.*.job_title": "string?",
+          "items.*.image": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Команда.resources/examples
+order: 5000

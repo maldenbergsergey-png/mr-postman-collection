@@ -1,0 +1,45 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/content/sitemap"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "sections": [
+          {
+            "name": "<string>",
+            "links": [
+              {
+                "text": "<string>",
+                "link": "<string>"
+              },
+              {
+                "text": "<string>",
+                "link": "<string>"
+              }
+            ]
+          },
+          {
+            "name": "<string>",
+            "links": [
+              {
+                "text": "<string>",
+                "link": "<string>"
+              },
+              {
+                "text": "<string>",
+                "link": "<string>"
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

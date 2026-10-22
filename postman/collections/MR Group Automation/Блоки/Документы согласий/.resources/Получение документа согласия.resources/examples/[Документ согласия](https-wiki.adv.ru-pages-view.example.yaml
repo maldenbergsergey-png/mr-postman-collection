@@ -1,0 +1,30 @@
+$kind: http-example
+name: |
+  [Документ согласия](https://wiki.adv.ru/pages/viewpage.action?pageId=307093060).
+request:
+  url: "{{baseUrl}}/legal/consent-documents/:identifier"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    identifier: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+    cache-control: ""
+    last-modified: ""
+  body:
+    type: json
+    content: |-
+      {
+        "data": {
+          "brief": "<string>",
+          "id": "<string>",
+          "text": "<string>",
+          "title": "<string>",
+          "url_name": "<string>"
+        }
+      }
+order: 1000

@@ -1,0 +1,162 @@
+$kind: http-request
+name: Запрос на участие в реферальной программе
+description: |
+  Позволяет потенциальному клиенту, получившему реферальную ссылку, подать заявку на
+  участие в реферальной программе в
+  [центр клиентской поддержки](https://wiki.adv.ru/pages/viewpage.action?pageId=307075716).
+
+  - [Аналитика](https://wiki.adv.ru/pages/viewpage.action?pageId=330567331)
+url: "{{baseUrl}}/referral/participation/requests"
+method: POST
+headers:
+  - key: Captcha-Token
+    value: <string>
+    description: Токен, полученный после прохождения проверки пользователя во внешнем сервисе верификации запросов
+  - key: Device-Token
+    value: <string>
+    description: Константное значение, аналог Captcha-Token для моб. приложений для прохождения проверки (временное решение, будет отключено после разработки варианта проверки запросов на отправку роботом для мобильных приложений)
+  - key: Content-Type
+    value: application/json
+  - key: Accept
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "meta": {
+        "consents": {
+          "consent_documents": [
+            "<string>",
+            "<string>"
+          ],
+          "phone": "+72720862415",
+          "email": ""
+        },
+        "source": {
+          "platform": "web",
+          "context": "<string>"
+        }
+      },
+      "data": {
+        "name": "<string>",
+        "phone": "+71879289426",
+        "loyalty_card": "1242342342342342",
+        "project_code": "<string>"
+      }
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // === Получаем текущее окружение ===
+      const baseUrl = pm.environment.get("baseUrl");
+      console.log("🌍 Текущее окружение:", baseUrl);
+
+      if (!baseUrl) {
+          throw new Error("❌ Переменная окружения 'baseUrl' не установлена!");
+      }
+
+      // === Данные для DEV окружения ===
+      const devRequest = {
+          url: "http://mrsuperapp.dev.adv:8080/api/v1/jwt",
+          method: "POST",
+          header: { "Content-Type": "application/json" },
+          body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                  payload: {
+                      sub: "fcde0f7e-9e18-4918-803a-299ee24e8ae4",
+                      iat: 1761660000,
+                      exp: 1764252000,
+                      user_id: "58",
+                      phone_number: "+79951108394",
+                      roles: ["client"]
+                  }
+              })
+          }
+      };
+
+      // === Данные для STAGE окружения ===
+      const stageRequest = {
+          url: "http://stagetest.mr-group.ru:8080/api/v1/jwt",
+          method: "POST",
+          header: { "Content-Type": "application/json" },
+          body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                  payload: {
+                      sub: "d75420eb-9a48-465c-a583-291d3b202dbc",
+                      iat: 1761660000,
+                      exp: 1764252000,
+                      user_id: "58",
+                      phone_number: "+79951108394",
+                      roles: ["client"]
+                  }
+              })
+          }
+      };
+
+      // === Основная логика выбора окружения ===
+      if (baseUrl === "https://mrsuperapp.adv.ru/api") {
+          console.log("🟢 Выполняется запрос для окружения DEV...");
+
+          pm.sendRequest(devRequest, (err, res) => {
+              if (err) {
+                  console.error("❌ Ошибка при получении токена DEV:", err);
+                  return;
+              }
+
+              const jsonResponse = res.json();
+              const jwtToken = jsonResponse.jwt;
+
+              if (jwtToken) {
+                  if (!pm.environment.has("bearerToken")) {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("✅ Переменная окружения 'bearerToken' создана и значение установлено:", jwtToken);
+                  } else {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("🔄 Значение переменной окружения 'bearerToken' обновлено:", jwtToken);
+                  }
+              } else {
+                  console.warn("⚠️ Токен JWT не найден в ответе DEV:", jsonResponse);
+              }
+          });
+
+      } else if (baseUrl === "https://stage-superapp.mr-group.ru/api") {
+          console.log("🟣 Выполняется запрос для окружения STAGE...");
+
+          pm.sendRequest(stageRequest, (err, res) => {
+              if (err) {
+                  console.error("❌ Ошибка при получении токена STAGE:", err);
+                  return;
+              }
+
+              const jsonResponse = res.json();
+              const jwtToken = jsonResponse.jwt;
+
+              if (jwtToken) {
+                  if (!pm.environment.has("bearerToken")) {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("✅ Переменная окружения 'bearerToken' создана и значение установлено:", jwtToken);
+                  } else {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("🔄 Значение переменной окружения 'bearerToken' обновлено:", jwtToken);
+                  }
+              } else {
+                  console.warn("⚠️ Токен JWT не найден в ответе STAGE:", jsonResponse);
+              }
+          });
+
+      } else if (baseUrl === "https://www.mr-group.ru/api") {
+          console.log("🚫 Необходимо использовать токен реального пользователя");
+          pm.environment.unset("bearerToken");
+      } else {
+          console.warn("⚠️ Неизвестное окружение baseUrl:", baseUrl);
+      }
+    language: text/javascript
+settings: {}
+examples: ./.resources/Запрос на участие в реферальной пр.resources/examples
+order: 1000

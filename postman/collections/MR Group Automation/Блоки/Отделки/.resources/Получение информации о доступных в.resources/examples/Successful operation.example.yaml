@@ -1,0 +1,441 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/decoration/kitchen/options?layout_type_id=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: layout_type_id
+      value: <string>
+      description: (Required) Идентификатор типа планировки кухни
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "count": "<integer>",
+        "description": "<string>",
+        "items": [
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "colors": [
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "kitchen_partner": {
+                  "name": "<string>",
+                  "logo": "<string>"
+                },
+                "file": "<string>",
+                "3d_layout": "<string>",
+                "image": {
+                  "image": "<string>",
+                  "details_placement": "upper_right",
+                  "slider_position": "<number>",
+                  "pins": [
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "lower_right",
+                      "replacement_image": "<string>"
+                    },
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "lower_right",
+                      "replacement_image": "<string>"
+                    }
+                  ]
+                },
+                "elements": [
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  },
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  }
+                ],
+                "additional_images": [
+                  {
+                    "image": "<string>",
+                    "details_placement": "upper_left",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "upper_left",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_right",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  },
+                  {
+                    "image": "<string>",
+                    "details_placement": "upper_left",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "upper_left",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "upper_left",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "kitchen_partner": {
+                  "name": "<string>",
+                  "logo": "<string>"
+                },
+                "file": "<string>",
+                "3d_layout": "<string>",
+                "image": {
+                  "image": "<string>",
+                  "details_placement": "lower_left",
+                  "slider_position": "<number>",
+                  "pins": [
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "upper_left",
+                      "replacement_image": "<string>"
+                    },
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "upper_left",
+                      "replacement_image": "<string>"
+                    }
+                  ]
+                },
+                "elements": [
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  },
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  }
+                ],
+                "additional_images": [
+                  {
+                    "image": "<string>",
+                    "details_placement": "upper_left",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "upper_left",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "upper_left",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  },
+                  {
+                    "image": "<string>",
+                    "details_placement": "lower_right",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_right",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_right",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "colors": [
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "kitchen_partner": {
+                  "name": "<string>",
+                  "logo": "<string>"
+                },
+                "file": "<string>",
+                "3d_layout": "<string>",
+                "image": {
+                  "image": "<string>",
+                  "details_placement": "upper_left",
+                  "slider_position": "<number>",
+                  "pins": [
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "upper_right",
+                      "replacement_image": "<string>"
+                    },
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "upper_left",
+                      "replacement_image": "<string>"
+                    }
+                  ]
+                },
+                "elements": [
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  },
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  }
+                ],
+                "additional_images": [
+                  {
+                    "image": "<string>",
+                    "details_placement": "lower_right",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "upper_right",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "upper_left",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  },
+                  {
+                    "image": "<string>",
+                    "details_placement": "upper_right",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_left",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_right",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "kitchen_partner": {
+                  "name": "<string>",
+                  "logo": "<string>"
+                },
+                "file": "<string>",
+                "3d_layout": "<string>",
+                "image": {
+                  "image": "<string>",
+                  "details_placement": "lower_right",
+                  "slider_position": "<number>",
+                  "pins": [
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "lower_left",
+                      "replacement_image": "<string>"
+                    },
+                    {
+                      "x": "<number>",
+                      "y": "<number>",
+                      "label": "<string>",
+                      "details_description": "<string>",
+                      "details_image": "<string>",
+                      "details_placement": "upper_left",
+                      "replacement_image": "<string>"
+                    }
+                  ]
+                },
+                "elements": [
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  },
+                  {
+                    "name": "<string>",
+                    "label": "<string>",
+                    "image": "<string>",
+                    "description": "<string>"
+                  }
+                ],
+                "additional_images": [
+                  {
+                    "image": "<string>",
+                    "details_placement": "lower_left",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_left",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_right",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  },
+                  {
+                    "image": "<string>",
+                    "details_placement": "upper_right",
+                    "slider_position": "<number>",
+                    "pins": [
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_left",
+                        "replacement_image": "<string>"
+                      },
+                      {
+                        "x": "<number>",
+                        "y": "<number>",
+                        "label": "<string>",
+                        "details_description": "<string>",
+                        "details_image": "<string>",
+                        "details_placement": "lower_right",
+                        "replacement_image": "<string>"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

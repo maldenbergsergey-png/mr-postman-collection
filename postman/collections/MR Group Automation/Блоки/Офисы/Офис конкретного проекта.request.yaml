@@ -1,0 +1,60 @@
+$kind: http-request
+description: |
+  Получение основных контактов офиса компании MR
+url: "{{baseUrl}}/offices/projects?project={{projectCode}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: project
+    value: "{{projectCode}}"
+    description: Фильтр по коду проекта
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА
+      pm.variables.set("schema", {
+        required: [
+          "projects",
+          "projects.*.id",
+          "projects.*.code",
+          "projects.*.name",
+          "projects.*.offices",
+          "projects.*.brandbook",
+          "projects.*.is_private",
+          "projects.*.business_unit"
+        ],
+        types: {
+          "projects": "array",
+
+          "projects.*.id": "integer",
+          "projects.*.code": "string",
+          "projects.*.name": "string",
+
+          "projects.*.image": "string?",
+          "projects.*.address": "string?",
+          "projects.*.latitude": "number?",
+          "projects.*.longitude": "number?",
+          "projects.*.brandbook": "string",
+          "projects.*.is_private": "boolean",
+          "projects.*.business_unit": "string",
+          "projects.*.title": "string?",
+
+          // offices (массив объектов)
+          "projects.*.offices": "array",
+          "projects.*.offices.*.name": "string",
+          "projects.*.offices.*.address": "string?",
+          "projects.*.offices.*.schedule": "string?",
+          "projects.*.offices.*.phone": "string?",
+          "projects.*.offices.*.email": "string?",
+          "projects.*.offices.*.latitude": "number?",
+          "projects.*.offices.*.longitude": "number?",
+
+          // доп. поле, которое у тебя ругалось
+          "projects.*.is_countryside": "boolean?"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Офис конкретного проекта.resources/examples
+order: 2000

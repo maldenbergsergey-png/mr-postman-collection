@@ -1,0 +1,220 @@
+$kind: http-request
+description: Получение объекта планировки
+url: "{{baseUrl}}/sale/typicalobjects/{{typicalObjectId}}/products"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: sort
+    value: <string>
+    disabled: true
+    description: |
+      Код способа сортировки (по умолчанию default)\
+      Способы сортировки описаны тут - https://wiki.adv.ru/pages/viewpage.action?pageId=273666894
+  - key: price_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин цене
+  - key: price_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс цене
+  - key: payment_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин платежу
+  - key: payment_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс платежу
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: area_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальной площади
+  - key: area_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальной площади
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: booked
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Забронирован"
+  - key: free
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Доступен"
+  - key: floor_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному этажу
+  - key: floor_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному этажу
+  - key: level_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному уровню
+  - key: level_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному уровню
+  - key: discount
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию скидки
+  - key: family
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Семейное"
+  - key: housing[]
+    value: Flat
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: housing[]
+    value: Apartment
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: assignment
+    value: <boolean>
+    disabled: true
+    description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+  - key: installments
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: ["items","typicalObject","sort"],
+        types: {
+          "items" : "array",
+          "typicalObject" : "object",
+          "sort" : "object",
+      //items[]
+      "items.*.area" : "number?",
+      "items.*.booking_type" : "string?",
+      "items.*.building" : "object",
+      "items.*.code" : "string",
+      "items.*.discount" : "object?",
+      "items.*.floor" : "integer?",
+      "items.*.id" : "integer",
+      "items.*.monthly_payment" : "number?",
+      "items.*.name" : "string",
+      "items.*.number" : "string?",
+      "items.*.price" : "number?",
+      "items.*.purchase_type" : "string",
+      "items.*.purchase_types" : "array",
+      "items.*.status" : "object",
+      "items.*.technical_layout" : "string",
+      //"items.*.building"{}
+      "items.*.building.floors_number" : "integer",
+      //"items.*.discount"{}
+      "items.*.discount.absolute_discount" : "number",
+      "items.*.discount.description" : "string?",
+      "items.*.discount.meter_price" : "number",
+      "items.*.discount.percentage_discount" : "number",
+      "items.*.discount.price" : "number",
+      "items.*.discount.type" : "string",
+      //"items.*.purchase_types"[]
+      "items.*.purchase_types.*.code" : "string",
+      "items.*.purchase_types.*.discount" : "object?",
+      "items.*.purchase_types.*.name" : "string",
+      //"items.*.purchase_types.*.discount"{}
+      "items.*.purchase_types.*.discount.absolute_discount" : "number",
+      "items.*.purchase_types.*.discount.description" : "string?",
+      "items.*.purchase_types.*.discount.meter_price" : "number",
+      "items.*.purchase_types.*.discount.percentage_discount" : "number",
+      "items.*.purchase_types.*.discount.price" : "number",
+      "items.*.purchase_types.*.discount.type" : "string",
+      //"items.*.status"{}
+      "items.*.status.code" : "string",
+      "items.*.status.name" : "string",
+      //typicalObject{}
+      "typicalObject.3d_layout" : "string?",
+      "typicalObject.apartments_count" : "integer",
+      "typicalObject.building" : "object",
+      "typicalObject.max_area" : "number",
+      "typicalObject.max_floor" : "integer",
+      "typicalObject.min_area" : "number",
+      "typicalObject.min_floor" : "integer",
+      "typicalObject.min_payment" : "number?",
+      "typicalObject.min_price" : "number?",
+      "typicalObject.project" : "object",
+      "typicalObject.rooms_number" : "integer",
+      "typicalObject.technical_layout" : "string",
+      "typicalObject.typicalObjectId" : "string",
+      //"typicalObject.building"{}
+      "typicalObject.building.code" : "string",
+      "typicalObject.building.deadline" : "string",
+      "typicalObject.building.id" : "integer",
+      "typicalObject.building.name" : "string",
+      //"typicalObject.project" {}
+      "typicalObject.project.brandbook" : "string", 
+      "typicalObject.project.business_unit" : "string", 
+      "typicalObject.project.code" : "string", 
+      "typicalObject.project.id" : "integer", 
+      "typicalObject.project.image" : "string?", 
+      "typicalObject.project.is_private" : "boolean", 
+      "typicalObject.project.name" : "string", 
+      "typicalObject.project.title" : "string?", 
+      //sort{}
+      "sort.code": "string",
+      "sort.name": "string",
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение объекта планировки.resources/examples
+order: 3000

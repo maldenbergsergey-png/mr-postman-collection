@@ -1,0 +1,32 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/promo/:promo-code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    promo-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "title": "<string>",
+        "subtitle": "<string>",
+        "promo_image_detail": "<string>",
+        "content": "<string>",
+        "project": {
+          "id": "<integer>",
+          "code": "<string>"
+        },
+        "promo_expires": "<string>",
+        "button_text": "<string>",
+        "button_web_link": "<string>",
+        "button_app_link": "<string>",
+        "ad_label": "<string>"
+      }
+order: 1000

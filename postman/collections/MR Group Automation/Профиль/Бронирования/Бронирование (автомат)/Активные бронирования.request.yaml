@@ -1,0 +1,30 @@
+$kind: http-request
+description: |
+  Метод получения списка действующих бесплатных бронирований пользователя
+url: "{{baseUrl}}/user/bookings/active"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // ===== КОНТРАКТ UserActiveBookingList =====
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "product_ids",
+        ],
+        types: {
+          "count": "integer",
+          "product_ids": "array",
+          "product_ids.*": "integer",
+        },
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Активные бронирования.resources/examples
+order: 2000

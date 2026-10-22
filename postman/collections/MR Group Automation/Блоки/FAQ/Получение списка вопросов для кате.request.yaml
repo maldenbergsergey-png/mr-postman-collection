@@ -1,0 +1,79 @@
+$kind: http-request
+name: Получение списка вопросов для категории
+description: |
+  Получение списка вопросов для категории
+url: "{{baseUrl}}/faq/category/{{faqCategoryCode}}/questions"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      const code = pm.environment.get("faqCategoryCode");
+      pm.test("Есть faqCategoryCode", function () {
+        pm.expect(code, "Переменная 'faqCategoryCode' отсутствует — сначала вызови /api/faq/category").to.be.a("string").and.not.empty;
+      });
+
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "questions.*.answer",
+          "questions.*.id",
+          "questions.*.question",
+
+        ],
+        types: { //проверка типов данных
+
+        "count" : "integer",
+        "name" : "string",
+
+        "questions" : "array",
+        "questions.*.answer" : "string",
+        "questions.*.id" : "number",
+        "questions.*.question" : "string",
+        
+        }
+        });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      pm.test("Ответ: корректный JSON и есть questions", function () {
+          let data;
+          try { data = pm.response.json(); }
+          catch { pm.expect.fail("Ответ не является корректным JSON"); }
+
+          pm.expect(data, "Нет ключа 'questions'").to.have.property("questions");
+          pm.expect(data.questions, "'questions' должен быть непустым массивом")
+              .to.be.an("array").that.is.not.empty;
+
+          const candidates = data.questions.filter(q => q && typeof q.question === "string" && q.question.trim());
+          pm.expect(candidates, "Нет вопросов с текстом 'question'").to.have.lengthOf.above(0);
+
+          const pick = candidates[Math.floor(Math.random() * candidates.length)];
+
+          // Очистим текст вопроса от html и переносов
+          const clean = (s) => s
+              .replace(/<br\s*\/?>/gi, " ")
+              .replace(/<\/?[^>]+>/g, "")
+              .replace(/\s+/g, " ")
+              .trim();
+
+          const fullText = clean(pick.question);
+
+          // Берем только первые 48 символов (API ограничивает до 50)
+          const shortQuery = fullText.slice(0, 48);
+
+          pm.environment.set("faqQuery", shortQuery);
+
+          console.log(`🟢 Сохранён faqQuery = "${shortQuery}"`);
+
+          pm.test("faqQuery задан корректно", function () {
+              pm.expect(pm.environment.get("faqQuery")).to.be.a("string").and.not.empty;
+          });
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка вопросов для кате.resources/examples
+order: 2000

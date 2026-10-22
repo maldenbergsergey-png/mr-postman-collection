@@ -1,0 +1,101 @@
+$kind: http-request
+description: Метод получения списка особенностей проекта
+url: "{{baseUrl}}/project/{{projectCode}}/features"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |
+      const jsonData = pm.response.json();
+
+      // Проверяем наличие items
+      pm.test("Ответ содержит items", function () {
+          pm.expect(jsonData).to.have.property("items");
+          pm.expect(jsonData.items).to.be.an("array").that.is.not.empty;
+      });
+
+      // Выбираем случайный ID
+      const items = jsonData.items;
+      const randomIndex = Math.floor(Math.random() * items.length);
+      const randomId = items[randomIndex].id;
+
+      // Сохраняем ID
+      pm.environment.set("current_id", randomId);
+      console.log(`Выбран случайный ID у проекта ${pm.environment.get("projectCode")}: ${randomId}`);
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      // URL метода, откуда берём проекты
+      const baseUrl = pm.environment.get("baseUrl")
+
+      // Формируем полный URL запроса
+      const projectsUrl = `${baseUrl}/realty/projects`;
+
+      const delayMs = 2000; // задержка 2 секунды
+
+      function delay(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      (async function () {
+          // Загружаем сохранённые данные
+          let projectsArray = pm.environment.get("projectsArray");
+          let index = parseInt(pm.environment.get("index") || "0", 10);
+
+          // Если список проектов уже есть, используем его
+          if (projectsArray) {
+              try {
+                  projectsArray = JSON.parse(projectsArray);
+                  const projectCode = projectsArray[index] || projectsArray[0];
+                  pm.environment.set("projectCode", projectCode);
+                  console.log(`✅ Текущий проект: ${projectCode}`);
+                  return;
+              } catch (e) {
+                  console.warn("⚠️ Ошибка при чтении projectsArray:", e);
+              }
+          }
+
+          console.log("⏳ Получаем список проектов...");
+          await delay(delayMs);
+
+          // Если списка нет — запросим с API
+          pm.sendRequest({
+              url: projectsUrl,
+              method: "GET"
+          }, function (err, res) {
+              if (err || res.code !== 200) {
+                  console.error("❌ Ошибка при запросе проектов:", err || res.code);
+                  return;
+              }
+
+              const data = res.json();
+              const codes = data.items.map(p => p.code).filter(Boolean);
+
+              pm.environment.set("projectsArray", JSON.stringify(codes));
+              pm.environment.set("projectCode", codes[0]);
+              pm.environment.set("index", 0);
+              console.log("Список проектов сохранён, выбран первый:", codes[0]);
+          });
+      })();
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "items"
+        ],
+        types: {
+          //"description": "string" устарело
+          "items": "array",
+          
+          "items.*.id": "string",
+          "items.*.image": "string",
+          "items.*.title": "string",
+          
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Особенности проекта.resources/examples
+order: 4000

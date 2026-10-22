@@ -1,0 +1,54 @@
+$kind: http-example
+name: |
+  При обработке запроса на сервере произошла внутренняя ошибка.
+
+  Возможные коды ошибок:
+  - `internal_error` — внутренняя ошибка приложения.
+request:
+  url: "{{baseUrl}}/sale/plan/floor/objects?category=flats&building=<string>&section=<integer>&floor=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: category
+      value: flats
+      description: (Required) Код корпуса
+    - key: building
+      value: <string>
+      description: Код корпуса
+    - key: section
+      value: <integer>
+      description: ID секции
+    - key: floor
+      value: <integer>
+      description: (Required) Номер этажа
+response:
+  statusCode: 500
+  statusText: Internal Server Error
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 2000

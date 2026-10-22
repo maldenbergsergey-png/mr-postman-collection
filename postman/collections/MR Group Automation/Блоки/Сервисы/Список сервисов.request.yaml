@@ -1,0 +1,55 @@
+$kind: http-request
+description: |
+  Метод возвращает карточки сервисов
+url: "{{baseUrl}}/services"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: project
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проекта
+  - key: application
+    value: <boolean>
+    disabled: true
+    description: Фильтр, позволяющий отобрать из общего массива объектов только объекты для МП
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА
+
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+          "items.*.background_color",
+          "items.*.background_image",
+          "items.*.description",
+          "items.*.gradient",
+          "items.*.header",
+          "items.*.icon",
+          "items.*.id",
+          "items.*.screen_mp",
+          "items.*.url",
+          "items.*.white_text"
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*.background_color": "string?",
+          "items.*.background_image": "string?",
+          "items.*.description": "string?",
+          "items.*.gradient": "boolean",
+          "items.*.header": "string",
+          "items.*.icon": "string?",
+          "items.*.id": "integer",
+          "items.*.screen_mp": "string?",
+          "items.*.url": "string?",
+          "items.*.white_text": "boolean"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список сервисов.resources/examples
+order: 1000

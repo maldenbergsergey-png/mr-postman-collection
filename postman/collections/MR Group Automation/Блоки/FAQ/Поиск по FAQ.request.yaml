@@ -1,0 +1,82 @@
+$kind: http-request
+description: |
+  Получение списка вопросов для категории
+url: "{{baseUrl}}/faq/search?query={{faqQuery}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: query
+    value: "{{faqQuery}}"
+    description: (Required) Поисковый запрос
+scripts:
+  - type: beforeRequest
+    code: |-
+      const q = pm.environment.get("faqQuery");
+      pm.test("Есть faqQuery для поиска", function () {
+        pm.expect(q, "Переменная 'faqQuery' отсутствует — сначала вызови /questions").to.be.a("string").and.not.empty;
+      });
+
+
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "count",
+          "items",
+          "items.*.category_code",
+          "items.*.question"
+
+        ],
+        types: { //проверка типов данных
+
+        "count" : "integer",
+
+        "items" : "array",
+        "items.*.answer" : "string",
+        "items.*.category_code" : "string",
+        "items.*.category_name" : "string",
+        "items.*.question" : "string",
+        "items.*.question_id" : "string",
+        "items.*.subcategory_code" : "string",
+        "items.*.subcategory_name" : "string",
+
+        
+        }
+        });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      pm.test("Поиск: корректный JSON и релевантность", function () {
+        let data;
+        try { data = pm.response.json(); }
+        catch { pm.expect.fail("Ответ не является корректным JSON"); }
+
+        // Ответы поиска могут отличаться по структуре; учитываем частые варианты:
+        const items = Array.isArray(data.items) ? data.items
+                    : Array.isArray(data.results) ? data.results
+                    : Array.isArray(data) ? data
+                    : [];
+
+        pm.expect(items, "Результаты поиска пустые").to.be.an("array").that.is.not.empty;
+
+        const wantedId = pm.environment.get("faqQuestionId");
+        const wantedQuery = pm.environment.get("faqQuery").toLowerCase();
+
+        // Пытаемся найти совпадение по id, если он есть в элементах
+        const foundById = items.some(it => String(it?.id || "") === String(wantedId));
+
+        // Или по вхождению текста вопроса (часть строки) в поля question/answer
+        const foundByText = items.some(it => {
+          const q = (it?.question || it?.title || "").toString().toLowerCase();
+          const a = (it?.answer || it?.text || "").toString().toLowerCase();
+          return q.includes(wantedQuery) || a.includes(wantedQuery);
+        });
+
+        pm.expect(foundById || foundByText, "Искомый вопрос не найден среди результатов поиска").to.be.true;
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Поиск по FAQ.resources/examples
+order: 3000

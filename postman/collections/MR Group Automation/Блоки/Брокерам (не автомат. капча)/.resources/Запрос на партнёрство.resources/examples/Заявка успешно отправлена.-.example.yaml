@@ -1,0 +1,46 @@
+$kind: http-example
+name: |
+  Заявка успешно отправлена.
+request:
+  url: "{{baseUrl}}/brokers/partnership/requests"
+  method: POST
+  headers:
+    - key: Captcha-Token
+      value: <string>
+      description: Токен, полученный после прохождения проверки пользователя во внешнем сервисе верификации запросов
+    - key: Device-Token
+      value: <string>
+      description: Константное значение, аналог Captcha-Token для моб. приложений для прохождения проверки (временное решение, будет отключено после разработки варианта проверки запросов на отправку роботом для мобильных приложений)
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "data": {
+          "email": "<string>",
+          "name": "<string>",
+          "phone": "+75524942981"
+        },
+        "meta": {
+          "consents": {
+            "consent_documents": [
+              "<string>",
+              "<string>"
+            ],
+            "phone": "+73528968398",
+            "email": "<string>"
+          },
+          "source": {
+            "platform": "web",
+            "context": "<string>"
+          }
+        }
+      }
+response:
+  statusCode: 204
+  statusText: No Content
+  body:
+    type: text
+    content: ""
+order: 1000

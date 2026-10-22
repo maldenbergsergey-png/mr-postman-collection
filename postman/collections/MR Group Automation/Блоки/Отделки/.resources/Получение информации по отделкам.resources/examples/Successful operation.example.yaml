@@ -1,0 +1,121 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/decoration?project_code=<string>&product_code=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: project_code
+      value: <string>
+      description: Код проекта (не путать с фильтром по проекту). Параметр передается, если метод вызывается со страницы проекта
+    - key: product_code
+      value: <string>
+      description: Код ОН
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "options": [
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "description": "<string>",
+                "image": "<string>",
+                "booklet": "<string>",
+                "3d": "<string>",
+                "image_pins": [
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  },
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  }
+                ]
+              },
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "description": "<string>",
+                "image": "<string>",
+                "booklet": "<string>",
+                "3d": "<string>",
+                "image_pins": [
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  },
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  }
+                ]
+              }
+            ],
+            "description": "<string>"
+          },
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "options": [
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "description": "<string>",
+                "image": "<string>",
+                "booklet": "<string>",
+                "3d": "<string>",
+                "image_pins": [
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  },
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  }
+                ]
+              },
+              {
+                "id": "<integer>",
+                "name": "<string>",
+                "description": "<string>",
+                "image": "<string>",
+                "booklet": "<string>",
+                "3d": "<string>",
+                "image_pins": [
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  },
+                  {
+                    "x": "<number>",
+                    "y": "<number>",
+                    "label": "<string>"
+                  }
+                ]
+              }
+            ],
+            "description": "<string>"
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

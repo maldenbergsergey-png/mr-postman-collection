@@ -1,0 +1,9 @@
+$kind: http-request
+name: Получение маркетинговых способов покупок
+url: https://devservices.mr-group.ru:5117/api/v1/Catalogue/project/fabdd00e-c970-4357-a1fa-4e1db3b5407f/purchasemethods
+method: GET
+headers:
+  Content-Type: application/json
+  x-correlation-id: 1bfe45b1-4753-4cf2-9433-bcc1b658d3d7
+settings: {}
+order: 10000

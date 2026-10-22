@@ -1,0 +1,33 @@
+$kind: http-request
+description: |
+  Получение основных контактов офиса компании MR
+url: "{{baseUrl}}/offices/company"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.name",
+        ],
+        types: {
+          "items": "array",
+
+          "items.*.name": "string",
+          "items.*.phone": "string",
+
+          "items.*.address": "string|null?",
+          "items.*.email": "string|null?",
+          "items.*.latitude": "number|null?",
+          "items.*.longitude": "number|null?",
+          "items.*.schedule": "string|null?"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Офисы компаний.resources/examples
+order: 1000

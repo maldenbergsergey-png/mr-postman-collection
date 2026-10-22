@@ -1,0 +1,44 @@
+$kind: http-example
+name: |
+  Запрошенный URL не существует.
+
+  Возможные коды ошибок:
+
+  - `not_found` — запрошенный ресурс не найден.
+request:
+  url: "{{baseUrl}}/project/:project-code/construction-progress"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    project-code: ""
+response:
+  statusCode: 404
+  statusText: Not Found
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 3000

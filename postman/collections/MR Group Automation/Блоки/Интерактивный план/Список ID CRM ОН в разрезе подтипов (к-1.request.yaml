@@ -1,0 +1,79 @@
+$kind: http-request
+name: Список ID CRM ОН в разрезе подтипов (категорий) (новый метод)
+description: Метод возвращает список ID CRM ОН в разрезе подтипов (категорий)
+url: "{{baseUrl}}/realty/plan/subtype_objects?category={{categoryHasPlan}}&building={{buildingHasPlan}}&floor={{floorNumberHasPlan}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: "{{categoryHasPlan}}"
+    description: (Required) Код типа ОН
+  - key: building
+    value: "{{buildingHasPlan}}"
+    description: (Required) Код корпуса
+  - key: floor
+    value: "{{floorNumberHasPlan}}"
+    description: (Required) Номер этажа
+scripts:
+  - type: afterResponse
+    code: |+
+      let jsonData;
+      jsonData = pm.response.json();
+
+      // --- Собираем все objects в один массив ---
+      let allObjects = [];
+      jsonData.forEach(item => {
+          if (Array.isArray(item.objects)) {
+              allObjects = allObjects.concat(item.objects);
+          }
+      });
+
+      // --- Проверяем, что объекты есть ---
+      pm.test("В массиве есть объекты", function () {
+          pm.expect(allObjects.length).to.be.above(0);
+      });
+
+      // --- Сохраняем весь массив объектов ---
+      pm.environment.set("objectsArray", JSON.stringify(allObjects));
+      console.log("Сохранён список объектов:", allObjects);
+
+      // --- Выбираем случайный объект ---
+      const randomIndex = Math.floor(Math.random() * allObjects.length);
+      const randomObjectId = allObjects[randomIndex];
+
+      // --- Сохраняем выбранный объект ---
+      pm.environment.set("crmIdHasPlan", randomObjectId);
+      console.log("Случайный object.id:", randomObjectId);
+
+      // --- Проверка, что переменная установлена ---
+      pm.test("Переменная crmIdHasPlan сохранена", function () {
+          pm.expect(pm.environment.get("crmIdHasPlan")).to.eql(randomObjectId);
+      });
+
+    language: text/javascript
+  - type: beforeRequest
+    code: |+
+      pm.variables.set("schema", {
+      required: [
+          "*.code",
+          "*.description",
+          "*.icon",
+          "*.name",
+          "*.objects",
+            
+      ],
+      types: {
+          "*.code": "string",
+          "*.description": "string",
+          "*.icon": "string?",
+          "*.name": "string",
+          "*.objects": "array",
+
+      }
+      });
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список ID CRM ОН в разрезе подтипов (к-1.resources/examples
+order: 9000

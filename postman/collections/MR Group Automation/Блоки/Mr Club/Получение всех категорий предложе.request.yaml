@@ -1,0 +1,56 @@
+$kind: http-request
+name: Получение всех категорий предложений MR Club.
+description: |
+  Получение всех категорий предложений MR Club
+url: "{{baseUrl}}/mrclub/offers/category"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "categories",
+          "categories.*.code",
+          "categories.*.name",
+          "count"
+        ],
+        types: {
+          "categories": "array",
+          "categories.*.code": "string",
+          "categories.*.name": "string",
+          "count": "integer"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      let jsonData;
+      jsonData = pm.response.json();
+
+      // --- Извлекаем все codes из categories ---
+      const codes = jsonData.categories.map(cat => cat.code);
+
+      // --- Сохраняем все коды в переменную окружения ---
+      pm.environment.set("categoriesOffersListMrclubArray", JSON.stringify(codes));
+      console.log("Сохранён список категорий ЬК:", codes);
+
+      // --- Выбираем случайный код ---
+      const randomIndex = Math.floor(Math.random() * codes.length);
+      const randomCategoryCode = codes[randomIndex];
+
+      // --- Сохраняем выбранный код в окружение ---
+      pm.environment.set("categoryCodeMrClub", randomCategoryCode);
+      console.log("Выбрана случайная категория из спика предложений MR Club:", randomCategoryCode);
+
+      // --- Проверка, что переменная записана ---
+      pm.test("Переменная categoryCodeMrClub успешно сохранена", function () {
+          pm.expect(pm.environment.get("categoryCodeMrClub")).to.eql(randomCategoryCode);
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение всех категорий предложе.resources/examples
+order: 1000

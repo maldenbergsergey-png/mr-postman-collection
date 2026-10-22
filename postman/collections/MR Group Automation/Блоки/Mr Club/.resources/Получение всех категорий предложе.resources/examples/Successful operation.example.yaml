@@ -1,0 +1,28 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mrclub/offers/category"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "categories": [
+          {
+            "code": "<string>",
+            "name": "<string>"
+          },
+          {
+            "code": "<string>",
+            "name": "<string>"
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

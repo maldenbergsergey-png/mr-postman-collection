@@ -1,0 +1,460 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/user/bookings"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "<integer>",
+        "bookings_qty": "<integer>",
+        "bookings_history_qty": "<integer>",
+        "bookings": [
+          {
+            "id": "<integer>",
+            "product_code": "<string>",
+            "finish_dt": "<string>",
+            "product": {
+              "id": "<integer>",
+              "crm_id": "<string>",
+              "code": "<string>",
+              "name": "<string>",
+              "price": "<number>",
+              "discount": {
+                "price": "<number>",
+                "meter_price": "<number>",
+                "type": "absolute",
+                "percentage_discount": "<number>",
+                "absolute_discount": "<number>",
+                "description": "<string>"
+              },
+              "purchase_type": "<string>",
+              "meter_price": "<number>",
+              "monthly_payment": "<number>",
+              "category": {
+                "id": "<integer>",
+                "code": "boxrooms",
+                "name": "<string>"
+              },
+              "decoration": {
+                "code": "<string>",
+                "name": "<string>"
+              },
+              "technical_layout": "<string>",
+              "functional_layout": "<string>",
+              "apartment_on_floor": "<string>",
+              "area": "<number>",
+              "floor": "<integer>",
+              "rooms_number": 4,
+              "number": "<string>",
+              "family": "<boolean>",
+              "plan": {
+                "background_image": "<string>",
+                "svg_markup": "<string>"
+              },
+              "building": {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>",
+                "floors_number": "<integer>",
+                "deadline": "<string>",
+                "readiness": "<integer>",
+                "scheme": "<string>",
+                "compass_angle": "<number>"
+              },
+              "project": {
+                "code": "<string>",
+                "description": "<string>",
+                "id": "<integer>",
+                "marketing_image": "<string>",
+                "name": "<string>",
+                "title": "<string>",
+                "is_private": "<boolean>"
+              },
+              "subtype": {
+                "code": "<string>",
+                "name": "<string>",
+                "description": "<string>",
+                "icon": "<string>"
+              },
+              "booking_type": "free",
+              "purchase_types": [
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "absolute",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                },
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "percent",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                }
+              ],
+              "kitchen": {
+                "layout_type_id": "<string>"
+              },
+              "status": {
+                "code": "booked",
+                "name": "<string>"
+              },
+              "stop_sales": "<boolean>"
+            },
+            "purchase_type": {
+              "code": "installments",
+              "title": "Рассрочка"
+            }
+          },
+          {
+            "id": "<integer>",
+            "product_code": "<string>",
+            "finish_dt": "<string>",
+            "product": {
+              "id": "<integer>",
+              "crm_id": "<string>",
+              "code": "<string>",
+              "name": "<string>",
+              "price": "<number>",
+              "discount": {
+                "price": "<number>",
+                "meter_price": "<number>",
+                "type": "percent",
+                "percentage_discount": "<number>",
+                "absolute_discount": "<number>",
+                "description": "<string>"
+              },
+              "purchase_type": "<string>",
+              "meter_price": "<number>",
+              "monthly_payment": "<number>",
+              "category": {
+                "id": "<integer>",
+                "code": "offices",
+                "name": "<string>"
+              },
+              "decoration": {
+                "code": "<string>",
+                "name": "<string>"
+              },
+              "technical_layout": "<string>",
+              "functional_layout": "<string>",
+              "apartment_on_floor": "<string>",
+              "area": "<number>",
+              "floor": "<integer>",
+              "rooms_number": 4,
+              "number": "<string>",
+              "family": "<boolean>",
+              "plan": {
+                "background_image": "<string>",
+                "svg_markup": "<string>"
+              },
+              "building": {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>",
+                "floors_number": "<integer>",
+                "deadline": "<string>",
+                "readiness": "<integer>",
+                "scheme": "<string>",
+                "compass_angle": "<number>"
+              },
+              "project": {
+                "code": "<string>",
+                "description": "<string>",
+                "id": "<integer>",
+                "marketing_image": "<string>",
+                "name": "<string>",
+                "title": "<string>",
+                "is_private": "<boolean>"
+              },
+              "subtype": {
+                "code": "<string>",
+                "name": "<string>",
+                "description": "<string>",
+                "icon": "<string>"
+              },
+              "booking_type": "paid",
+              "purchase_types": [
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "percent",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                },
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "absolute",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                }
+              ],
+              "kitchen": {
+                "layout_type_id": "<string>"
+              },
+              "status": {
+                "code": "free",
+                "name": "<string>"
+              },
+              "stop_sales": "<boolean>"
+            },
+            "purchase_type": {
+              "code": "cash",
+              "title": "Рассрочка"
+            }
+          }
+        ],
+        "bookings_hist": [
+          {
+            "id": "<integer>",
+            "product_code": "<string>",
+            "finish_dt": "<string>",
+            "product": {
+              "id": "<integer>",
+              "crm_id": "<string>",
+              "code": "<string>",
+              "name": "<string>",
+              "price": "<number>",
+              "discount": {
+                "price": "<number>",
+                "meter_price": "<number>",
+                "type": "percent",
+                "percentage_discount": "<number>",
+                "absolute_discount": "<number>",
+                "description": "<string>"
+              },
+              "purchase_type": "<string>",
+              "meter_price": "<number>",
+              "monthly_payment": "<number>",
+              "category": {
+                "id": "<integer>",
+                "code": "offices",
+                "name": "<string>"
+              },
+              "decoration": {
+                "code": "<string>",
+                "name": "<string>"
+              },
+              "technical_layout": "<string>",
+              "functional_layout": "<string>",
+              "apartment_on_floor": "<string>",
+              "area": "<number>",
+              "floor": "<integer>",
+              "rooms_number": 0,
+              "number": "<string>",
+              "family": "<boolean>",
+              "plan": {
+                "background_image": "<string>",
+                "svg_markup": "<string>"
+              },
+              "building": {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>",
+                "floors_number": "<integer>",
+                "deadline": "<string>",
+                "readiness": "<integer>",
+                "scheme": "<string>",
+                "compass_angle": "<number>"
+              },
+              "project": {
+                "code": "<string>",
+                "description": "<string>",
+                "id": "<integer>",
+                "marketing_image": "<string>",
+                "name": "<string>",
+                "title": "<string>",
+                "is_private": "<boolean>"
+              },
+              "subtype": {
+                "code": "<string>",
+                "name": "<string>",
+                "description": "<string>",
+                "icon": "<string>"
+              },
+              "booking_type": "free",
+              "purchase_types": [
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "absolute",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                },
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "absolute",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                }
+              ],
+              "kitchen": {
+                "layout_type_id": "<string>"
+              },
+              "status": {
+                "code": "free",
+                "name": "<string>"
+              },
+              "stop_sales": "<boolean>"
+            },
+            "purchase_type": {
+              "code": "cash",
+              "title": "Рассрочка"
+            }
+          },
+          {
+            "id": "<integer>",
+            "product_code": "<string>",
+            "finish_dt": "<string>",
+            "product": {
+              "id": "<integer>",
+              "crm_id": "<string>",
+              "code": "<string>",
+              "name": "<string>",
+              "price": "<number>",
+              "discount": {
+                "price": "<number>",
+                "meter_price": "<number>",
+                "type": "absolute",
+                "percentage_discount": "<number>",
+                "absolute_discount": "<number>",
+                "description": "<string>"
+              },
+              "purchase_type": "<string>",
+              "meter_price": "<number>",
+              "monthly_payment": "<number>",
+              "category": {
+                "id": "<integer>",
+                "code": "offices",
+                "name": "<string>"
+              },
+              "decoration": {
+                "code": "<string>",
+                "name": "<string>"
+              },
+              "technical_layout": "<string>",
+              "functional_layout": "<string>",
+              "apartment_on_floor": "<string>",
+              "area": "<number>",
+              "floor": "<integer>",
+              "rooms_number": 1,
+              "number": "<string>",
+              "family": "<boolean>",
+              "plan": {
+                "background_image": "<string>",
+                "svg_markup": "<string>"
+              },
+              "building": {
+                "id": "<integer>",
+                "code": "<string>",
+                "name": "<string>",
+                "floors_number": "<integer>",
+                "deadline": "<string>",
+                "readiness": "<integer>",
+                "scheme": "<string>",
+                "compass_angle": "<number>"
+              },
+              "project": {
+                "code": "<string>",
+                "description": "<string>",
+                "id": "<integer>",
+                "marketing_image": "<string>",
+                "name": "<string>",
+                "title": "<string>",
+                "is_private": "<boolean>"
+              },
+              "subtype": {
+                "code": "<string>",
+                "name": "<string>",
+                "description": "<string>",
+                "icon": "<string>"
+              },
+              "booking_type": "free",
+              "purchase_types": [
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "absolute",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                },
+                {
+                  "code": "<string>",
+                  "name": "<string>",
+                  "discount": {
+                    "price": "<number>",
+                    "meter_price": "<number>",
+                    "type": "percent",
+                    "percentage_discount": "<number>",
+                    "absolute_discount": "<number>",
+                    "description": "<string>"
+                  }
+                }
+              ],
+              "kitchen": {
+                "layout_type_id": "<string>"
+              },
+              "status": {
+                "code": "purchased",
+                "name": "<string>"
+              },
+              "stop_sales": "<boolean>"
+            },
+            "purchase_type": {
+              "code": "cash",
+              "title": "Ипотека"
+            }
+          }
+        ]
+      }
+order: 1000

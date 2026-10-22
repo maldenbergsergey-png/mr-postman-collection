@@ -1,0 +1,233 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/sale/typicalobjects/:id/products?sort=<string>&price_min=<integer>&price_max=<integer>&payment_min=<integer>&payment_max=<integer>&rooms[]=<integer>&release[]=<string>&area_min=<integer>&area_max=<integer>&place[]=<string>&project[]=<string>&building[]=<string>&booked=<boolean>&free=<boolean>&floor_min=<integer>&floor_max=<integer>&level_min=<integer>&level_max=<integer>&discount=<boolean>&family=<boolean>&housing[]=Apartment&decoration[]=<string>&assignment=<boolean>&installments=<boolean>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: sort
+      value: <string>
+      description: |
+        Код способа сортировки (по умолчанию default)\
+        Способы сортировки описаны тут - https://wiki.adv.ru/pages/viewpage.action?pageId=273666894
+    - key: price_min
+      value: <integer>
+      description: Фильтр по мин цене
+    - key: price_max
+      value: <integer>
+      description: Фильтр по макс цене
+    - key: payment_min
+      value: <integer>
+      description: Фильтр по мин платежу
+    - key: payment_max
+      value: <integer>
+      description: Фильтр по макс платежу
+    - key: rooms[]
+      value: <integer>
+      description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+    - key: release[]
+      value: <string>
+      description: Фильтр по сроку сдачи
+    - key: area_min
+      value: <integer>
+      description: Фильтр по минимальной площади
+    - key: area_max
+      value: <integer>
+      description: Фильтр по максимальной площади
+    - key: place[]
+      value: <string>
+      description: Фильтр по станции метро
+    - key: project[]
+      value: <string>
+      description: Фильтр по коду проектов
+    - key: building[]
+      value: <string>
+      description: Фильтр по корпусу
+    - key: booked
+      value: <boolean>
+      description: Фильтр по признаку "Забронирован"
+    - key: free
+      value: <boolean>
+      description: Фильтр по признаку "Доступен"
+    - key: floor_min
+      value: <integer>
+      description: Фильтр по минимальному этажу
+    - key: floor_max
+      value: <integer>
+      description: Фильтр по максимальному этажу
+    - key: level_min
+      value: <integer>
+      description: Фильтр по минимальному уровню
+    - key: level_max
+      value: <integer>
+      description: Фильтр по максимальному уровню
+    - key: discount
+      value: <boolean>
+      description: Фильтр по наличию скидки
+    - key: family
+      value: <boolean>
+      description: Фильтр по признаку "Семейное"
+    - key: housing[]
+      value: Apartment
+      description: Фильтр по типу жилого помещения
+    - key: decoration[]
+      value: <string>
+      description: Фильтр по типу отделки
+    - key: assignment
+      value: <boolean>
+      description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+    - key: installments
+      value: <boolean>
+      description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+  pathVariables:
+    id: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "typicalObject": {
+          "typicalObjectId": "<uuid>",
+          "project": {
+            "id": "<integer>",
+            "code": "<string>",
+            "name": "<string>"
+          },
+          "building": {
+            "id": "<integer>",
+            "code": "<string>",
+            "name": "<string>",
+            "deadline": "<string>"
+          },
+          "apartments_count": "<integer>",
+          "rooms_number": 1,
+          "technical_layout": "<string>",
+          "3d_layout": "<string>",
+          "min_area": "<number>",
+          "max_area": "<number>",
+          "min_price": "<number>",
+          "min_payment": "<number>",
+          "min_floor": "<integer>",
+          "max_floor": "<integer>",
+          "min_deadline": true
+        },
+        "sort": {
+          "code": "<string>",
+          "name": "<string>"
+        },
+        "items": [
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "name": "<string>",
+            "price": "<number>",
+            "discount": {
+              "price": "<number>",
+              "meter_price": "<number>",
+              "type": "absolute",
+              "percentage_discount": "<number>",
+              "absolute_discount": "<number>",
+              "description": "<string>"
+            },
+            "purchase_type": "<string>",
+            "monthly_payment": "<number>",
+            "floor": "<integer>",
+            "area": "<number>",
+            "building": {
+              "floors_number": "<integer>"
+            },
+            "status": {
+              "code": "free",
+              "name": "<string>"
+            },
+            "technical_layout": "<string>",
+            "purchase_types": [
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "discount": {
+                  "price": "<number>",
+                  "meter_price": "<number>",
+                  "type": "percent",
+                  "percentage_discount": "<number>",
+                  "absolute_discount": "<number>",
+                  "description": "<string>"
+                }
+              },
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "discount": {
+                  "price": "<number>",
+                  "meter_price": "<number>",
+                  "type": "percent",
+                  "percentage_discount": "<number>",
+                  "absolute_discount": "<number>",
+                  "description": "<string>"
+                }
+              }
+            ],
+            "booking_type": "free",
+            "number": "<string>"
+          },
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "name": "<string>",
+            "price": "<number>",
+            "discount": {
+              "price": "<number>",
+              "meter_price": "<number>",
+              "type": "absolute",
+              "percentage_discount": "<number>",
+              "absolute_discount": "<number>",
+              "description": "<string>"
+            },
+            "purchase_type": "<string>",
+            "monthly_payment": "<number>",
+            "floor": "<integer>",
+            "area": "<number>",
+            "building": {
+              "floors_number": "<integer>"
+            },
+            "status": {
+              "code": "booked",
+              "name": "<string>"
+            },
+            "technical_layout": "<string>",
+            "purchase_types": [
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "discount": {
+                  "price": "<number>",
+                  "meter_price": "<number>",
+                  "type": "percent",
+                  "percentage_discount": "<number>",
+                  "absolute_discount": "<number>",
+                  "description": "<string>"
+                }
+              },
+              {
+                "code": "<string>",
+                "name": "<string>",
+                "discount": {
+                  "price": "<number>",
+                  "meter_price": "<number>",
+                  "type": "percent",
+                  "percentage_discount": "<number>",
+                  "absolute_discount": "<number>",
+                  "description": "<string>"
+                }
+              }
+            ],
+            "booking_type": "paid",
+            "number": "<string>"
+          }
+        ]
+      }
+order: 1000

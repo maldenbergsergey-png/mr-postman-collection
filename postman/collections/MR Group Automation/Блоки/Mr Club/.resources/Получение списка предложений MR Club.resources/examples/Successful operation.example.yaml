@@ -1,0 +1,60 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mrclub/offers/category/:category-code?page=<integer>&limit=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: page
+      value: <integer>
+      description: Номер страницы для пагинации (по умолчанию = 1)
+    - key: limit
+      value: <integer>
+      description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+  pathVariables:
+    category-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "code": "<string>",
+            "image": "<string>",
+            "name": "<string>",
+            "teaser": "<string>",
+            "labels": [
+              {
+                "text": "<string>"
+              },
+              {
+                "text": "<string>"
+              }
+            ]
+          },
+          {
+            "code": "<string>",
+            "image": "<string>",
+            "name": "<string>",
+            "teaser": "<string>",
+            "labels": [
+              {
+                "text": "<string>"
+              },
+              {
+                "text": "<string>"
+              }
+            ]
+          }
+        ],
+        "count": "<integer>",
+        "limit": "<integer>",
+        "page": "<integer>",
+        "page_count": "<integer>"
+      }
+order: 1000

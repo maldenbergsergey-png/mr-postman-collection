@@ -1,0 +1,31 @@
+$kind: http-request
+description: Метод получения контента для блока Награды
+url: "{{baseUrl}}/content/awards"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.awards",
+          "items.*.year",
+          "items.*.awards.*.title"
+        ],
+        types: {
+          "awards_qty": "integer",
+          "items": "array",
+          "items.*.year": "integer",
+          "items.*.awards": "array",
+          "items.*.awards.*.title": "string",
+          "items.*.awards.*.description": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Награды.resources/examples
+order: 6000

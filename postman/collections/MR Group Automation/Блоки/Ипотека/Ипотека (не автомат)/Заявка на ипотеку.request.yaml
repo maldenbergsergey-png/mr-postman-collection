@@ -1,0 +1,140 @@
+$kind: http-request
+description: |
+  Метод создает заявку на ипотеку в ДВИЖ и возвращает ссылку на форму.\
+  Если доступа к пользователю ДВИЖ нет, возвращает 422.\
+  В этом случае требуется повторно вызвать метод с параметром code
+url: "{{baseUrl}}/mortgage/application"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "project": "<string>",
+      "code": "<string>",
+      "rate": "<number>",
+      "payment": "<number>",
+      "period_max": "<number>",
+      "initial_payment": "<number>",
+      "price": "<number>",
+      "purchase_id": "<number>"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |+
+      // === Получаем текущее окружение ===
+      const baseUrl = pm.environment.get("baseUrl");
+      console.log("🌍 Текущее окружение:", baseUrl);
+
+      if (!baseUrl) {
+          throw new Error("❌ Переменная окружения 'baseUrl' не установлена!");
+      }
+
+      // === Данные для DEV окружения ===
+      const devRequest = {
+          url: "http://mrsuperapp.dev.adv:8080/api/v1/jwt",
+          method: "POST",
+          header: { "Content-Type": "application/json" },
+          body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                  payload: {
+                      sub: "fcde0f7e-9e18-4918-803a-299ee24e8ae4",
+                      iat: 1761660000,
+                      exp: 1764252000,
+                      user_id: "58",
+                      phone_number: "+79951108394",
+                      roles: ["client"]
+                  }
+              })
+          }
+      };
+
+      // === Данные для STAGE окружения ===
+      const stageRequest = {
+          url: "http://stagetest.mr-group.ru:8080/api/v1/jwt",
+          method: "POST",
+          header: { "Content-Type": "application/json" },
+          body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                  payload: {
+                      sub: "d75420eb-9a48-465c-a583-291d3b202dbc",
+                      iat: 1761660000,
+                      exp: 1764252000,
+                      user_id: "58",
+                      phone_number: "+79951108394",
+                      roles: ["client"]
+                  }
+              })
+          }
+      };
+
+      // === Основная логика выбора окружения ===
+      if (baseUrl === "https://mrsuperapp.adv.ru/api") {
+          console.log("🟢 Выполняется запрос для окружения DEV...");
+
+          pm.sendRequest(devRequest, (err, res) => {
+              if (err) {
+                  console.error("❌ Ошибка при получении токена DEV:", err);
+                  return;
+              }
+
+              const jsonResponse = res.json();
+              const jwtToken = jsonResponse.jwt;
+
+              if (jwtToken) {
+                  if (!pm.environment.has("bearerToken")) {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("✅ Переменная окружения 'bearerToken' создана и значение установлено:", jwtToken);
+                  } else {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("🔄 Значение переменной окружения 'bearerToken' обновлено:", jwtToken);
+                  }
+              } else {
+                  console.warn("⚠️ Токен JWT не найден в ответе DEV:", jsonResponse);
+              }
+          });
+
+      } else if (baseUrl === "https://stage-superapp.mr-group.ru/api") {
+          console.log("🟣 Выполняется запрос для окружения STAGE...");
+
+          pm.sendRequest(stageRequest, (err, res) => {
+              if (err) {
+                  console.error("❌ Ошибка при получении токена STAGE:", err);
+                  return;
+              }
+
+              const jsonResponse = res.json();
+              const jwtToken = jsonResponse.jwt;
+
+              if (jwtToken) {
+                  if (!pm.environment.has("bearerToken")) {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("✅ Переменная окружения 'bearerToken' создана и значение установлено:", jwtToken);
+                  } else {
+                      pm.environment.set("bearerToken", jwtToken);
+                      console.log("🔄 Значение переменной окружения 'bearerToken' обновлено:", jwtToken);
+                  }
+              } else {
+                  console.warn("⚠️ Токен JWT не найден в ответе STAGE:", jsonResponse);
+              }
+          });
+
+      } else if (baseUrl === "https://www.mr-group.ru/api") {
+          console.log("🚫 Необходимо использовать токен реального пользователя");
+          pm.environment.unset("bearerToken");
+      } else {
+          console.warn("⚠️ Неизвестное окружение baseUrl:", baseUrl);
+      }
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Заявка на ипотеку.resources/examples
+order: 1000

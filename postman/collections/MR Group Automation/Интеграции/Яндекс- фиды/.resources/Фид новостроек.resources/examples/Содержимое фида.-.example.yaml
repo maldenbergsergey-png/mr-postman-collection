@@ -1,0 +1,19 @@
+$kind: http-example
+name: |
+  Содержимое фида.
+request:
+  url: "{{baseUrl}}/yandex/realty/feeds/sale-new"
+  method: GET
+  headers:
+    Accept: application/xml
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/xml
+  body:
+    type: xml
+    content: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <element>(string)</element>
+order: 1000

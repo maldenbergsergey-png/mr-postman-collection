@@ -1,0 +1,12 @@
+$kind: http-request
+description: |
+  Возвращает презентацию объекта недвижимости в виде загружаемого файла.
+
+  На текущий момент всегда возвращается файл PDF.
+url: "{{baseUrl}}/realty/objects/{{product_code}}/presentation"
+method: GET
+headers:
+  Accept: application/pdf
+settings: {}
+examples: ./.resources/Файл презентации ОН.resources/examples
+order: 2000

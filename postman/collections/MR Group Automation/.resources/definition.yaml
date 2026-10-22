@@ -1,0 +1,419 @@
+$kind: collection
+description: "[https://confluence.mr-group.ru/pages/viewpage.action?pageId=73892283#/](https://confluence.mr-group.ru/pages/viewpage.action?pageId=73892283#/)"
+variables:
+  baseURL: ""
+  projectCodes: ""
+  projectCode: ""
+  construction-progress/projectCodes: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-veer: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-slava: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-citybay: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-paveletskaya-siti: ""
+  construction-progress/projectCodes/construction-progress/timelines/klubnyy-dom-noble: ""
+  construction-progress/projectCodes/construction-progress/timelines/eko-vidnoe-2-0: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-seliger-siti: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-jois: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhiloy-kompleks-metropoliya: ""
+  construction-progress/projectCodes/construction-progress/timelines/famous: ""
+  construction-progress/projectCodes/construction-progress/timelines/symphony-34: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-mira: ""
+  construction-progress/projectCodes/construction-progress/timelines/cityzen: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-mod: ""
+  construction-progress/projectCodes/construction-progress/timelines/bc-icity: ""
+  formsConsentsMap: ""
+  construction-progress/projectCodes/construction-progress/timelines/zhk-seliger-sitiii: ""
+  banner_main: ""
+  consentIdentifiers: ""
+  consentIndex: ""
+  consentTplUrl: ""
+  supabase_service_role_api_key_0z3l: ""
+  bearer_token_0ie3: ""
+scripts:
+  - type: http:afterResponse
+    code: |-
+      // ----------------------------------
+      // ОСНОВНЫЕ ПРОВЕРКИ:
+      // ----------------------------------
+
+      // ----------------------------------
+      // 1. Проверяем статус код
+      // ----------------------------------
+
+      const status = pm.response.code;
+      const allowed = [200, 201, 202, 204];
+
+      if (allowed.includes(status)) {
+        pm.test("Запрос выполнен успешно", function () {
+          pm.expect(true).to.be.true;
+        });
+      } else {
+        pm.test(`Запрос выполнен с ошибкой: ${status}`, function () {
+          pm.expect.fail();
+        });
+      }
+
+      // ----------------------------------
+      // 2. Проверка ответа на соответствие JSON
+      // ----------------------------------
+
+      // --- Если статус 204 — просто выходим, никаких тестов больше не выполняем
+      if (pm.response.code === 204) {
+        console.log("⚠️ Ответ 204: тело отсутствует — проверки пропущены");
+        return;
+      }
+
+      // --- Проверка PDF запросов по части URL
+      const nonJsonUrl = "/presentation";
+      const requestUrl = pm.request.url.toString();
+
+      if (requestUrl.includes(nonJsonUrl)) {
+        pm.test("Response has Content-Type header", function () {
+          pm.response.to.have.header("Content-Type");
+        });
+
+        pm.test("Content-Type is application/pdf", function () {
+          const contentType = pm.response.headers.get("Content-Type") || "";
+          pm.expect(contentType.toLowerCase()).to.include("application/pdf");
+        });
+
+        return; // Завершаем, дальше JSON не проверяем
+      }
+
+      // --- Для всех остальных запросов → ответ должен быть JSON
+      pm.test("Ответ возвращается в формате JSON", function () {
+        pm.response.to.be.json;
+      });
+
+      // ----------------------------------
+      // ДОПОЛНИТЕЛЬНЫЕ ПРОВЕРКИ:
+      // ----------------------------------
+
+      // ----------------------------------
+      // Берём схему из переменной запроса
+      // ----------------------------------
+      const schema = pm.variables.get("schema");
+
+      // Если схема не определена → просто выходим, никаких проверок дальше не делаем
+      if (!schema) {
+        console.warn("Schema не задана — проверки контракта пропущены");
+        return;
+      }
+
+      // ----------------------------------
+      // УТИЛИТЫ
+      // ----------------------------------
+      function get(obj, path) {
+        return path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
+      }
+
+      function typeOk(value, expected) {
+
+        // optional типы — "string?" → допускаем null/undefined
+        let isOptional = expected.endsWith("?");
+        if (isOptional) {
+          if (value === null || value === undefined) return true;
+          expected = expected.slice(0, -1);
+        }
+
+        // поддержка вариантов типов через "|"
+        if (expected.includes("|")) {
+          return expected
+            .split("|")                     // "string|integer" → ["string", "integer"]
+            .some(type => typeOk(value, type)); // пробуем каждый вариант
+        }
+
+        // integer — целое число
+        if (expected === "integer") {
+          return typeof value === "number" && Number.isInteger(value);
+        }
+
+        // float — число с плавающей точкой
+        if (expected === "float") {
+          return typeof value === "number" && !Number.isInteger(value);
+        }
+
+        // number — любое число (integer или float)
+        if (expected === "number") {
+          return typeof value === "number";
+        }
+
+        // string
+        if (expected === "string") {
+          return typeof value === "string";
+        }
+
+        // boolean
+        if (expected === "boolean") {
+          return typeof value === "boolean";
+        }
+
+        // array
+        if (expected === "array") {
+          return Array.isArray(value);
+        }
+
+        // object
+        if (expected === "object") {
+          return value !== null && typeof value === "object" && !Array.isArray(value);
+        }
+
+        // any — разрешаем любое значение
+        if (expected === "any") {
+          return true;
+        }
+
+        // fallback
+        return typeof value === expected;
+      }
+
+      // ----------------------------------
+      // ДАННЫЕ
+      // ----------------------------------
+      const body = pm.response.json();
+
+      // ----------------------------------
+      // 1) Проверка обязательности полей 
+      // ----------------------------------
+      pm.test("Проверка обязательности полей", function () {
+        const body = pm.response.json();
+        const missing = [];
+
+        function getValue(obj, path) {
+          return path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
+        }
+
+        schema.required.forEach((path) => {
+          // Вариант верхнего уровня: "*.field"
+          if (path.startsWith("*.")) {
+            const fieldPath = path.slice(2);
+            if (!Array.isArray(body)) {
+              missing.push(path);
+              return;
+            }
+
+            body.forEach((item, i) => {
+              if (getValue(item, fieldPath) === undefined) {
+                missing.push(`[${i}].${fieldPath}`);
+              }
+            });
+            return;
+          }
+
+          // Вариант "items.*.field"
+          if (path.includes(".*.")) {
+            const [arrPath, field] = path.split(".*.");
+            const arr = getValue(body, arrPath);
+
+            if (!Array.isArray(arr)) {
+              missing.push(path);
+              return;
+            }
+
+            arr.forEach((item, i) => {
+              if (item[field] === undefined) missing.push(`${arrPath}[${i}].${field}`);
+            });
+            return;
+          }
+
+          // Обычный путь
+          if (getValue(body, path) === undefined) {
+            missing.push(path);
+          }
+        });
+
+        // Если нет ошибок — успешно
+        if (missing.length === 0) {
+          pm.expect(true).to.be.true;
+          return;
+        }
+
+        // ----------------------------------------------------
+        // Группировка: какое поле какого типа ожидается
+        // ----------------------------------------------------
+        const typeGroups = {}; // { "number or null": [ 'plot', 'tier_quantity' ] }
+
+        missing.forEach((field) => {
+          const t = schema.types[field];
+
+          let typeLabel;
+
+          if (!t) {
+            typeLabel = "тип не указан";
+          } else if (t.endsWith("?")) {
+            typeLabel = t.replace("?", "") + " или null";
+          } else {
+            typeLabel = t;
+          }
+
+          if (!typeGroups[typeLabel]) typeGroups[typeLabel] = [];
+          typeGroups[typeLabel].push(field);
+        });
+
+        // Строим текст ошибки
+        let message = "\nОтсутствуют обязательные поля:\n";
+        message += missing.join(", ");
+        message += "\n\nОжидаемые типы данных:\n";
+
+        Object.entries(typeGroups).forEach(([type, fields]) => {
+          message += `• Поле "${fields.join(", ")}" — ожидается с типом: ${type}\n`;
+        });
+
+        pm.expect.fail(message);
+      });
+
+      // ----------------------------------
+      // 2) Проверка типов данных
+      // ----------------------------------
+
+      pm.test("Проверка типов данных", function () {
+        if (!schema.types || Object.keys(schema.types).length === 0) {
+          console.warn("Схема типов не задана — проверка пропущена");
+          pm.expect(true).to.be.true;
+          return;
+        }
+
+        // Коллекция ошибок: ключ = нормализованный путь, значение = текст ошибки
+        const errors = new Map();
+
+        // Нормализация путей: убираем индексы массивов, убираем *, убираем *. в начале
+        function normalizePath(p) {
+          return p
+            .replace(/\.\d+(?=\.|$)/g, "")   // purchase.0.name → purchase.name
+            .replace(/\.\*/g, "")           // purchase.*.name → purchase.name
+            .replace(/^\*\./, "");          // *.name → name
+        }
+
+        function walk(obj, path, expected, fullPath = path) {
+          const parts = path.split(".");
+          let current = obj;
+
+          for (let i = 0; i < parts.length; i++) {
+            const segment = parts[i];
+
+            if (segment === "*") {
+              if (current === null || current === undefined) return;
+
+              // массив
+              if (Array.isArray(current)) {
+                return current.forEach((item) =>
+                  walk(item, parts.slice(i + 1).join("."), expected, fullPath)
+                );
+              }
+
+              // объект
+              if (current && typeof current === "object") {
+                return Object.values(current).forEach((value) =>
+                  walk(value, parts.slice(i + 1).join("."), expected, fullPath)
+                );
+              }
+
+              // неправильный тип — не объект и не массив
+              const actualType = current === null ? "null" : typeof current;
+              const norm = normalizePath(fullPath);
+
+              if (!errors.has(norm)) {
+                errors.set(
+                  norm,
+                  `Поле "${norm}" ожидалось как массив/объект, но имеет тип "${actualType}"`
+                );
+              }
+              return;
+            }
+
+            current = current ? current[segment] : undefined;
+            if (current === undefined) return;
+          }
+
+          // После прохода по структуре — проверяем фактический тип
+          if (!typeOk(current, expected)) {
+            const actual = Array.isArray(current)
+              ? "array"
+              : current === null
+              ? "null"
+              : typeof current;
+
+            const normalized = normalizePath(fullPath);
+
+            if (!errors.has(normalized)) {
+              errors.set(
+                normalized,
+                `Поле "${normalized}" имеет тип "${actual}", ожидался тип "${expected}"`
+              );
+            }
+          }
+        }
+
+        Object.entries(schema.types).forEach(([path, expected]) =>
+          walk(body, path, expected, path)
+        );
+
+        if (errors.size > 0) {
+          // красивое форматирование: ошибки через •
+          const formatted = [...errors.values()].join("  •  ");
+          pm.expect.fail("Ошибки типов данных: " + formatted);
+        } else {
+          pm.expect(true).to.be.true;
+        }
+      });
+
+      // ----------------------------------
+      // 3) Проверка отсутствия лишних полей
+      // ----------------------------------
+
+      pm.test("Проверка наличия лишних полей", function () {
+        const body = pm.response.json();
+        const schema = pm.variables.get("schema");
+
+        const allowedPaths = [...schema.required, ...Object.keys(schema.types)];
+
+        // Преобразуем шаблоны со * в корректные RegExp
+        const allowedRegexps = allowedPaths.map(
+          (path) =>
+            new RegExp(
+              "^" +
+                path
+                  .replace(/\./g, "\\.")
+                  .replace(/\*/g, "[^.]+") +
+              "$"
+            )
+        );
+
+        const extra = new Set(); // ← предотвращает дублирование
+
+        function normalizePath(path) {
+          // Убираем индексы массивов: items.0.code → items.code
+          return path.replace(/\.\d+(?=\.|$)/g, "");
+        }
+
+        function scan(obj, currentPath) {
+          if (Array.isArray(obj)) {
+            obj.forEach((item, index) => scan(item, `${currentPath}.${index}`));
+            return;
+          }
+
+          if (obj && typeof obj === "object") {
+            Object.keys(obj).forEach((key) => {
+              const newPath = currentPath ? `${currentPath}.${key}` : key;
+              const normalized = newPath.replace(/^\./, "");
+
+              const isAllowed = allowedRegexps.some((r) => r.test(normalized));
+
+              if (!isAllowed) {
+                extra.add(normalizePath(normalized));
+              }
+
+              scan(obj[key], newPath);
+            });
+          }
+        }
+
+        scan(body, "");
+
+        if (extra.size > 0) {
+          const list = [...extra].map((p) => `• ${p}`).join("\n");
+          pm.expect.fail(`Ответ содержит лишние поля:\n${list}`);
+        } else {
+          pm.expect(true).to.be.true;
+        }
+      });
+    language: text/javascript

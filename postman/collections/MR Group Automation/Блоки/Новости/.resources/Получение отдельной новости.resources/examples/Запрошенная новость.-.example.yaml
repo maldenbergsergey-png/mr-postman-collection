@@ -1,0 +1,40 @@
+$kind: http-example
+name: |
+  Запрошенная новость.
+request:
+  url: "{{baseUrl}}/news/:news-code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    news-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "ad_label": "<string>",
+        "code": "<string>",
+        "date": "<date>",
+        "image": "<string>",
+        "project": [
+          {
+            "code": "<string>",
+            "id": "<integer>",
+            "name": "<string>"
+          },
+          {
+            "code": "<string>",
+            "id": "<integer>",
+            "name": "<string>"
+          }
+        ],
+        "teaser": "<string>",
+        "text": "<string>",
+        "title": "<string>"
+      }
+order: 1000

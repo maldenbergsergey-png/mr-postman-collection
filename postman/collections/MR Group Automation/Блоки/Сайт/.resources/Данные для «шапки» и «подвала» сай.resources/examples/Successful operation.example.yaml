@@ -1,0 +1,103 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/site/template"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "app_links": [
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          },
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          }
+        ],
+        "socnet_links": [
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          },
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          }
+        ],
+        "reg_links": [
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          },
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          }
+        ],
+        "footer_links": [
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          },
+          {
+            "name": "<string>",
+            "link": "<string>",
+            "icon": {
+              "src": "<string>",
+              "description": "<string>"
+            },
+            "button": "<string>"
+          }
+        ],
+        "advert": {
+          "title": "<string>",
+          "link": "<string>",
+          "description": "<string>",
+          "accent_text": "<string>"
+        }
+      }
+order: 1000

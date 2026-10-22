@@ -1,0 +1,39 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mortgage/calc/category?project-code=<string>&product-code=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: project-code
+      value: <string>
+      description: Код проекта
+    - key: product-code
+      value: <string>
+      description: Код ОН
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "min_price": "<number>",
+            "max_price": "<number>"
+          },
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "min_price": "<number>",
+            "max_price": "<number>"
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

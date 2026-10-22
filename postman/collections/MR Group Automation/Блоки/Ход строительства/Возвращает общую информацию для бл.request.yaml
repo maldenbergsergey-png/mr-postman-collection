@@ -1,0 +1,109 @@
+$kind: http-request
+name: Возвращает общую информацию для блока Ход строительства
+description: Возвращает общую информацию для блока Ход строительства
+url: "{{baseUrl}}/project/{{projectCode}}/construction-progress"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      const projectsCodes = pm.collectionVariables.get("construction-progress/projectCodes");
+
+      pm.environment.set("projectCode", projectsCodes[Math.floor(Math.random() * projectsCodes.length)])
+
+      if (projectsCodes === undefined || projectsCodes.length === 0) {
+          return
+      }
+
+      for (const code of projectsCodes) {
+          pm.sendRequest({
+              url: pm.environment.get("baseUrl") + "/project/" + code + "/construction-progress",
+              method: 'GET',
+              header: {
+                  'Accept': 'application/json',
+              },
+          }, (err, res) => {
+              if (err) {
+                  console.error(`Error fetching data for project code ${code}: ${err}`)
+                  return;
+              }
+              const resBody = res.json();
+
+              if (resBody.timeline === null || resBody.timeline === undefined) {
+                  console.warn(`Нет timeline для проекта с кодом ${code}`);
+                  return;
+              }
+
+              const randomdate = resBody.timeline[Math.floor(Math.random() * resBody.timeline.length)]
+              console.log(`Random date for project code ${code}: ${randomdate}`);
+
+              pm.collectionVariables.set(`construction-progress/projectCodes/construction-progress/timelines/${code}`, randomdate);
+          })
+      }
+
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "construction_dynamics",
+          "last_month",
+          "project",
+          "streams",
+          "timeline" 
+          ],
+
+        types: { //проверка типов данных
+
+        "construction_dynamics" : "object?",
+        "construction_dynamics.month_update" : "integer",
+        "construction_dynamics.video_link" : "string",
+        "construction_dynamics.video_preview" : "string",
+        "construction_dynamics.year_update" : "integer",
+
+        "last_month" : "object?",
+        "last_month.month" : "integer",
+        "last_month.photo" : "array",
+        "last_month.photo*" : "string",
+        "last_month.year" : "integer",
+
+        "project" : "object",
+        "project.brandbook" : "string",
+        "project.business_unit" : "string",
+        "project.code" : "string",
+        "project.id" : "integer",
+        "project.image" : "string?",
+        "project.is_private" : "boolean",
+        "project.name" : "string",
+        "project.title" : "string?",
+
+        "streams" : "array",
+
+        "streams.*.building" : "object",
+        "streams.*.building.id" : "integer",
+        "streams.*.building.name" : "string",
+
+        "streams.*.cameras" : "array",
+        "streams.*.cameras.*.description" : "string?",
+        "streams.*.cameras.*.link" : "string",
+        "streams.*.cameras.*.preview" : "string",
+
+        "streams.*.cameras_count" : "integer",
+
+        "timeline" : "array",
+        "timeline.*.count" : "integer",
+        "timeline.*.month" : "integer",
+        "timeline.*.year" : "integer",
+
+        }
+        });
+    language: text/javascript
+  - type: afterResponse
+    code: |+
+      
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Возвращает общую информацию для бл.resources/examples
+order: 2000

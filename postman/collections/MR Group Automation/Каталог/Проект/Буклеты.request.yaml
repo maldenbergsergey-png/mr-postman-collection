@@ -1,0 +1,30 @@
+$kind: http-request
+description: |
+  Метод возвращает материалы по проекту
+url: "{{baseUrl}}/project/{{projectCode}}/booklets"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "items"
+        ],
+        types: {
+          "items": "array",
+         
+
+          "items.*.file": "string",
+          "items.*.image": "string",
+          "items.*.title": "string",
+           
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Буклеты.resources/examples
+order: 2000

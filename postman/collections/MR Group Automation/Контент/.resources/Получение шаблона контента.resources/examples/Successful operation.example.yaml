@@ -1,0 +1,35 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/content/template/:code"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "main_title": "<string>",
+        "main_description": "<string>",
+        "second_title": "<string>",
+        "second_description": "<string>",
+        "main_image_desk": "<string>",
+        "main_image_mob": "<string>",
+        "main_button": {
+          "text": "<string>",
+          "link_web": "<string>",
+          "link_app": "<string>"
+        },
+        "faq_linked_section": [
+          "<string>",
+          "<string>"
+        ],
+        "steps_block_code": "<string>"
+      }
+order: 1000

@@ -1,0 +1,53 @@
+$kind: http-example
+name: |
+  Заявка успешно отправлена.
+request:
+  url: "{{baseUrl}}/user/booking/product/:code"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    code: ""
+  body:
+    type: json
+    content: |-
+      {
+        "purchase_type": "cash",
+        "meta": {
+          "consents": {
+            "consent_documents": [
+              "<string>",
+              "<string>"
+            ],
+            "phone": "+78014862339",
+            "email": "<string>"
+          },
+          "source": {
+            "platform": "web",
+            "context": "<string>"
+          }
+        },
+        "phone": "+70774142726",
+        "name": "<string>",
+        "sms_code": "<integer>"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "request_received",
+        "detail": "<string>",
+        "id": "<integer>"
+      }
+order: 1000

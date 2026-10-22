@@ -1,0 +1,38 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mortgage/application"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: json
+    content: |-
+      {
+        "project": "<string>",
+        "code": "<string>",
+        "rate": "<number>",
+        "payment": "<number>",
+        "period_max": "<number>",
+        "initial_payment": "<number>",
+        "price": "<number>",
+        "purchase_id": "<number>"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "form_url": "<string>",
+        "number": "<string>"
+      }
+order: 1000

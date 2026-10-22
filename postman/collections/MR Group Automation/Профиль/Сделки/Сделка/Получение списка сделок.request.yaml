@@ -1,0 +1,179 @@
+$kind: http-request
+description: |
+  Метод получения списка сделок пользователя
+url: "{{baseUrl}}/purchases"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      // Проверяем, что ответ корректный JSON
+      let data;
+      try {
+          data = pm.response.json();
+      } catch (e) {
+          pm.test("Ответ не является корректным JSON", function () {
+              pm.expect.fail("Ошибка парсинга JSON");
+          });
+      }
+
+      // Проверяем наличие массива items
+      pm.test("Проверяем, что есть массив items", function () {
+          pm.expect(data).to.have.property("items");
+          pm.expect(data.items).to.be.an("array").that.is.not.empty;
+      });
+
+      // Ищем первую сделку, где массив products не пуст
+      let validDeal = null;
+      if (Array.isArray(data.items) && data.items.length > 0) {
+          validDeal = data.items.find(item => 
+              Array.isArray(item.products) && item.products.length > 0
+          );
+      }
+
+      // Проверяем, что нашли подходящую сделку
+      pm.test("Проверяем, что есть сделка с непустым products", function () {
+          pm.expect(validDeal, "Не найдено ни одной сделки с непустым products").to.not.be.undefined;
+      });
+
+      // Сохраняем id подходящей сделки
+      if (validDeal) {
+          pm.environment.set("idDeal", validDeal.id);
+          console.log(`Переменная idDeal сохранена: ${validDeal.id}`);
+      } else {
+          console.warn("Не найдено ни одной сделки с непустым products — idDeal не сохранена");
+      }
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      // Tests (Postman)
+      // Контракт: PurchasesList
+      // (*) — обязательные поля (должны быть в ответе). nullable:true => тип с "?"
+
+      pm.variables.set("schema", {
+        required: [
+          "active_purchases_qty",
+          "canceled_purchases_qty",
+          "completed_purchases_qty",
+          "items",
+
+          "items.*.cancel_dt",
+          "items.*.complete_dt",
+          "items.*.expiration_dt",
+          "items.*.free_booking_dt",
+          "items.*.id",
+          "items.*.phase",
+          "items.*.products",
+          "items.*.status",
+
+          "items.*.phase.*.code",
+          "items.*.phase.*.name",
+          "items.*.phase.*.number",
+          "items.*.phase.*.phases_qty",
+
+          "items.*.products.*.assignment",
+          "items.*.products.*.category",
+          "items.*.products.*.category.*.code",
+          "items.*.products.*.category.*.name",
+          "items.*.products.*.code",
+          "items.*.products.*.crm_id",
+          "items.*.products.*.floor",
+          "items.*.products.*.id",
+          "items.*.products.*.name",
+          "items.*.products.*.number",
+          "items.*.products.*.plot",
+          "items.*.products.*.rooms_number",
+          "items.*.products.*.status",
+          "items.*.products.*.status.code",
+          "items.*.products.*.status.name",
+          "items.*.products.*.tier_quantity",
+          "items.*.products.*.title",
+          "items.*.products.*.area",
+          "items.*.products.*.project",
+          "items.*.products.*.project.*.brandbook",
+          "items.*.products.*.project.*.business_unit",
+          "items.*.products.*.project.*.code",
+          "items.*.products.*.project.*.id",
+          "items.*.products.*.project.*.image",
+          "items.*.products.*.project.*.is_countryside",
+          "items.*.products.*.project.*.is_private",
+          "items.*.products.*.project.*.name",
+          "items.*.products.*.project.*.title",
+          "items.*.products.*.project.*.description",
+          "items.*.products.*.project.*.marketing_image",
+          "items.*.products.*.technical_layout",
+
+          "items.*.status.*.code",
+          "items.*.status.*.name"
+        ],
+
+        types: {
+          "active_purchases_qty": "integer",
+          "canceled_purchases_qty": "integer",
+          "completed_purchases_qty": "integer",
+          "items": "array",
+
+          "items.*.cancel_dt": "string?",
+          "items.*.complete_dt": "string?",
+          "items.*.expiration_dt": "string?",
+          "items.*.free_booking_dt": "string?",
+          "items.*.id": "number",
+          "items.*.lead_id": "string?",
+
+          "items.*.phase": "object",
+          "items.*.phase.code": "string",
+          "items.*.phase.name": "string",
+          "items.*.phase.number": "number",
+          "items.*.phase.phases_qty": "number",
+
+          "items.*.products": "array",
+          "items.*.products.*.assignment": "boolean",
+          "items.*.products.*.category": "object",
+          "items.*.products.*.category.code": "string",
+          "items.*.products.*.category.name": "string",
+          "items.*.products.*.code": "string",
+          "items.*.products.*.crm_id": "string",
+          "items.*.products.*.floor": "integer?",
+          "items.*.products.*.id": "integer",
+          "items.*.products.*.name": "string",
+          "items.*.products.*.number": "string?",
+          "items.*.products.*.plot": "object?",
+          // plot nullable => не делаю обязательными вложенные, но типы описываю:
+          "items.*.products.*.plot.exists": "boolean",
+          "items.*.products.*.plot.size": "number?",
+          "items.*.products.*.rooms_number": "integer?",
+          "items.*.products.*.status": "object",
+          "items.*.products.*.status.code": "string",
+          "items.*.products.*.status.name": "string",
+          "items.*.products.*.tier_quantity": "integer?",
+          "items.*.products.*.title": "string?",
+          "items.*.products.*.area": "number?",
+          "items.*.products.*.contract_price": "number",
+          "items.*.products.*.project": "object",
+          "items.*.products.*.project.brandbook": "string",
+          "items.*.products.*.project.business_unit": "string",
+          "items.*.products.*.project.code": "string",
+          "items.*.products.*.project.id": "integer",
+          "items.*.products.*.project.image": "string?",
+          "items.*.products.*.project.is_countryside": "boolean",
+          "items.*.products.*.project.is_private": "boolean",
+          "items.*.products.*.project.name": "string",
+          "items.*.products.*.project.title": "string?",
+          "items.*.products.*.project.description": "string?",
+          "items.*.products.*.project.marketing_image": "string?",
+          "items.*.products.*.technical_layout": "string?",
+
+          "items.*.status": "object",
+          "items.*.status.code": "string",
+          "items.*.status.name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка сделок.resources/examples
+order: 1000

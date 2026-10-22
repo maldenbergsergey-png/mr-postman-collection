@@ -1,0 +1,40 @@
+$kind: http-request
+description: |
+  Метод, который позволяет получить данные платежей по рассрочке в рамках сделки
+url: "{{baseUrl}}/purchase/{{idDeal}}/payments"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "payments",
+          "payments.*.debt",
+          "payments.*.expiration_dt",
+          "payments.*.number",
+          "payments.*.payment",
+          "show_in",
+          "show_in.purchase_card"
+        ],
+        types: {
+          "payments": "array",
+          "payments.*.debt": "number",
+          "payments.*.expiration_dt": "string",
+          "payments.*.number": "integer",
+          "payments.*.payment": "number",
+          "show_in": "object",
+          "show_in.purchase_card": "boolean"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение графика платежей.resources/examples
+order: 1000

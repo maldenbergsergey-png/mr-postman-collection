@@ -1,0 +1,47 @@
+$kind: http-request
+name: Получение списка проектов для калькулятора
+description: |
+  Получение списка проектов для калькулятора
+url: "{{baseUrl}}/mortgage/calc/projects"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА
+
+      pm.variables.set("schema", {
+        required: [
+          "projects",
+          // "projects.*.code",
+          // "projects.*.id",
+          // "projects.*.is_private",
+          // "projects.*.name",
+          // "projects.*.business_unit",
+          // "projects.*.brandbook",
+          // "projects.*.metro.name",
+          // "projects.*.min_price"
+       
+        ],
+        types: {
+          "projects": "array",
+          "projects.*.code": "string",
+          "projects.*.id": "integer",
+          "projects.*.image": "string?",           
+          "projects.*.is_private": "boolean",
+          "projects.*.name": "string",
+          "projects.*.title": "string?",           
+          "projects.*.business_unit": "string",
+          "projects.*.brandbook": "string",
+          "projects.*.metro" : "object?",
+          "projects.*.metro.name": "string",
+          "projects.*.metro.color": "string?",     
+          "projects.*.metro_distance": "integer?", 
+          "projects.*.min_price": "number"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка проектов для каль.resources/examples
+order: 5000

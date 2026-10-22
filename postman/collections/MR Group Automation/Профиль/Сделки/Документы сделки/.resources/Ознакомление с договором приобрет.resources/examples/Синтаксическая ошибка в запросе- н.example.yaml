@@ -1,0 +1,51 @@
+$kind: http-example
+name: |-
+  Синтаксическая ошибка в запросе: неверный JSON, нет обязательного поля, недопустимый тип
+  значения и т.п.
+
+  Возможные коды ошибок:
+
+  - `invalid_value` — полученное значение не соответствует заданным ограничениям;
+  - `syntax_error` — синтаксическая ошибка в за
+request:
+  url: "{{baseUrl}}/purchase/:purchase-id/documents/:document-id/acceptance"
+  method: POST
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    purchase-id: ""
+    document-id: ""
+response:
+  statusCode: 400
+  statusText: Bad Request
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 2000

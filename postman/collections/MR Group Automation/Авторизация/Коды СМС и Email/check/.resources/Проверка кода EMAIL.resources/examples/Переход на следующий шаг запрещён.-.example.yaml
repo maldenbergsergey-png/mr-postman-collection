@@ -1,0 +1,31 @@
+$kind: http-example
+name: |
+  Переход на следующий шаг запрещён.
+request:
+  url: "{{baseUrl}}/code/check"
+  method: POST
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "type": "<string>",
+        "code": "<integer>",
+        "phoneNumber": "<string>",
+        "mail": "<string>"
+      }
+response:
+  statusCode: 403
+  statusText: Forbidden
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "refresh": "<string>",
+        "message": "<string>"
+      }
+order: 3000

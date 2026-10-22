@@ -1,0 +1,81 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/mortgage/offer/:offer-id"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    offer-id: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "<integer>",
+        "create_date": "<date>",
+        "program": "<string>",
+        "bank": {
+          "logo": "<string>",
+          "name": "<string>",
+          "code": "<string>"
+        },
+        "rate": "<number>",
+        "payment": "<number>",
+        "amount": "<number>",
+        "period": "<integer>",
+        "initial_payment": "<number>",
+        "status": {
+          "code": "new",
+          "name": "<string>"
+        },
+        "persons": [
+          {
+            "id": "<integer>",
+            "surname": "<string>",
+            "name": "<string>",
+            "patronymic": "<string>",
+            "phone": "<string>",
+            "email": "<string>",
+            "role": "<string>"
+          },
+          {
+            "id": "<integer>",
+            "surname": "<string>",
+            "name": "<string>",
+            "patronymic": "<string>",
+            "phone": "<string>",
+            "email": "<string>",
+            "role": "<string>"
+          }
+        ],
+        "reject_reason": "<string>",
+        "available": "<boolean>",
+        "application": {
+          "id": "<integer>",
+          "number": "<string>",
+          "project": {
+            "id": "<integer>",
+            "code": "<string>",
+            "name": "<string>"
+          },
+          "create_date": "<date>",
+          "status": {
+            "code": "awaiting_approval",
+            "name": "<string>"
+          },
+          "manager": {
+            "name": "<string>",
+            "email": "<string>",
+            "phone": "<string>"
+          }
+        }
+      }
+order: 1000

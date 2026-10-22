@@ -1,0 +1,238 @@
+$kind: http-request
+name: Получение списка планировок (новый метод)
+description: Получение списка планировок
+url: "{{baseUrl}}/realty/typicalobjects?category=flats"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: category
+    value: flats
+    description: Фильтр по типу ОН
+  - key: page
+    value: <integer>
+    disabled: true
+    description: Номер страницы для пагинации (по умолчанию = 1)
+  - key: limit
+    value: <integer>
+    disabled: true
+    description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+  - key: sort
+    value: <string>
+    disabled: true
+    description: |
+      Код способа сортировки (по умолчанию default)\
+      Способы сортировки описаны тут - https://wiki.adv.ru/pages/viewpage.action?pageId=273666894
+  - key: price_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин цене
+  - key: price_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс цене
+  - key: payment_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по мин платежу
+  - key: payment_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по макс платежу
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: rooms[]
+    value: <integer>
+    disabled: true
+    description: Фильтр по количеству комнат. 0 - студии, 4 - 4 и более
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: release[]
+    value: <string>
+    disabled: true
+    description: Фильтр по сроку сдачи
+  - key: area_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальной площади
+  - key: area_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальной площади
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: place[]
+    value: <string>
+    disabled: true
+    description: Фильтр по станции метро
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: project[]
+    value: <string>
+    disabled: true
+    description: Фильтр по коду проектов
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: building[]
+    value: <string>
+    disabled: true
+    description: Фильтр по корпусу
+  - key: booked
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Забронирован"
+  - key: free
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Доступен"
+  - key: floor_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному этажу
+  - key: floor_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному этажу
+  - key: level_min
+    value: <integer>
+    disabled: true
+    description: Фильтр по минимальному уровню
+  - key: level_max
+    value: <integer>
+    disabled: true
+    description: Фильтр по максимальному уровню
+  - key: discount
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию скидки
+  - key: family
+    value: <boolean>
+    disabled: true
+    description: Фильтр по признаку "Семейное"
+  - key: housing[]
+    value: Flat
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: housing[]
+    value: Apartment
+    disabled: true
+    description: Фильтр по типу жилого помещения
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: decoration[]
+    value: <string>
+    disabled: true
+    description: Фильтр по типу отделки
+  - key: assignment
+    value: <boolean>
+    disabled: true
+    description: Фильтр по переуступке (пока не используются, история MRSUPERAPP-2954)
+  - key: installments
+    value: <boolean>
+    disabled: true
+    description: Фильтр по наличию рассрочки (пока не используются, история MRSUPERAPP-2954)
+scripts:
+  - type: afterResponse
+    code: |+
+      // Пытаемся распарсить JSON; если не получилось — фиксируем ошибку и прекращаем дальнейшие проверки
+      let jsonData;
+      try {
+          jsonData = pm.response.json();
+      } catch (e) {
+          pm.test("Ответ является валидным JSON", function () {
+              throw new Error("Ответ не является JSON: " + e.message);
+          });
+          // останавливаем дальнейшее выполнение
+          return;
+      }
+
+      // Проверяем наличие массива items
+      pm.test("Ответ содержит массив items (не пустой)", function () {
+          pm.expect(jsonData).to.have.property("items");
+          pm.expect(jsonData.items).to.be.an("array");
+          pm.expect(jsonData.items.length).to.be.above(0);
+      });
+
+      // Берём первый элемент
+      const firstItem = Array.isArray(jsonData.items) && jsonData.items.length > 0 ? jsonData.items[0] : null;
+
+      if (!firstItem) {
+          console.warn("items пустой — дальнейшие проверки пропущены");
+          return;
+      }
+
+      // Сохраняем поле typicalObjectId в окружение, если оно есть
+      if (firstItem.typicalObjectId) {
+          pm.environment.set("typicalObjectId", firstItem.typicalObjectId);
+          pm.test("Сохранён typicalObjectId", function () {
+              pm.expect(pm.environment.get("typicalObjectId")).to.eql(firstItem.typicalObjectId);
+          });
+          console.log("typicalObjectId =", firstItem.typicalObjectId);
+      } else {
+          pm.test("В первом элементе есть поле typicalObjectId", function () {
+              throw new Error("Поле 'typicalObjectId' отсутствует в items[0]");
+          });
+      }
+
+    language: text/javascript
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: ["items","limit", "page","page_count", "sort"],
+        types: {
+          "items" : "array",
+          "limit" : "integer",
+          "page" : "integer",
+          "page_count" : "integer",
+          "sort" : "object",
+      //items[]
+      "items.*.3d_layout" : "string?",
+      "items.*.apartments_count" : "integer",
+      "items.*.building" : "object",
+      "items.*.max_area" : "number",
+      "items.*.max_floor" : "integer",
+      "items.*.min_area" : "number",
+      "items.*.min_floor" : "integer",
+      "items.*.min_payment" : "number?",
+      "items.*.min_price" : "number?",
+      "items.*.project" : "object",
+      "items.*.rooms_number" : "integer",
+      "items.*.technical_layout" : "string",
+      "items.*.typicalObjectId" : "string",
+      //"items.*.building"{}
+      "items.*.building.code" : "string",
+      "items.*.building.deadline" : "string",
+      "items.*.building.id" : "integer",
+      "items.*.building.name" : "string",
+      //"items.*.project"{}
+      "items.*.project.brandbook" : "string",
+      "items.*.project.business_unit" : "string",
+      "items.*.project.code" : "string",
+      "items.*.project.id" : "integer",
+      "items.*.project.image" : "string?",
+      "items.*.project.is_private" : "boolean",
+      "items.*.project.name" : "string",
+      "items.*.project.title" : "string?",
+      //sort{}
+      "sort.code": "string",
+      "sort.name": "string",
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение списка планировок (новый.resources/examples
+order: 2000

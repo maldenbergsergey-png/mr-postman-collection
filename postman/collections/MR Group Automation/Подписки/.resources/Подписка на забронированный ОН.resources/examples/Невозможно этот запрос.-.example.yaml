@@ -1,0 +1,42 @@
+$kind: http-example
+name: |
+  Невозможно этот запрос.
+request:
+  url: "{{baseUrl}}/user/subscription/product-status"
+  method: POST
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "email": "<string>",
+        "meta": {
+          "consents": {
+            "consent_documents": [
+              "<string>",
+              "<string>"
+            ],
+            "phone": "+73775746335",
+            "email": "<string>"
+          }
+        },
+        "product_code": "<string>"
+      }
+response:
+  statusCode: 422
+  statusText: Unprocessable Entity (WebDAV) (RFC 4918)
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "message": "<string>",
+        "errors": [
+          "<string>",
+          "<string>"
+        ]
+      }
+order: 3000

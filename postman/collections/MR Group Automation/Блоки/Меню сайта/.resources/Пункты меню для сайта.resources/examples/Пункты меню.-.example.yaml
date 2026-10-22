@@ -1,0 +1,34 @@
+$kind: http-example
+name: |
+  Пункты меню.
+request:
+  url: "{{baseUrl}}/pages/menu"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "<integer>",
+        "href": "<string>",
+        "name": "<string>",
+        "depthLevel": "<integer>",
+        "sort": "<integer>",
+        "columnNumber": "<integer>",
+        "slug": "<string>",
+        "children": [
+          {
+            "value": "<Circular reference to #/components/schemas/SiteMenuPagesList detected>"
+          },
+          {
+            "value": "<Circular reference to #/components/schemas/SiteMenuPagesList detected>"
+          }
+        ]
+      }
+order: 1000

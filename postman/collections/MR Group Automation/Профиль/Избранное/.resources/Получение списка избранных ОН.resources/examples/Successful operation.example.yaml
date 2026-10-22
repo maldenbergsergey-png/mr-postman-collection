@@ -1,0 +1,50 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/user/favourites?category=commercials"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  queryParams:
+    - key: category
+      value: commercials
+      description: Фильтр по типу ОН
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "categories": [
+          {
+            "category": {
+              "id": "<integer>",
+              "code": "offices",
+              "name": "<string>"
+            },
+            "product_ids": [
+              "<integer>",
+              "<integer>"
+            ]
+          },
+          {
+            "category": {
+              "id": "<integer>",
+              "code": "parkings",
+              "name": "<string>"
+            },
+            "product_ids": [
+              "<integer>",
+              "<integer>"
+            ]
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

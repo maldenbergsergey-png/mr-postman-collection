@@ -1,0 +1,61 @@
+$kind: http-request
+description: |
+  Метод основных данных по пользователю
+url: "{{baseUrl}}/user"
+method: GET
+headers:
+  - key: Accept
+    value: application/json
+  - key: ""
+    value: ""
+    disabled: true
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА: UserDetails
+      pm.variables.set("schema", {
+        required: [
+          "id",
+          "booking_count",
+          "favourite_count",
+          "purchase_count",
+          "client_id",
+          "email",
+          "name",
+          "lastName",
+          "phone",
+          "expected_consents",
+        ],
+        types: {
+          "id": "integer",
+          "booking_count": "integer",
+          "favourite_count": "integer",
+          "purchase_count": "integer",
+
+          "client_id": "string?",  
+          "email": "string",
+          "name": "string",
+          "lastName": "string",
+          "phone": "string",
+
+          "loyalty_card": "string?",
+          "mortgage_count": "integer?",
+
+          "expected_consents": "array",
+          "expected_consents.*.caption": "string",
+          "expected_consents.*.consent_document": "object",
+          "expected_consents.*.consent_document.id": "string",
+          "expected_consents.*.consent_document.name": "string",
+          "expected_consents.*.consent_document.url_name": "string",
+          "expected_consents.*.display_condition": "string",
+          "expected_consents.*.required": "boolean"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Данные пользователя.resources/examples
+order: 1000

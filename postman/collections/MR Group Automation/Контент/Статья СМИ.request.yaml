@@ -1,0 +1,39 @@
+$kind: http-request
+description: Метод получения данных объектов сущности Статья СМИ
+url: "{{baseUrl}}/content/media_articles"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: page
+    value: "1"
+    disabled: true
+    description: Номер страницы для пагинации (по умолчанию = 1)
+  - key: limit
+    value: "1"
+    disabled: true
+    description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+scripts:
+  - type: beforeRequest
+    code: |+
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: ["items"],
+        types: {
+          "count": "integer",
+          "page": "integer",
+          "page_count": "integer",
+          "items": "array",
+          "items.*.date": "string",
+          "items.*.descriptions": "string?",
+          "items.*.logo": "string?",
+          "items.*.title": "string?",
+          "items.*.web_link": "string?"
+        }
+      });
+
+    language: text/javascript
+settings: {}
+examples: ./.resources/Статья СМИ.resources/examples
+order: 11000

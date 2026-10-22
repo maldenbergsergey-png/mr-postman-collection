@@ -1,0 +1,55 @@
+$kind: http-example
+name: |
+  Сервер не готов обработать запрос.
+
+  Возможные коды ошибок:
+
+  - `service_unavailable` — приложение временно недоступно.
+request:
+  url: "{{baseUrl}}/sale/plan/floor/objects?category=flats&building=<string>&section=<integer>&floor=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: category
+      value: flats
+      description: (Required) Код корпуса
+    - key: building
+      value: <string>
+      description: Код корпуса
+    - key: section
+      value: <integer>
+      description: ID секции
+    - key: floor
+      value: <integer>
+      description: (Required) Номер этажа
+response:
+  statusCode: 503
+  statusText: Service Unavailable
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 3000

@@ -1,0 +1,47 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/promo?projectCode=<string>&tags[]=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: projectCode
+      value: <string>
+      description: Код проекта
+    - key: tags[]
+      value: <string>
+      description: |
+        Вернуть только те акции, у которых есть **хотя бы одна** из перечисленных меток.
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "code": "<string>",
+            "title": "<string>",
+            "subtitle": "<string>",
+            "promo_expires": "<string>",
+            "promo_image": "<string>",
+            "background_color": "<string>",
+            "white_text": "<boolean>",
+            "gradient": "<boolean>"
+          },
+          {
+            "code": "<string>",
+            "title": "<string>",
+            "subtitle": "<string>",
+            "promo_expires": "<string>",
+            "promo_image": "<string>",
+            "background_color": "<string>",
+            "white_text": "<boolean>",
+            "gradient": "<boolean>"
+          }
+        ]
+      }
+order: 1000

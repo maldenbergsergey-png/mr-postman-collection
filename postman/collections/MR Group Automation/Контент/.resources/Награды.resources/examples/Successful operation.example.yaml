@@ -1,0 +1,46 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/content/awards"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "year": "<integer>",
+            "awards": [
+              {
+                "title": "<string>",
+                "description": "<string>"
+              },
+              {
+                "title": "<string>",
+                "description": "<string>"
+              }
+            ]
+          },
+          {
+            "year": "<integer>",
+            "awards": [
+              {
+                "title": "<string>",
+                "description": "<string>"
+              },
+              {
+                "title": "<string>",
+                "description": "<string>"
+              }
+            ]
+          }
+        ],
+        "awards_qty": "<integer>"
+      }
+order: 1000

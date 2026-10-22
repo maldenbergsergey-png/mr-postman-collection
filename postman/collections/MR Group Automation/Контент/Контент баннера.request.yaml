@@ -1,0 +1,97 @@
+$kind: http-request
+description: Метод получения контента для Универсального блока баннеров
+url: "{{baseUrl}}/content/banners/{{contentBannerCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      
+      try {
+          if (pm.response.code === 200) {
+              const data = pm.response.json();
+              const banner = pm.environment.get("contentBannerCode") || "неизвестно";
+
+              console.log("Основной баннер загружен:", banner);
+
+              
+              pm.collectionVariables.set("banner_main", JSON.stringify(data));
+
+              let html = `
+                  <div style="padding:20px; font-family:system-ui; background:#e8f5e8; border-radius:8px; margin:16px;">
+                      <h2>Основной запрос</h2>
+                      <p><b>Баннер:</b> <code>${banner}</code></p>
+                      <p><b>Заголовок:</b> ${data.main_title || '—'}</p>
+                      <p><b>Элементов:</b> ${data.items?.length || 0}</p>
+                  </div>
+                  <h3>Фоновые баннеры (загружены в Pre-request):</h3>
+                  <div id="all-banners">`;
+
+             
+              const possibleBanners = ["vacancy", "company"];
+              possibleBanners.forEach(b => {
+                  const saved = pm.collectionVariables.get(`banner_${b}`);
+                  if (saved) {
+                      let item;
+                      try { item = JSON.parse(saved); } catch (e) { return; }
+                      const isMain = b === banner;
+                      html += `
+                          <div style="margin:8px 0; padding:10px; background:#f0f0f0; border-left:4px solid ${isMain ? '#4CAF50' : '#ccc'}; border-radius:4px;">
+                              <p><b>${b}</b> ${isMain ? '<small style="color:green;">← основной</small>' : ''}</p>
+                              <p><small>${item.main_title || '—'}</small></p>
+                          </div>`;
+                  }
+              });
+
+              html += `</div>`;
+              pm.visualizer.set(html);
+          }
+      } catch (e) {
+          console.error("Ошибка в Post-response:", e);
+          pm.visualizer.set(`<h3 style="color:red;">Ошибка: ${e.message}</h3>`);
+      }
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      const bannersCodeList = ["company", "vacancy"]
+
+      pm.environment.set("contentBannerCode", bannersCodeList[Math.floor(Math.random() * bannersCodeList.length)])
+
+
+      for (const bannerCode of bannersCodeList) {
+           pm.sendRequest({
+              url: pm.environment.get("baseUrl") + "/content/banners/" + bannerCode,
+              method: 'GET',
+              header: {
+                  'Accept': 'application/json',
+              },
+          }, (err) => {
+              if (err) {
+                  console.error(`Error fetching data for template code ${code}: ${err}`)
+                  return;
+              }
+          })
+      }
+
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: ["items", "main_title"],
+        types: {
+          "items": "array",
+          "items.*.background_color": "string?",
+          "items.*.description": "string?",
+          "items.*.font_color": "string?",
+          "items.*.icon": "string?",
+          "items.*.image": "string?",
+          "items.*.title": "object",
+          "items.*.title.font_size": "integer?",
+          "items.*.title.text": "string?",
+          "main_title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Контент баннера.resources/examples
+order: 9000

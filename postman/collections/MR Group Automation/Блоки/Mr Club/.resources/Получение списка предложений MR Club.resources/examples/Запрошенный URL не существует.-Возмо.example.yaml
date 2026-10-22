@@ -1,0 +1,51 @@
+$kind: http-example
+name: |
+  Запрошенный URL не существует.
+
+  Возможные коды ошибок:
+
+  - `not_found` — запрошенный ресурс не найден.
+request:
+  url: "{{baseUrl}}/mrclub/offers/category/:category-code?page=<integer>&limit=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: page
+      value: <integer>
+      description: Номер страницы для пагинации (по умолчанию = 1)
+    - key: limit
+      value: <integer>
+      description: Количество элементов на странице для пагинации (каждый метод может иметь своё значение по умолчанию)
+  pathVariables:
+    category-code: ""
+response:
+  statusCode: 404
+  statusText: Not Found
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 3000

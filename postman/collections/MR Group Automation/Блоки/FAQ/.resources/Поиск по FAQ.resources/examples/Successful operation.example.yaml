@@ -1,0 +1,42 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/faq/search?query=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: query
+      value: <string>
+      description: (Required) Поисковый запрос
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "question": "<string>",
+            "category_code": "<string>",
+            "question_id": "<string>",
+            "answer": "<string>",
+            "category_name": "<string>",
+            "subcategory_code": "<string>",
+            "subcategory_name": "<string>"
+          },
+          {
+            "question": "<string>",
+            "category_code": "<string>",
+            "question_id": "<string>",
+            "answer": "<string>",
+            "category_name": "<string>",
+            "subcategory_code": "<string>",
+            "subcategory_name": "<string>"
+          }
+        ],
+        "count": "<integer>"
+      }
+order: 1000

@@ -1,0 +1,31 @@
+$kind: http-example
+name: |
+  Устройство успешно зарегистрировано.
+request:
+  url: "{{baseUrl}}/app/device"
+  method: PUT
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "device_id": "<string>",
+        "install_id": "<string>",
+        "device_type": "android_google",
+        "token": "<string>",
+        "active": "<boolean>",
+        "meta": {
+          "source": {
+            "platform": "web",
+            "context": "<string>"
+          }
+        }
+      }
+response:
+  statusCode: 204
+  statusText: No Content
+  body:
+    type: text
+    content: ""
+order: 1000

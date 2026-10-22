@@ -1,0 +1,134 @@
+$kind: http-request
+name: Поиск объектов недвижимости (новый метод)
+url: "{{baseUrl}}/realty/search?query={{projectName}}"
+method: GET
+queryParams:
+  query: "{{projectName}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // Проверка готовности projectName и длины [3;255] байт UTF-8
+      let q = pm.environment.get("projectName");
+      if (typeof q !== "string" || !q.trim()) {
+        throw new Error('projectName пуст — сначала выполните /realty/projects/{{projectCode}}');
+      }
+      q = q.trim().replace(/\s+/g, " ");
+      pm.environment.set("projectName", q);
+
+      // UTF-8 длина без TextEncoder
+      const utf8Len = encodeURI(q).split(/%..|./).length - 1;
+      if (utf8Len < 3 || utf8Len > 255) {
+        throw new Error(`Длина projectName ${utf8Len} байт — вне допуска [3;255] для ?query=`);
+      }
+      pm.environment.set("searchQueryLen", String(utf8Len));
+      console.log(`→ /realty/search?query="${q}"`);
+
+
+      // КОНТРАКТЫ МЕТОДА: RealtySearchResults
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+
+          "items.*.brandbook",
+          "items.*.business_unit",
+          "items.*.code",
+          "items.*.id",
+          "items.*.image",
+          "items.*.is_countryside",
+          "items.*.is_private",
+          "items.*.name",
+          "items.*.title",
+          "items.*.air_3d",
+
+          "items.*.categories",
+
+          "items.*.completion_date",
+          "items.*.external",
+          "items.*.is_completed",
+          "items.*.key_project",
+          "items.*.latitude",
+          "items.*.logo",
+          "items.*.longitude",
+          "items.*.main_3d",
+          "items.*.max_discount",
+
+          "items.*.metro",
+          "items.*.metro_distance",
+          "items.*.min_price",
+          "items.*.movement_way",
+
+          "items.*.partners",
+          "items.*.price_table",
+          "items.*.project_usp",
+
+          "items.*.queues"
+        ],
+
+        types: {
+          "count": "integer",
+          "items": "array",
+
+          "items.*.brandbook": "string",
+          "items.*.business_unit": "string",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.image": "string?",
+          "items.*.is_countryside": "boolean",
+          "items.*.is_private": "boolean",
+          "items.*.name": "string",
+          "items.*.title": "string?",
+          "items.*.air_3d": "string?",
+
+          "items.*.categories": "array",
+          "items.*.categories.*.code": "string",
+          "items.*.categories.*.name": "string",
+          "items.*.categories.*.max_discount": "number?",
+          "items.*.categories.*.min_meter_price": "number?",
+          "items.*.categories.*.min_price": "number?",
+
+          "items.*.completion_date": "string?",
+          "items.*.external": "boolean",
+          "items.*.is_completed": "boolean",
+          "items.*.key_project": "boolean",
+          "items.*.latitude": "number",
+          "items.*.logo": "string?",
+          "items.*.longitude": "number",
+          "items.*.main_3d": "string?",
+          "items.*.max_discount": "number?",
+
+          "items.*.metro": "object?",
+          "items.*.metro.color": "string?",
+          "items.*.metro.name": "string",
+
+          "items.*.metro_distance": "integer?",
+          "items.*.min_price": "number?",
+
+          "items.*.movement_way": "object?",
+          "items.*.movement_way.icon": "string",
+          "items.*.movement_way.name": "string",
+
+          "items.*.partners": "array",
+          "items.*.partners.*.logo": "string",
+          "items.*.partners.*.name": "string",
+
+          "items.*.price_table": "array",
+          "items.*.price_table.*.filter": "integer",
+          "items.*.price_table.*.min_area": "number",
+          "items.*.price_table.*.min_price": "number",
+          "items.*.price_table.*.name": "string",
+
+          "items.*.project_usp": "array",
+          "items.*.project_usp.*.icon": "string",
+          "items.*.project_usp.*.name": "string",
+
+          "items.*.queues": "object?",
+          "items.*.queues.": "array?",
+          "items.*.queues.*": "array",
+          "items.*.queues.*.*": "string",
+          "items.*.queues..*": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 2000

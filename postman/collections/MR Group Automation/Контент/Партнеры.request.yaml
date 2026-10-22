@@ -1,0 +1,32 @@
+$kind: http-request
+description: Метод получения данных объектов сущности Партнер
+url: "{{baseUrl}}/content/partners"
+method: GET
+headers:
+  Accept: application/json
+body:
+  type: json
+  content: ""
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [  // проверка обязательности параметров
+          "items",
+          "items.*.name",
+          "items.*.partners"
+        ],
+        types: { //проверка типов данных
+          "items": "array",
+          "items.*.name": "string",
+          "items.*.partners": "array",
+          "items.*.partners.*.image": "string",
+          "items.*.partners.*.web_link": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Партнеры.resources/examples
+order: 4000

@@ -1,0 +1,95 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/sale/plan/floors?category=commercials&building=<string>&section=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: category
+      value: commercials
+      description: Фильтр по типу ОН
+    - key: building
+      value: <string>
+      description: Код корпуса
+    - key: section
+      value: <integer>
+      description: ID секции
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "floor_number": "<integer>",
+            "apartments_count": "<integer>",
+            "min_area": "<number>",
+            "min_price": "<number>",
+            "max_discount": "<number>",
+            "min_payment": "<number>",
+            "plan": {
+              "background_image": "<string>",
+              "svg_markup": "<string>",
+              "level_plan": "project",
+              "floor": "<number>",
+              "object_types": [
+                "<string>",
+                "<string>"
+              ],
+              "compass_angle": "<number>"
+            },
+            "price_table": [
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              },
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              }
+            ]
+          },
+          {
+            "floor_number": "<integer>",
+            "apartments_count": "<integer>",
+            "min_area": "<number>",
+            "min_price": "<number>",
+            "max_discount": "<number>",
+            "min_payment": "<number>",
+            "plan": {
+              "background_image": "<string>",
+              "svg_markup": "<string>",
+              "level_plan": "section",
+              "floor": "<number>",
+              "object_types": [
+                "<string>",
+                "<string>"
+              ],
+              "compass_angle": "<number>"
+            },
+            "price_table": [
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              },
+              {
+                "name": "<string>",
+                "filter": "<integer>",
+                "min_price": "<number>",
+                "min_area": "<number>"
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

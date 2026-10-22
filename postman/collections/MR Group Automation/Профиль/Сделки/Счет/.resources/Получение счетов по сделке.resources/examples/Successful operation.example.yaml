@@ -1,0 +1,45 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/purchase/:purchase-id/bills"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  pathVariables:
+    purchase-id: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "description": "<string>",
+            "amount": "<number>",
+            "payment_link": "<string>",
+            "expiration_dt": "<string>",
+            "status": {
+              "code": "waiting",
+              "name": "Ожидание"
+            }
+          },
+          {
+            "description": "<string>",
+            "amount": "<number>",
+            "payment_link": "<string>",
+            "expiration_dt": "<string>",
+            "status": {
+              "code": "new",
+              "name": "Отменен"
+            }
+          }
+        ]
+      }
+order: 1000

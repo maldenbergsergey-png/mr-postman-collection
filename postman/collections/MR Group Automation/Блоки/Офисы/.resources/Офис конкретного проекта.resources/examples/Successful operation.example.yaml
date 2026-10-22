@@ -1,0 +1,81 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/offices/projects?project=<string>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: project
+      value: <string>
+      description: Фильтр по коду проекта
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "projects": [
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "image": "<string>",
+            "offices": [
+              {
+                "name": "<string>",
+                "address": "<string>",
+                "schedule": "<string>",
+                "phone": "<string>",
+                "email": "<string>",
+                "latitude": "<number>",
+                "longitude": "<number>"
+              },
+              {
+                "name": "<string>",
+                "address": "<string>",
+                "schedule": "<string>",
+                "phone": "<string>",
+                "email": "<string>",
+                "latitude": "<number>",
+                "longitude": "<number>"
+              }
+            ],
+            "name": "<string>",
+            "latitude": "<number>",
+            "longitude": "<number>",
+            "address": "<string>"
+          },
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "image": "<string>",
+            "offices": [
+              {
+                "name": "<string>",
+                "address": "<string>",
+                "schedule": "<string>",
+                "phone": "<string>",
+                "email": "<string>",
+                "latitude": "<number>",
+                "longitude": "<number>"
+              },
+              {
+                "name": "<string>",
+                "address": "<string>",
+                "schedule": "<string>",
+                "phone": "<string>",
+                "email": "<string>",
+                "latitude": "<number>",
+                "longitude": "<number>"
+              }
+            ],
+            "name": "<string>",
+            "latitude": "<number>",
+            "longitude": "<number>",
+            "address": "<string>"
+          }
+        ]
+      }
+order: 1000

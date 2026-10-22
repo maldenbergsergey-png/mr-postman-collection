@@ -1,0 +1,87 @@
+$kind: http-request
+name: Данные для «шапки» и «подвала» сайта
+description: |
+  Возвращает данные для «шапки» и «подвала» сайта.
+url: "{{baseUrl}}/site/template"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "app_links.*.button",
+          "app_links.*.icon",
+          "app_links.*.icon.*.src",
+          "app_links.*.link",
+          "app_links.*.name",
+
+          "footer_links.*.button",
+          "footer_links.*.icon",
+          "footer_links.*.icon.*.src",
+          "footer_links.*.link",
+          "footer_links.*.name",
+
+          "reg_links.*.button",
+          "reg_links.*.icon",
+          "reg_links.*.icon.*.src",
+          "reg_links.*.link",
+          "reg_links.*.name",
+
+          "socnet_links.*.button",
+          "socnet_links.*.icon",
+          "socnet_links.*.icon.*.src",
+          "socnet_links.*.link",
+          "socnet_links.*.name"
+        ],
+        types: {
+          "advert": "object",
+          "advert.accent_text": "string",
+          "advert.description": "string",
+          "advert.link": "string",
+          "advert.title": "string",
+
+          "app_links": "array",
+          "app_links.*": "object",
+          "app_links.*.button": "string?",
+          "app_links.*.icon": "object",
+          "app_links.*.icon.description": "string",
+          "app_links.*.icon.src": "string",
+          "app_links.*.link": "string",
+          "app_links.*.name": "string?",
+
+          "footer_links": "array",
+          "footer_links.*": "object",
+          "footer_links.*.button": "string?",
+          "footer_links.*.icon": "object",
+          "footer_links.*.icon.description": "string",
+          "footer_links.*.icon.src": "string",
+          "footer_links.*.link": "string",
+          "footer_links.*.name": "string?",
+
+          "reg_links": "array",
+          "reg_links.*": "object",
+          "reg_links.*.button": "string?",
+          "reg_links.*.icon": "object",
+          "reg_links.*.icon.description": "string",
+          "reg_links.*.icon.src": "string",
+          "reg_links.*.link": "string",
+          "reg_links.*.name": "string?",
+
+          "socnet_links": "array",
+          "socnet_links.*": "object",
+          "socnet_links.*.button": "string?",
+          "socnet_links.*.icon": "object",
+          "socnet_links.*.icon.description": "string",
+          "socnet_links.*.icon.src": "string",
+          "socnet_links.*.link": "string",
+          "socnet_links.*.name": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Данные для «шапки» и «подвала» сай.resources/examples
+order: 3000

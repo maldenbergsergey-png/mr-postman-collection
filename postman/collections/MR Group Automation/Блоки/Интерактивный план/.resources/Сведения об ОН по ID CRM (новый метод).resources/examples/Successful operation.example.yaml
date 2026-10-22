@@ -1,0 +1,116 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/sale/plan/objects/:crm-id"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    crm-id: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "<integer>",
+        "crm_id": "<string>",
+        "code": "<string>",
+        "name": "<string>",
+        "price": "<number>",
+        "discount": {
+          "price": "<number>",
+          "meter_price": "<number>",
+          "type": "percent",
+          "percentage_discount": "<number>",
+          "absolute_discount": "<number>",
+          "description": "<string>"
+        },
+        "purchase_type": "<string>",
+        "meter_price": "<number>",
+        "monthly_payment": "<number>",
+        "category": {
+          "id": "<integer>",
+          "code": "parkings",
+          "name": "<string>"
+        },
+        "decoration": {
+          "code": "<string>",
+          "name": "<string>"
+        },
+        "technical_layout": "<string>",
+        "functional_layout": "<string>",
+        "apartment_on_floor": "<string>",
+        "area": "<number>",
+        "floor": "<integer>",
+        "rooms_number": 0,
+        "number": "<string>",
+        "family": "<boolean>",
+        "plan": {
+          "background_image": "<string>",
+          "svg_markup": "<string>"
+        },
+        "building": {
+          "id": "<integer>",
+          "code": "<string>",
+          "name": "<string>",
+          "floors_number": "<integer>",
+          "deadline": "<string>",
+          "readiness": "<integer>",
+          "scheme": "<string>",
+          "compass_angle": "<number>"
+        },
+        "project": {
+          "code": "<string>",
+          "description": "<string>",
+          "id": "<integer>",
+          "marketing_image": "<string>",
+          "name": "<string>",
+          "title": "<string>",
+          "is_private": "<boolean>"
+        },
+        "subtype": {
+          "code": "<string>",
+          "name": "<string>",
+          "description": "<string>",
+          "icon": "<string>"
+        },
+        "booking_type": "free",
+        "purchase_types": [
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "discount": {
+              "price": "<number>",
+              "meter_price": "<number>",
+              "type": "percent",
+              "percentage_discount": "<number>",
+              "absolute_discount": "<number>",
+              "description": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "name": "<string>",
+            "discount": {
+              "price": "<number>",
+              "meter_price": "<number>",
+              "type": "percent",
+              "percentage_discount": "<number>",
+              "absolute_discount": "<number>",
+              "description": "<string>"
+            }
+          }
+        ],
+        "kitchen": {
+          "layout_type_id": "<string>"
+        },
+        "status": {
+          "code": "booked",
+          "name": "<string>"
+        },
+        "stop_sales": "<boolean>"
+      }
+order: 1000

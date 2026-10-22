@@ -1,0 +1,84 @@
+$kind: http-request
+description: |
+  Иерархический набор ссылок для сайта
+
+  Есть следующие типы меню (slug):
+
+  - desktop_menu — меню для desktop-режиме сайта;
+  - top_menu — верхнее меню сайта;
+  - sitemap — карта сайта в footer сайта.
+url: "{{baseUrl}}/pages/menu"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "pages",
+          "pages.*.id",
+          "pages.*.children.*.id",
+          "pages.*.children.*.children.*.id",
+          "pages.*.children.*.children.*.children.*.id",
+          "pages.*.children.*.children.*.children.*.children.*.id"
+        ],
+        types: {
+         
+          "pages": "array",
+          "pages.*.id": "integer",
+          "pages.*.href": "string?",
+          "pages.*.name": "string?",
+          "pages.*.depthLevel": "integer?",
+          "pages.*.sort": "integer?",
+          "pages.*.columnNumber": "integer?", 
+          "pages.*.slug": "string?",
+          "pages.*.children": "array?",
+
+
+          "pages.*.children.*.id": "integer",
+          "pages.*.children.*.href": "string?",
+          "pages.*.children.*.name": "string?",
+          "pages.*.children.*.depthLevel": "integer?",
+          "pages.*.children.*.sort": "integer?",
+          "pages.*.children.*.columnNumber": "integer|null?",
+          "pages.*.children.*.slug": "string?",
+          "pages.*.children.*.children": "array?",
+
+        
+          "pages.*.children.*.children.*.id": "integer",
+          "pages.*.children.*.children.*.href": "string?",
+          "pages.*.children.*.children.*.name": "string?",
+          "pages.*.children.*.children.*.depthLevel": "integer?",
+          "pages.*.children.*.children.*.sort": "integer?",
+          "pages.*.children.*.children.*.columnNumber": "integer|null?",
+          "pages.*.children.*.children.*.slug": "string?",
+          "pages.*.children.*.children.*.children": "array?",
+
+        
+          "pages.*.children.*.children.*.children.*.id": "integer",
+          "pages.*.children.*.children.*.children.*.href": "string?",
+          "pages.*.children.*.children.*.children.*.name": "string?",
+          "pages.*.children.*.children.*.children.*.depthLevel": "integer?",
+          "pages.*.children.*.children.*.children.*.sort": "integer?",
+          "pages.*.children.*.children.*.children.*.columnNumber": "integer?",
+          "pages.*.children.*.children.*.children.*.slug": "string?",
+          "pages.*.children.*.children.*.children.*.children": "array?",
+
+          
+          "pages.*.children.*.children.*.children.*.children.*.id": "integer",
+          "pages.*.children.*.children.*.children.*.children.*.href": "string?",
+          "pages.*.children.*.children.*.children.*.children.*.name": "string?",
+          "pages.*.children.*.children.*.children.*.children.*.depthLevel": "integer?",
+          "pages.*.children.*.children.*.children.*.children.*.sort": "integer?",
+          "pages.*.children.*.children.*.children.*.children.*.columnNumber": "integer?",
+          "pages.*.children.*.children.*.children.*.children.*.slug": "string?",
+          "pages.*.children.*.children.*.children.*.children.*.children": "array?"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Пункты меню для сайта.resources/examples
+order: 1000

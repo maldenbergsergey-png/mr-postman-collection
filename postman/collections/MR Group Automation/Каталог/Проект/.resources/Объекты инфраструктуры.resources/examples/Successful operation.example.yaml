@@ -1,0 +1,63 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/project/:project-code/infrastructure"
+  method: GET
+  headers:
+    Accept: application/json
+  pathVariables:
+    project-code: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "category_id": "<integer>",
+            "name": "<string>",
+            "address": "<string>",
+            "availabilities": "<string>",
+            "longitude": "<number>",
+            "latitude": "<number>"
+          },
+          {
+            "id": "<integer>",
+            "code": "<string>",
+            "category_id": "<integer>",
+            "name": "<string>",
+            "address": "<string>",
+            "availabilities": "<string>",
+            "longitude": "<number>",
+            "latitude": "<number>"
+          }
+        ],
+        "project": {
+          "image": "<string>",
+          "latitude": "<number>",
+          "longitude": "<number>",
+          "name": "<string>"
+        },
+        "categories": [
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "icon_web": "<string>",
+            "icon_app": "<string>",
+            "code": "qui anim consequat Ut"
+          },
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "icon_web": "<string>",
+            "icon_app": "<string>",
+            "code": -99206787
+          }
+        ]
+      }
+order: 1000

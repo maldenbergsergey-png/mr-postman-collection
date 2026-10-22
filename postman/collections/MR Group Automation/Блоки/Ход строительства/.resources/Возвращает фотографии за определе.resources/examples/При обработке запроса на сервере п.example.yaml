@@ -1,0 +1,50 @@
+$kind: http-example
+name: |
+  При обработке запроса на сервере произошла внутренняя ошибка.
+
+  Возможные коды ошибок:
+  - `internal_error` — внутренняя ошибка приложения.
+request:
+  url: "{{baseUrl}}/project/:project-code/construction-progress/photo?month=<integer>&year=<integer>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: month
+      value: <integer>
+      description: "(Required) "
+    - key: year
+      value: <integer>
+      description: "(Required) "
+  pathVariables:
+    project-code: ""
+response:
+  statusCode: 500
+  statusText: Internal Server Error
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 4000

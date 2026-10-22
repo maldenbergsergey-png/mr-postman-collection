@@ -1,0 +1,160 @@
+$kind: http-request
+description: Получение акций
+url: "{{baseUrl}}/promo/{{promoCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // URL метода, откуда берём акции
+      const baseUrl = pm.environment.get("baseUrl");
+      const promoUrl = `${baseUrl}/promo`;
+
+      // Проверяем, есть ли сохранённый список акций
+      let promoArray = pm.environment.get("promoArray");
+      let index = parseInt(pm.environment.get("index") || "0", 10);
+
+      // Если список уже сохранён — используем его
+      if (promoArray) {
+          try {
+              promoArray = JSON.parse(promoArray);
+
+              if (Array.isArray(promoArray) && promoArray.length > 0) {
+                  if (index >= promoArray.length) index = 0;
+                  const selectedCode = promoArray[index];
+                  pm.environment.set("promoCode", selectedCode);
+                  pm.environment.set("index", (index + 1) % promoArray.length);
+
+                  console.log(`Используем сохранённый код акции: ${selectedCode}`);
+
+                  // === ВСТАВЛЯЕМ СХЕМУ И ПРОВЕРКУ ЗДЕСЬ ===
+                  setPromoDetailSchemaAndRunTests();
+                  return;
+              }
+          } catch (e) {
+              console.warn("Ошибка при чтении promoArray, запрашиваем заново");
+          }
+      }
+
+      // Если список не найден — делаем GET-запрос
+      console.log("Делаем запрос к API, чтобы получить список акций");
+
+      pm.sendRequest({
+          url: promoUrl,
+          method: "GET",
+          header: {
+              "Accept": "application/json"
+          }
+      }, function (err, res) {
+          if (err) {
+              console.error("Ошибка при запросе акций:", err);
+              return;
+          }
+
+          if (res.code !== 200) {
+              console.error(`API вернул статус ${res.code}`);
+              return;
+          }
+
+          const jsonData = res.json();
+
+          if (!jsonData || !Array.isArray(jsonData.items)) {
+              console.error("Нет поля 'items' или оно не массив в ответе /promo");
+              return;
+          }
+
+          const items = jsonData.items;
+          if (items.length === 0) {
+              console.error("Список акций пуст");
+              return;
+          }
+
+          // Собираем массив кодов
+          const newPromoArray = items.map(p => p.code).filter(Boolean);
+          if (newPromoArray.length === 0) {
+              console.error("Не найдено ни одного promo code");
+              return;
+          }
+
+          // Сохраняем
+          pm.environment.set("promoArray", JSON.stringify(newPromoArray));
+          pm.environment.set("promoCode", newPromoArray[0]);
+          pm.environment.set("index", 1);
+
+          console.log(`Список акций сохранён. Текущая акция: ${newPromoArray[0]}`);
+
+          // === ВСТАВЛЯЕМ СХЕМУ И ПРОВЕРКУ ЗДЕСЬ ===
+          setPromoDetailSchemaAndRunTests();
+      });
+
+      // КОНТРАКТЫ МЕТОДА: PromoContent
+      pm.variables.set("schema", {
+        required: [
+          "ad_label",
+          "button_app_link",
+          "button_text",
+          "button_web_link",
+          "content",
+          "project",
+          "project.brandbook",
+          "project.business_unit",
+          "project.code",
+          "project.id",
+          "project.image",
+          "project.is_countryside",
+          "project.is_private",
+          "project.name",
+          "project.title",
+          "promo_expires",
+          "promo_image_detail",
+          "subtitle",
+          "title"
+        ],
+
+        types: {
+          "ad_label": "string?",
+          "button_app_link": "string?",
+          "button_text": "string?",
+          "button_web_link": "string?",
+
+          "content": "string",
+
+          "project": "object",
+          "project.brandbook": "string",
+          "project.business_unit": "string",
+          "project.code": "string",
+          "project.id": "integer",
+          "project.image": "string?",
+          "project.is_countryside": "boolean",
+          "project.is_private": "boolean",
+          "project.name": "string",
+          "project.title": "string?",
+
+          "promo_expires": "string?",
+          "promo_image_detail": "string?",
+
+          "subtitle": "string",
+          "title": "string"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      let jsonData;
+      jsonData = pm.response.json();
+
+      // --- Сохраняем projectСodePromo в окружение ---
+      if (jsonData.project && jsonData.project.code) {
+          pm.environment.set("projectCodePromo", jsonData.project.code);
+          console.log("💾 Переменная окружения 'projectCodePromo' сохранена:", jsonData.project.code);
+          pm.test("project.code сохранён в окружении", function () {
+              pm.expect(pm.environment.get("projectCodePromo")).to.eql(jsonData.project.code);
+          });
+      } else {
+          console.warn("⚠️ Поле project.code не найдено в ответе!");
+      }
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение акции.resources/examples
+order: 1000

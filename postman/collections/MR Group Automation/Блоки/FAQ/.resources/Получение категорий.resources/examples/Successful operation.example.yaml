@@ -1,0 +1,53 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/faq/category"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "categories": [
+          {
+            "name": "<string>",
+            "code": "<string>",
+            "image": "<string>",
+            "subcategories": [
+              {
+                "name": "<string>",
+                "code": "<string>",
+                "image": "<string>"
+              },
+              {
+                "name": "<string>",
+                "code": "<string>",
+                "image": "<string>"
+              }
+            ]
+          },
+          {
+            "name": "<string>",
+            "code": "<string>",
+            "image": "<string>",
+            "subcategories": [
+              {
+                "name": "<string>",
+                "code": "<string>",
+                "image": "<string>"
+              },
+              {
+                "name": "<string>",
+                "code": "<string>",
+                "image": "<string>"
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

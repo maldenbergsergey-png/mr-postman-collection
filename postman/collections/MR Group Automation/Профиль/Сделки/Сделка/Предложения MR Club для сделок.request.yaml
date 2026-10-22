@@ -1,0 +1,41 @@
+$kind: http-request
+description: |
+  Метод получения списка предложений MR Club для сделок
+url: "{{baseUrl}}/purchase/mrclub/offers"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      // ===== КОНТРАКТ PurchaseMrclubOffersList =====
+      pm.variables.set("schema", {
+        required: [
+          "items",
+        ],
+        types: {
+          "items": "array",
+
+          "items.*.categories": "array",
+          "items.*.categories.*.code": "string",
+          "items.*.categories.*.name": "string",
+
+          "items.*.code": "string",
+          "items.*.image": "string",
+
+          "items.*.labels": "array",
+          "items.*.labels.*.text": "string",
+
+          "items.*.logo": "string",   // nullable
+          "items.*.name": "string",
+          "items.*.teaser": "string", // nullable
+        },
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Предложения MR Club для сделок.resources/examples
+order: 3000

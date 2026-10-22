@@ -1,0 +1,273 @@
+$kind: http-request
+description: |
+  Метод, который позволяет получить данные по сделке в текущем состоянии
+url: "{{baseUrl}}/purchase/{{idDeal}}"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |
+      const idDeal = pm.environment.get("idDeal");
+
+      if (!idDeal) {
+          pm.expect.fail("Переменная idDeal не найдена. Сначала выполни запрос /api/purchases");
+      } else {
+          console.log(`Используем idDeal = ${idDeal}`);
+      }
+
+
+      // КОНТРАКТЫ МЕТОДА: PurchaseDetail
+      pm.variables.set("schema", {
+        required: [
+          "bills_qty",
+          "documents_qty",
+          "phase",
+          "phase.code",
+          "phase.name",
+          "phase.number",
+          "phase.phases_qty",
+          "step",
+          "title",
+          "status",
+          "status.code",
+          "status.name",
+          "purchase_type",
+          "purchase_type.code",
+          "purchase_type.title",
+          "products",
+          "products.*.assignment",
+          "products.*.category",
+          "products.*.category.*.code",
+          "products.*.category.*.name",
+          "products.*.code",
+          "products.*.crm_id",
+          "products.*.floor",
+          "products.*.id",
+          "products.*.name",
+          "products.*.number",
+          "products.*.rooms_number",
+          "products.*.status",
+          "products.*.status.code",
+          "products.*.status.name",
+          "products.*.title",
+          "products.*.area",
+          "products.*.contract_price",
+          "products.*.project",
+          "products.*.project.*.brandbook",
+          "products.*.project.*.business_unit",
+          "products.*.project.*.code",
+          "products.*.project.*.id",
+          "products.*.project.*.image",
+          "products.*.project.*.is_countryside",
+          "products.*.project.*.is_private",
+          "products.*.project.*.name",
+          "products.*.project.*.title",
+          "products.*.project.*.description",
+          "products.*.project.*.marketing_image",
+          "products.*.technical_layout"
+        ],
+        types: {
+          "bills_qty": "integer",
+          "documents_qty": "integer",
+
+          "booking_payment": "object?",
+          "booking_payment.amount": "number",
+          "booking_payment.debt": "number",
+          "booking_payment.unpaid_bills": "array",
+          "booking_payment.unpaid_bills.*.amount": "number",
+          "booking_payment.unpaid_bills.*.description": "string",
+          "booking_payment.unpaid_bills.*.expiration_dt": "string",
+          "booking_payment.unpaid_bills.*.payment_link": "string",
+          "booking_payment.unpaid_bills.*.status": "object",
+          "booking_payment.unpaid_bills.*.status.code": "string",
+          "booking_payment.unpaid_bills.*.status.name": "string",
+          "booking_payment.unpaid_bills_count": "integer",
+
+          "contact": "object?",
+          "contact.type": "string",
+          "contact.manager": "object?",
+          "contact.manager.name": "string?",
+          "contact.manager.phone": "string?",
+          "contact.occupancy": "object?",
+          "contact.occupancy.address": "string?",
+          "contact.occupancy.email": "string?",
+          "contact.occupancy.latitude": "number?",
+          "contact.occupancy.longitude": "number?",
+          "contact.occupancy.name": "string",
+          "contact.occupancy.phone": "string?",
+          "contact.occupancy.schedule": "string?",
+          "contact.support": "object?",
+          "contact.support.email": "string",
+          "contact.support.phone": "string",
+
+          "description": "string?",
+          "explanation": "string?",
+          "notification": "string?",
+
+          "digital_signature": "object?",
+          "digital_signature.description": "string",
+          "digital_signature.explanation": "string",
+          "digital_signature.extra_title": "string",
+          "digital_signature.title": "string",
+
+          "escrow": "object?",
+          "escrow.approval_dt": "string?",
+          "escrow.logo": "string",
+          "escrow.sending_dt": "string?",
+          "escrow.status": "object",
+          "escrow.status.code": "string",
+          "escrow.status.name": "string",
+
+          "escrow_dt": "string?",
+          "expiration_dt": "string?",
+          "free_booking_dt": "string?",
+          "unilateral_act_dt": "string?",
+
+          "inspection": "object?",
+          "inspection.registration_state": "string",
+          "inspection.registration": "object?",
+          "inspection.registration.id": "string",
+          "inspection.registration.status": "object",
+          "inspection.registration.status.code": "string",
+          "inspection.registration.status.name": "string",
+          "inspection.registration.visit_dt": "string",
+
+          "lead_id": "string?",
+
+          "letter_of_credit": "object?",
+          "letter_of_credit.amount": "number",
+          "letter_of_credit.description": "string",
+          "letter_of_credit.explanation": "string?",
+
+          "letter_of_credit_dt": "string?",
+
+          "mortgage": "object?",
+          "mortgage.approved_offers_qty": "integer",
+          "mortgage.manager": "object?",
+          "mortgage.manager.email": "string?",
+          "mortgage.manager.name": "string?",
+          "mortgage.manager.phone": "string?",
+          "mortgage.mortgage_application": "object",
+          "mortgage.mortgage_application.create_date": "string",
+          "mortgage.mortgage_application.id": "integer",
+          "mortgage.mortgage_application.lead_id": "string?",
+          "mortgage.mortgage_application.link": "string",
+          "mortgage.mortgage_application.number": "string",
+          "mortgage.mortgage_application.offers": "array",
+          "mortgage.mortgage_application.offers.*.amount": "number?",
+          "mortgage.mortgage_application.offers.*.available": "boolean",
+          "mortgage.mortgage_application.offers.*.bank": "object",
+          "mortgage.mortgage_application.offers.*.bank.code": "string",
+          "mortgage.mortgage_application.offers.*.bank.logo": "string",
+          "mortgage.mortgage_application.offers.*.bank.name": "string",
+          "mortgage.mortgage_application.offers.*.id": "integer",
+          "mortgage.mortgage_application.offers.*.payment": "number?",
+          "mortgage.mortgage_application.offers.*.period": "integer?",
+          "mortgage.mortgage_application.offers.*.program": "string",
+          "mortgage.mortgage_application.offers.*.rate": "number?",
+          "mortgage.mortgage_application.offers.*.status": "object",
+          "mortgage.mortgage_application.offers.*.status.code": "string",
+          "mortgage.mortgage_application.offers.*.status.name": "string",
+          "mortgage.mortgage_application.payment": "number?",
+          "mortgage.mortgage_application.period": "integer?",
+          "mortgage.mortgage_application.project": "object",
+          "mortgage.mortgage_application.project.brandbook": "string",
+          "mortgage.mortgage_application.project.business_unit": "string",
+          "mortgage.mortgage_application.project.code": "string",
+          "mortgage.mortgage_application.project.id": "integer",
+          "mortgage.mortgage_application.project.image": "string?",
+          "mortgage.mortgage_application.project.is_countryside": "boolean",
+          "mortgage.mortgage_application.project.is_private": "boolean",
+          "mortgage.mortgage_application.project.name": "string",
+          "mortgage.mortgage_application.project.title": "string?",
+          "mortgage.mortgage_application.rate": "number?",
+          "mortgage.mortgage_application.status": "object",
+          "mortgage.mortgage_application.status.code": "string",
+          "mortgage.mortgage_application.status.name": "string",
+
+          "phase": "object",
+          "phase.code": "string",
+          "phase.name": "string",
+          "phase.number": "number",
+          "phase.phases_qty": "number",
+
+          "phase_document": "object?",
+          "phase_document.id": "number",
+          "phase_document.name": "string",
+          "phase_document.number": "string?",
+          "phase_document.type": "string",
+          "phase_document.file_id": "string?",
+          "phase_document.explanation": "string?",
+          "phase_document.debt_amount": "number?",
+          "phase_document.status": "object?",
+          "phase_document.status.code": "string",
+          "phase_document.status.name": "string",
+          "phase_document.contract_type": "object?",
+          "phase_document.contract_type.abbreviation": "string?",
+          "phase_document.contract_type.code": "string",
+          "phase_document.contract_type.name": "string",
+          "phase_document.attributes": "array",
+          "phase_document.attributes.*.code": "string",
+          "phase_document.attributes.*.extra_value": "string?",
+          "phase_document.attributes.*.formatted_value": "string",
+          "phase_document.attributes.*.name": "string",
+          "phase_document.attributes.*.value": "any",
+
+          "phase_title": "string",
+
+          "products": "array",
+          "products.*.assignment": "boolean",
+          "products.*.category": "object",
+          "products.*.category.code": "string",
+          "products.*.category.name": "string",
+          "products.*.code": "string",
+          "products.*.crm_id": "string",
+          "products.*.floor": "integer?",
+          "products.*.id": "integer",
+          "products.*.name": "string",
+          "products.*.number": "string?",
+          "products.*.rooms_number": "integer?",
+          "products.*.status": "object",
+          "products.*.status.code": "string",
+          "products.*.status.name": "string",
+          "products.*.title": "string?",
+          "products.*.area": "number?",
+          "products.*.contract_price": "number",
+          "products.*.plot": "object?",
+          "products.*.plot.exists": "boolean",
+          "products.*.plot.size": "number?",
+          "products.*.project": "object",
+          "products.*.project.brandbook": "string",
+          "products.*.project.business_unit": "string",
+          "products.*.project.code": "string",
+          "products.*.project.id": "integer",
+          "products.*.project.image": "string?",
+          "products.*.project.is_countryside": "boolean",
+          "products.*.project.is_private": "boolean",
+          "products.*.project.name": "string",
+          "products.*.project.title": "string?",
+          "products.*.project.description": "string?",
+          "products.*.project.marketing_image": "string?",
+          "products.*.technical_layout": "string?",
+
+          "purchase_type": "object",
+          "purchase_type.code": "string",
+          "purchase_type.title": "string",
+
+          "status": "object",
+          "status.code": "string",
+          "status.name": "string",
+
+          "step": "string",
+          "title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение данных по сделке.resources/examples
+order: 2000

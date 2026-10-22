@@ -1,0 +1,158 @@
+$kind: http-request
+description: |
+  Получение данных ОН по коду ОН.
+url: "{{baseUrl}}/sale/product/{{product_code}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+      required: ["product"],
+      types: {
+          "product" : "object",
+          
+
+      //product{}
+      "product.apartment_on_floor": "string?",
+          "product.area": "number?",
+          "product.article": "string?",
+          "product.booking_type": "string?", 
+          "product.building": "object?",
+          "product.category": "object",
+          "product.ceiling_height": "number?",
+          "product.code": "string",
+          "product.decoration": "object?",
+          "product.environment": "object?",
+          "product.floor": "integer?",
+          "product.functional_layout": "string?",
+          "product.id": "integer",
+          "product.kitchen": "object?",
+          "product.layout_3d": "string?",
+          "product.layout_3d_image": "string?",
+          "product.layout_3d_tour": "string?",
+          "product.meter_price": "number",
+          "product.metro": "object?",
+          "product.metro_distance": "integer?",
+          "product.monthly_payment": "number?",
+          "product.movement_way": "object?",
+          "product.name": "string", 
+          "product.number": "string?",
+          "product.object_types": "array",
+          "product.price": "number?",
+          "product.project": "object",
+          "product.purchase_type": "string",
+          "product.purchase_types": "array",
+          "product.room_type": "string?",
+          "product.rooms_number": "integer?",
+          "product.section": "object?",
+          "product.status": "object",
+          "product.stop_sales": "boolean",
+          "product.technical_layout": "string?",
+          "product.ventilation": "boolean",
+          "product.view_from_window": "object?",
+          //"product.building"{}
+          "product.building.code": "string",
+          "product.building.compass_angle": "number?",
+          "product.building.deadline": "string",
+          "product.building.floors_number": "integer?",
+          "product.building.id": "integer",
+          "product.building.readiness": "integer?",
+          "product.building.scheme": "string?",
+          "product.building.shadow_map": "object?",
+          "product.building.name": "string",
+          //"product.building.shadow_map"{}
+          "product.building.shadow_map.direction": "string?",
+          "product.building.shadow_map.sunrise_angle": "integer?",
+          "product.building.shadow_map.sunset_angle": "integer?",
+          //"product.category"{}
+          "product.category.code" : "string",
+          "product.category.id" : "integer",
+          "product.category.name" : "string",
+          //"product.decoration"{}
+          "product.decoration.code" : "string",
+          "product.decoration.name" : "string",
+          //"product.environment"{}
+          "product.environment.left_side" : "string?",
+          "product.environment.lower_side" : "string?",
+          "product.environment.right_side" : "string?",
+          "product.environment.upper_side" : "string?",
+          //"product.kitchen"{}
+          "product.kitchen.layout_type_id" : "string",
+          // "product.metro"{}
+          "product.metro.color" : "string?",
+          "product.metro.name" : "string",
+          // "product.movement_way"{}
+          "product.movement_way.icon" : "string",
+          "product.movement_way.name" : "string",
+          //"product.object_types"[]
+          "product.object_types.*.background_color" : "string?",
+          "product.object_types.*.code" : "string",
+          "product.object_types.*.description" : "string?",
+          "product.object_types.*.discounted_price" : "object?",
+          "product.object_types.*.image" : "string?",
+          "product.object_types.*.name" : "string",
+          "product.object_types.*.price" : "number?",
+          //"product.object_types.*.discounted_price"{}
+          "product.object_types.*.discounted_price.percentage_discount" : "number",
+          "product.object_types.*.discounted_price.price" : "number",
+          "product.object_types.*.discounted_price.type" : "string",
+          //"product.project"{}
+          "product.project.brandbook" : "string",
+          "product.project.business_unit" : "string",
+          "product.project.code" : "string",
+          "product.project.id" : "integer",
+          "product.project.image" : "string?",
+          "product.project.is_private" : "boolean",
+          "product.project.name" : "string",
+          "product.project.title" : "string?",
+          "product.project.description" : "string?",
+          "product.project.marketing_image" : "string?",
+          "product.project.publish_presentation" : "boolean",
+          //"product.purchase_types"[]
+          "product.purchase_types.*.app_link" : "string?",
+          "product.purchase_types.*.code" : "string",
+          "product.purchase_types.*.description" : "string?",
+          "product.purchase_types.*.discount" : "object?",
+          "product.purchase_types.*.image" : "string?",
+          "product.purchase_types.*.name" : "string",
+          "product.purchase_types.*.title" : "string?",
+          "product.purchase_types.*.web_link" : "string?",
+          //"product.purchase_types.*.discount"{}
+          "product.purchase_types.*.discount.absolute_discount" : "number",
+          "product.purchase_types.*.discount.description" : "string?",
+          "product.purchase_types.*.discount.meter_price" : "number",
+          "product.purchase_types.*.discount.percentage_discount" : "number",
+          "product.purchase_types.*.discount.price" : "number",
+          "product.purchase_types.*.discount.type" : "string",
+          //"product.section"{}
+          "product.section.building_id" : "integer",
+          "product.section.description" : "string?",
+          "product.section.external_id" : "string",
+          "product.section.floor_quantity" : "integer?",
+          "product.section.full_description" : "string?",
+          "product.section.id" : "integer",
+          "product.section.name" : "string?",
+          // "product.status"{}
+          "product.status.code" : "string",
+          "product.status.name" : "string",
+          // "product.view_from_window"{}
+          "product.view_from_window.angle": "number?",
+          "product.view_from_window.back_segment": "boolean",
+          "product.view_from_window.front_segment": "boolean",
+          "product.view_from_window.image": "string",
+          "product.view_from_window.left_segment": "boolean",
+          "product.view_from_window.right_segment": "boolean",
+          "product.view_from_window.size": "string",
+          "product.view_from_window.x": "number",
+          "product.view_from_window.y": "number",
+
+      }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение ОН.resources/examples
+order: 1000

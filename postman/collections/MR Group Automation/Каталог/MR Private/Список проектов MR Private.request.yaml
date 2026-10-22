@@ -1,0 +1,31 @@
+$kind: http-request
+description: Получение проектов MR Private
+url: "{{baseUrl}}/sale/projects/private"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТЫ МЕТОДА: 
+
+      pm.variables.set("schema", {
+        required: [
+          "items"
+        ],
+        types: {
+          "items": "array",
+          "items.*.code": "string",            
+          "items.*.id": "integer",             
+          "items.*.link": "string?",           
+          "items.*.marketing_image": "string?",  
+          "items.*.name": "string",            
+          "items.*.phone": "string?",           
+          "items.*.title": "string",           
+          "items.*.video": "string?" 
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Список проектов MR Private.resources/examples
+order: 1000

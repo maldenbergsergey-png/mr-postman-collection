@@ -1,0 +1,139 @@
+$kind: http-example
+name: |
+  Список заявок на ипотеку.
+request:
+  url: "{{baseUrl}}/mortgage/application"
+  method: GET
+  headers:
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": "<integer>",
+            "lead_id": "<string>",
+            "number": "<string>",
+            "status": {
+              "code": "chosen",
+              "name": "<string>"
+            },
+            "project": {
+              "id": "<integer>",
+              "code": "<string>",
+              "name": "<string>"
+            },
+            "rate": "<number>",
+            "payment": "<number>",
+            "period": "<integer>",
+            "create_date": "<date>",
+            "link": "<string>",
+            "offers": [
+              {
+                "id": "<integer>",
+                "program": "<string>",
+                "bank": {
+                  "logo": "<string>",
+                  "name": "<string>",
+                  "code": "<string>"
+                },
+                "rate": "<number>",
+                "payment": "<number>",
+                "amount": "<number>",
+                "period": "<integer>",
+                "available": "<boolean>",
+                "status": {
+                  "code": "awaiting_approval",
+                  "name": "<string>"
+                }
+              },
+              {
+                "id": "<integer>",
+                "program": "<string>",
+                "bank": {
+                  "logo": "<string>",
+                  "name": "<string>",
+                  "code": "<string>"
+                },
+                "rate": "<number>",
+                "payment": "<number>",
+                "amount": "<number>",
+                "period": "<integer>",
+                "available": "<boolean>",
+                "status": {
+                  "code": "approved",
+                  "name": "<string>"
+                }
+              }
+            ]
+          },
+          {
+            "id": "<integer>",
+            "lead_id": "<string>",
+            "number": "<string>",
+            "status": {
+              "code": "awaiting_approval",
+              "name": "<string>"
+            },
+            "project": {
+              "id": "<integer>",
+              "code": "<string>",
+              "name": "<string>"
+            },
+            "rate": "<number>",
+            "payment": "<number>",
+            "period": "<integer>",
+            "create_date": "<date>",
+            "link": "<string>",
+            "offers": [
+              {
+                "id": "<integer>",
+                "program": "<string>",
+                "bank": {
+                  "logo": "<string>",
+                  "name": "<string>",
+                  "code": "<string>"
+                },
+                "rate": "<number>",
+                "payment": "<number>",
+                "amount": "<number>",
+                "period": "<integer>",
+                "available": "<boolean>",
+                "status": {
+                  "code": "chosen",
+                  "name": "<string>"
+                }
+              },
+              {
+                "id": "<integer>",
+                "program": "<string>",
+                "bank": {
+                  "logo": "<string>",
+                  "name": "<string>",
+                  "code": "<string>"
+                },
+                "rate": "<number>",
+                "payment": "<number>",
+                "amount": "<number>",
+                "period": "<integer>",
+                "available": "<boolean>",
+                "status": {
+                  "code": "awaiting_approval",
+                  "name": "<string>"
+                }
+              }
+            ]
+          }
+        ]
+      }
+order: 1000

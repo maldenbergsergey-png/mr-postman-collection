@@ -1,0 +1,64 @@
+$kind: http-example
+name: |
+  Запрошенный URL не существует.
+
+  Возможные коды ошибок:
+
+  - `not_found` — запрошенный ресурс не найден.
+request:
+  url: "{{baseUrl}}/tradein/form"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: json
+    content: |-
+      {
+        "phone": "<string>",
+        "name": "<string>",
+        "project_code": "<string>",
+        "comment": "<string>",
+        "realty": {
+          "address": "<string>",
+          "floor": "<integer>",
+          "area": "<number>",
+          "rooms_number": 0,
+          "price": "<number>"
+        }
+      }
+response:
+  statusCode: 404
+  statusText: Not Found
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "errors": [
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          },
+          {
+            "code": "<string>",
+            "detail": "<string>",
+            "title": "<string>",
+            "source": {
+              "pointer": "<string>"
+            }
+          }
+        ],
+        "message": "<string>"
+      }
+order: 5000

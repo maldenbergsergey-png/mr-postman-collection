@@ -1,0 +1,158 @@
+$kind: http-request
+description: |
+  Возвращает [документ согласия](https://wiki.adv.ru/pages/viewpage.action?pageId=307093060)
+  по его идентификатору или коду.
+
+  - [Обзорное описание получения согласий пользователя](https://wiki.adv.ru/pages/viewpage.action?pageId=307094741)
+  - [Описание метода API для бэкенда](https://wiki.adv.ru/pages/viewpage.action?pageId=307094682)
+url: "{{baseUrl}}/legal/consent-documents/{{formsConsentsMap}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |
+      // Требуются существующие переменные ENV:
+      //   - formsConsentsMap  (заполнена первым запросом; карта или массив форм)
+      //   - consentIndex      (числовой индекс перебора; будет инкрементирован здесь)
+      //   - identifier        (если существует — синхронизируем локально тем же ID)
+
+      const raw = pm.environment.get("formsConsentsMap");
+      if (!raw || typeof raw !== "string") {
+        throw new Error("formsConsentsMap отсутствует или пуст; выполните сначала /forms/configs");
+      }
+
+      // Парсинг возможных форматов и сбор consent_document.id
+      function collectIdsFromArray(arr) {
+        const set = new Set();
+        for (const form of arr) {
+          const consents = Array.isArray(form?.consents) ? form.consents : [];
+          for (const c of consents) {
+            const id = c?.consent_document?.id ?? c?.consentDocument?.id ?? c?.id;
+            const s = id == null ? "" : String(id).trim();
+            if (s) set.add(s);
+          }
+        }
+        return Array.from(set);
+      }
+      function collectIdsFromMapLike(obj) {
+        const set = new Set();
+        for (const v of Object.values(obj)) {
+          if (Array.isArray(v)) {
+            // карта { formId: [ids...] }
+            for (const x of v) {
+              const s = String(x ?? "").trim();
+              if (s) set.add(s);
+            }
+          } else if (v && typeof v === "object" && Array.isArray(v.consents)) {
+            // словарь форм { formId: { consents:[...] } }
+            for (const c of v.consents) {
+              const id = c?.consent_document?.id ?? c?.consentDocument?.id ?? c?.id;
+              const s = id == null ? "" : String(id).trim();
+              if (s) set.add(s);
+            }
+          }
+        }
+        return Array.from(set);
+      }
+
+      let ids = [];
+      let parsed = null;
+      try { parsed = JSON.parse(raw); } catch (_) { parsed = null; }
+
+      if (Array.isArray(parsed)) {
+        ids = collectIdsFromArray(parsed);
+      } else if (parsed && typeof parsed === "object") {
+        if (Array.isArray(parsed?.data?.items)) {
+          ids = collectIdsFromArray(parsed.data.items);
+        } else if (Array.isArray(parsed?.data)) {
+          ids = collectIdsFromArray(parsed.data);
+        } else {
+          ids = collectIdsFromMapLike(parsed);
+        }
+      } else {
+        const only = raw.trim();
+        if (only) {
+          // В окружении лежит одиночный ID — используем его как есть
+          pm.variables.set("formsConsentsMap", only);            // локальная подстановка в URL
+          if (pm.environment.get("identifier") !== undefined) {
+            pm.variables.set("identifier", only);
+          }
+          console.log("consents.single id =", only);
+          return;
+        }
+      }
+
+      ids = Array.from(new Set(ids));
+      if (ids.length === 0) {
+        throw new Error("Не удалось извлечь consent_document.id из formsConsentsMap");
+      }
+
+      // Детерминированная «случайная» перестановка, меняющаяся по циклам
+      function hash32(s) {
+        let h = 2166136261 >>> 0;
+        for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+        return h >>> 0;
+      }
+      function shuffleDet(a, seedInit) {
+        let seed = seedInit >>> 0;
+        function rnd() {
+          seed ^= seed << 13; seed >>>= 0;
+          seed ^= seed >> 17; seed >>>= 0;
+          seed ^= seed << 5;  seed >>>= 0;
+          return (seed >>> 0) / 0x100000000;
+        }
+        const arr = a.slice();
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(rnd() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      // Индекс и выбор ID
+      const n = ids.length;
+      let idx = Number(pm.environment.get("consentIndex"));
+      if (!Number.isFinite(idx) || idx < 0) idx = 0;
+
+      const cycle = Math.floor(idx / n);
+      const pos   = idx % n;
+      const perm  = shuffleDet(ids, hash32(JSON.stringify(ids) + "#" + cycle));
+      const picked = perm[pos];
+
+      // Локальная подстановка в URL-плейсхолдер {{formsConsentsMap}} и, при наличии, в {{identifier}}
+      pm.variables.set("formsConsentsMap", picked);
+      if (pm.environment.get("identifier") !== undefined) {
+        pm.variables.set("identifier", picked);
+      }
+
+      // Сдвигаем индекс в окружении, чтобы на следующем запуске взять следующий документ
+      pm.environment.set("consentIndex", String(idx + 1));
+
+      console.log(`consents.total=${n} cycle=${cycle} pick=${pos + 1}/${n} id=${picked}`);
+
+
+      // КОНТРАКТЫ МЕТОДА:
+
+      pm.variables.set("schema", {
+        required: [
+          "data",
+          "data.brief",
+          "data.id",
+          "data.text",
+          "data.title",
+          "data.url_name"
+        ],
+        types: {
+          "data": "object",
+          "data.brief": "string",
+          "data.id": "string",
+          "data.text": "string",
+          "data.title": "string",
+          "data.url_name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Получение документа согласия.resources/examples
+order: 1000

@@ -1,0 +1,51 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/services?project=<string>&application=<boolean>"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    - key: project
+      value: <string>
+      description: Фильтр по коду проекта
+    - key: application
+      value: <boolean>
+      description: Фильтр, позволяющий отобрать из общего массива объектов только объекты для МП
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "count": "<integer>",
+        "items": [
+          {
+            "id": "<integer>",
+            "header": "<string>",
+            "description": "<string>",
+            "white_text": "<boolean>",
+            "gradient": "<boolean>",
+            "url": "<string>",
+            "screen_mp": "<string>",
+            "background_image": "<string>",
+            "background_color": "<string>",
+            "icon": "<string>"
+          },
+          {
+            "id": "<integer>",
+            "header": "<string>",
+            "description": "<string>",
+            "white_text": "<boolean>",
+            "gradient": "<boolean>",
+            "url": "<string>",
+            "screen_mp": "<string>",
+            "background_image": "<string>",
+            "background_color": "<string>",
+            "icon": "<string>"
+          }
+        ]
+      }
+order: 1000

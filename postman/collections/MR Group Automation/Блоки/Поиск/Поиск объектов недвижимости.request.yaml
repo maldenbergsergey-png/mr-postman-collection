@@ -1,0 +1,160 @@
+$kind: http-request
+description: |
+  Метод поиска объектов недвижимости.
+url: "{{baseUrl}}/sale/search?query={{projectName}}"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: query
+    value: City
+    disabled: true
+    description: (Required) Поисковый запрос
+  - key: query
+    value: "{{projectName}}"
+scripts:
+  - type: beforeRequest
+    code: |+
+      // Проверка, что projectName готов
+      let q = pm.environment.get("projectName");
+      if (typeof q !== "string" || !q.trim()) {
+        throw new Error('projectName пуст — сначала выполните карточку проекта /sale/projects/{{projectCode}}');
+      }
+      q = q.trim().replace(/\s+/g, " ");
+      pm.environment.set("projectName", q);
+
+      // Контроль длины по ТЗ [3;255] байт UTF-8
+      const utf8Len = encodeURI(q).split(/%..|./).length - 1;
+      if (utf8Len < 3 || utf8Len > 255) {
+        throw new Error(`Длина projectName ${utf8Len} байт — вне допуска [3;255] для ?query=`);
+      }
+      console.log(`→ Поиск по имени: "${q}"`);
+
+      // КОНТРАКТЫ МЕТОДА:
+
+       pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+
+          "items.*.brandbook",
+          "items.*.business_unit",
+          "items.*.code",
+          "items.*.id",
+          "items.*.is_countryside",
+          "items.*.is_private",
+          "items.*.marketing_images",
+          "items.*.name",
+          "items.*.title",
+          "items.*.air_3d",
+          "items.*.completion_date",
+          "items.*.external",
+          "items.*.image",
+          "items.*.is_completed",
+          "items.*.key_project",
+          "items.*.latitude",
+          "items.*.logo",
+          "items.*.longitude",
+          "items.*.main_3d",
+          "items.*.max_discount",
+          "items.*.metro",
+          "items.*.metro_distance",
+          "items.*.min_price",
+          "items.*.movement_way",
+          "items.*.partners",
+          "items.*.price_table",
+          "items.*.project_usp",
+          "items.*.queues",
+
+          "items.*.metro.*.color",
+          "items.*.metro.*.name",
+
+          "items.*.movement_way.*.icon",
+          "items.*.movement_way.*.name",
+
+          "items.*.partners.*.logo",
+          "items.*.partners.*.name",
+
+          "items.*.price_table.*.filter",
+          "items.*.price_table.*.min_area",
+          "items.*.price_table.*.min_price",
+          "items.*.price_table.*.name",
+
+          "items.*.project_usp.*.icon",
+          "items.*.project_usp.*.name"
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*": "object",
+
+          "items.*.brandbook": "string",
+          "items.*.business_unit": "string",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.is_countryside": "boolean",
+          "items.*.is_private": "boolean",
+
+          "items.*.marketing_images": "array",
+          "items.*.marketing_images.*": "string",
+
+          "items.*.name": "string",
+          "items.*.title": "string?",
+          "items.*.air_3d": "string?",
+          "items.*.completion_date": "string?",
+          "items.*.external": "boolean",
+          "items.*.image": "string?",
+          "items.*.is_completed": "boolean",
+          "items.*.key_project": "boolean",
+          "items.*.latitude": "number",
+          "items.*.logo": "string?",
+          "items.*.longitude": "number",
+          "items.*.main_3d": "string?",
+          "items.*.max_discount": "number?",
+
+          "items.*.metro": "object?",
+          "items.*.metro.color": "string?",
+          "items.*.metro.name": "string",
+
+          "items.*.metro_distance": "integer?",
+          "items.*.min_price": "number?",
+
+          "items.*.movement_way": "object?",
+          "items.*.movement_way.icon": "string",
+          "items.*.movement_way.name": "string",
+
+          "items.*.partners": "array",
+          "items.*.partners.*": "object",
+          "items.*.partners.*.logo": "string",
+          "items.*.partners.*.name": "string",
+
+          "items.*.price_table": "array",
+          "items.*.price_table.*": "object",
+          "items.*.price_table.*.filter": "integer",
+          "items.*.price_table.*.min_area": "number",
+          "items.*.price_table.*.min_price": "number",
+          "items.*.price_table.*.name": "string",
+
+          "items.*.project_usp": "array",
+          "items.*.project_usp.*": "object",
+          "items.*.project_usp.*.icon": "string",
+          "items.*.project_usp.*.name": "string",
+
+          "items.*.queues": "object?",
+          "items.*.queues.*": "array",
+          "items.*.queues.*.*": "string"
+        }
+      });
+
+    language: text/javascript
+  - type: afterResponse
+    code: |
+      pm.test("Поиск по имени проекта вернул результаты", function () {
+        const json = pm.response.json();
+        const ok = (Array.isArray(json?.items) && json.items.length > 0) || (Array.isArray(json?.data) && json.data.length > 0);
+        pm.expect(ok, "Выдача пуста").to.be.true;
+      });
+    language: text/javascript
+settings: {}
+examples: ./.resources/Поиск объектов недвижимости.resources/examples
+order: 1000
