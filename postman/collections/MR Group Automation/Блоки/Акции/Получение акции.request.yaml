@@ -7,86 +7,49 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // URL метода, откуда берём акции
-      const baseUrl = pm.environment.get("baseUrl");
-      const promoUrl = `${baseUrl}/promo`;
+      // Код акции берём из сохранённого списка, а если списка нет - запрашиваем GET /promo.
+      // Список акций возвращается массивом (допускаем и вариант с полем items).
+      const promoUrl = `${pm.environment.get("baseUrl")}/promo`;
 
-      // Проверяем, есть ли сохранённый список акций
-      let promoArray = pm.environment.get("promoArray");
-      let index = parseInt(pm.environment.get("index") || "0", 10);
-
-      // Если список уже сохранён — используем его
-      if (promoArray) {
-          try {
-              promoArray = JSON.parse(promoArray);
-
-              if (Array.isArray(promoArray) && promoArray.length > 0) {
-                  if (index >= promoArray.length) index = 0;
-                  const selectedCode = promoArray[index];
-                  pm.environment.set("promoCode", selectedCode);
-                  pm.environment.set("index", (index + 1) % promoArray.length);
-
-                  console.log(`Используем сохранённый код акции: ${selectedCode}`);
-
-                  // === ВСТАВЛЯЕМ СХЕМУ И ПРОВЕРКУ ЗДЕСЬ ===
-                  setPromoDetailSchemaAndRunTests();
-                  return;
-              }
-          } catch (e) {
-              console.warn("Ошибка при чтении promoArray, запрашиваем заново");
-          }
+      function pickPromo(codes) {
+          let index = parseInt(pm.environment.get("promoIndex") || "0", 10);
+          if (!Number.isFinite(index) || index >= codes.length) index = 0;
+          pm.environment.set("promoCode", String(codes[index]));
+          pm.environment.set("promoIndex", String((index + 1) % codes.length));
+          console.log(`Выбрана акция: ${codes[index]}`);
       }
 
-      // Если список не найден — делаем GET-запрос
-      console.log("Делаем запрос к API, чтобы получить список акций");
+      function extractCodes(body) {
+          const list = Array.isArray(body) ? body : (body && Array.isArray(body.items) ? body.items : []);
+          return list.map((p) => p && p.code).filter(Boolean);
+      }
 
-      pm.sendRequest({
-          url: promoUrl,
-          method: "GET",
-          header: {
-              "Accept": "application/json"
-          }
-      }, function (err, res) {
-          if (err) {
-              console.error("Ошибка при запросе акций:", err);
-              return;
-          }
+      let codes = [];
+      try { codes = JSON.parse(pm.environment.get("promoArray") || "[]"); } catch (e) { codes = []; }
 
-          if (res.code !== 200) {
-              console.error(`API вернул статус ${res.code}`);
-              return;
-          }
-
-          const jsonData = res.json();
-
-          if (!jsonData || !Array.isArray(jsonData.items)) {
-              console.error("Нет поля 'items' или оно не массив в ответе /promo");
-              return;
-          }
-
-          const items = jsonData.items;
-          if (items.length === 0) {
-              console.error("Список акций пуст");
-              return;
-          }
-
-          // Собираем массив кодов
-          const newPromoArray = items.map(p => p.code).filter(Boolean);
-          if (newPromoArray.length === 0) {
-              console.error("Не найдено ни одного promo code");
-              return;
-          }
-
-          // Сохраняем
-          pm.environment.set("promoArray", JSON.stringify(newPromoArray));
-          pm.environment.set("promoCode", newPromoArray[0]);
-          pm.environment.set("index", 1);
-
-          console.log(`Список акций сохранён. Текущая акция: ${newPromoArray[0]}`);
-
-          // === ВСТАВЛЯЕМ СХЕМУ И ПРОВЕРКУ ЗДЕСЬ ===
-          setPromoDetailSchemaAndRunTests();
-      });
+      if (Array.isArray(codes) && codes.length > 0) {
+          pickPromo(codes);
+      } else {
+          // Запрос выполняется до отправки основного запроса: Postman ждёт завершения pm.sendRequest
+          pm.sendRequest({ url: promoUrl, method: "GET", header: { Accept: "application/json" } }, function (err, res) {
+              if (err || !res || res.code !== 200) {
+                  pm.environment.unset("promoCode");
+                  console.warn("Не удалось получить список акций:", err || (res && res.code));
+                  pm.execution.skipRequest(); // без кода акции основной запрос не отправляем
+                  return;
+              }
+              let list = [];
+              try { list = extractCodes(res.json()); } catch (e) { list = []; }
+              if (list.length === 0) {
+                  pm.environment.unset("promoCode");
+                  console.warn("Список акций пуст - код акции не выбран");
+                  pm.execution.skipRequest();
+                  return;
+              }
+              pm.environment.set("promoArray", JSON.stringify(list));
+              pickPromo(list);
+          });
+      }
 
       // КОНТРАКТЫ МЕТОДА: PromoContent
       pm.variables.set("schema", {

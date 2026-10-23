@@ -37,6 +37,8 @@ scripts:
         // Берём случайный код
         const chosen = codes[Math.floor(Math.random() * codes.length)];
         pm.environment.set("faqCategoryCode", chosen);
+        // Все коды сохраняем: часть категорий пустая, следующий запрос выберет категорию с вопросами
+        pm.environment.set("faqCategoryCodes", JSON.stringify(codes));
 
         pm.test(`Сохранён faqCategoryCode = ${chosen}`, function () {
           pm.expect(pm.environment.get("faqCategoryCode")).to.be.a("string").and.not.empty;

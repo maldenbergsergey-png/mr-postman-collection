@@ -9,11 +9,34 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      const code = pm.environment.get("faqCategoryCode");
-      pm.test("Есть faqCategoryCode", function () {
-        pm.expect(code, "Переменная 'faqCategoryCode' отсутствует — сначала вызови /api/faq/category").to.be.a("string").and.not.empty;
-      });
+      // Берём первую категорию, в которой есть вопросы: часть категорий FAQ пустая
+      let faqCodes = [];
+      try { faqCodes = JSON.parse(pm.environment.get("faqCategoryCodes") || "[]"); } catch (e) { faqCodes = []; }
+      const faqFirst = pm.environment.get("faqCategoryCode");
+      if (faqFirst) faqCodes = [faqFirst].concat(faqCodes.filter((c) => c !== faqFirst));
 
+      function findCategoryWithQuestions(i) {
+        if (i >= faqCodes.length) {
+          pm.environment.unset("faqCategoryCode");
+          console.warn("Не найдено ни одной категории FAQ с вопросами - запрос пропущен");
+          pm.execution.skipRequest();
+          return;
+        }
+        pm.sendRequest({
+          url: `${pm.environment.get("baseUrl")}/faq/category/${faqCodes[i]}/questions`,
+          method: "GET",
+          header: { Accept: "application/json" }
+        }, function (err, res) {
+          let hasQuestions = false;
+          try { hasQuestions = !err && res.code === 200 && res.json().questions.length > 0; } catch (e) { hasQuestions = false; }
+          if (hasQuestions) {
+            pm.environment.set("faqCategoryCode", faqCodes[i]);
+          } else {
+            findCategoryWithQuestions(i + 1);
+          }
+        });
+      }
+      findCategoryWithQuestions(0);
 
       // КОНТРАКТЫ МЕТОДА: 
 

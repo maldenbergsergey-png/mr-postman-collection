@@ -13,9 +13,9 @@ scripts:
   - type: afterResponse
     code: |-
       // Проверяем, что ответ корректный JSON
-      let data;
+      let respData;
       try {
-          data = pm.response.json();
+          respData = pm.response.json();
       } catch (e) {
           pm.test("Ответ не является корректным JSON", function () {
               pm.expect.fail("Ошибка парсинга JSON");
@@ -24,14 +24,14 @@ scripts:
 
       // Проверяем наличие массива items
       pm.test("Проверяем, что есть массив items", function () {
-          pm.expect(data).to.have.property("items");
-          pm.expect(data.items).to.be.an("array").that.is.not.empty;
+          pm.expect(respData).to.have.property("items");
+          pm.expect(respData.items).to.be.an("array").that.is.not.empty;
       });
 
       // Ищем первую сделку, где массив products не пуст
       let validDeal = null;
-      if (Array.isArray(data.items) && data.items.length > 0) {
-          validDeal = data.items.find(item => 
+      if (Array.isArray(respData.items) && respData.items.length > 0) {
+          validDeal = respData.items.find(item => 
               Array.isArray(item.products) && item.products.length > 0
           );
       }

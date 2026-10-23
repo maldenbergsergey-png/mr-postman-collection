@@ -17,15 +17,15 @@ headers:
 scripts:
   - type: afterResponse
     code: |-
-      let data;
+      let respData;
       try {
-        data = pm.response.json().data;
+        respData = pm.response.json().data;
       } catch (e) {
         pm.expect.fail("Ответ не является корректным JSON");
       }
 
       // Проверяем что вернулся массив форм
-      pm.expect(data, "Нет массива data").to.be.an("array");
+      pm.expect(respData, "Нет массива data").to.be.an("array");
 
       // Забираем текущую карту formCode -> consentIds из ENV (или создаём новую)
       let formsConsentsMap = {};
@@ -36,7 +36,7 @@ scripts:
       }
 
       // Проходим по каждой форме
-      data.forEach(form => {
+      respData.forEach(form => {
         pm.expect(form, "У формы нет id").to.have.property("id");
 
         const codeForm = form.id;

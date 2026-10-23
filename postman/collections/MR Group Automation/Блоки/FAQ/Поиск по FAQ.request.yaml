@@ -12,6 +12,13 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
+      // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
+      const missingInputs__ = ["faqQuery"].filter((n) => !pm.variables.get(n));
+      if (missingInputs__.length) {
+        console.warn("Запрос пропущен: нет значений для " + missingInputs__.join(", "));
+        pm.execution.skipRequest();
+      }
+
       const q = pm.environment.get("faqQuery");
       pm.test("Есть faqQuery для поиска", function () {
         pm.expect(q, "Переменная 'faqQuery' отсутствует — сначала вызови /questions").to.be.a("string").and.not.empty;

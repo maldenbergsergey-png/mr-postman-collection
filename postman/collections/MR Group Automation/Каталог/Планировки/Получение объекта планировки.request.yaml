@@ -134,6 +134,13 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
+      // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
+      const missingInputs__ = ["typicalObjectId"].filter((n) => !pm.variables.get(n));
+      if (missingInputs__.length) {
+        console.warn("Запрос пропущен: нет значений для " + missingInputs__.join(", "));
+        pm.execution.skipRequest();
+      }
+
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {

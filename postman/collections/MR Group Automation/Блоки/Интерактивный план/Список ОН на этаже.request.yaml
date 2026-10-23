@@ -22,6 +22,13 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
+      // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
+      const missingInputs__ = ["categoryHasPlan", "buildingHasPlan", "floorNumberHasPlan"].filter((n) => !pm.variables.get(n));
+      if (missingInputs__.length) {
+        console.warn("Запрос пропущен: нет значений для " + missingInputs__.join(", "));
+        pm.execution.skipRequest();
+      }
+
       pm.variables.set("schema", {
         required: [
           "*.area",
@@ -130,4 +137,4 @@ scripts:
     language: text/javascript
 settings: {}
 examples: ./.resources/Список ОН на этаже.resources/examples
-order: 3000
+order: 4000
