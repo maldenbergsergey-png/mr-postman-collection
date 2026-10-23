@@ -6,6 +6,11 @@ description: |
   **Внимание!** Этот метод является заменой для `GET /sale/plan/floors`.
 url: "{{baseUrl}}/realty/plan/floors?category={{categoryHasPlan}}&building={{buildingHasPlan}}"
 method: GET
+queryParams:
+  - key: "category"
+    value: "{{categoryHasPlan}}"
+  - key: "building"
+    value: "{{buildingHasPlan}}"
 headers:
   Accept: application/json
 scripts:

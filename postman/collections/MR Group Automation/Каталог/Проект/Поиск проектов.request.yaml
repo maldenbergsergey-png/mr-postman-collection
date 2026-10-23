@@ -7,6 +7,9 @@ description: |
   Возвращает список проектов с учётом фильтров.
 url: "{{baseUrl}}/sale/projects?category=flats"
 method: GET
+queryParams:
+  - key: "category"
+    value: "flats"
 headers:
   Accept: application/json
 scripts:

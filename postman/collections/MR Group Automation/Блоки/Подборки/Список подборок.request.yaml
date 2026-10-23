@@ -4,6 +4,11 @@ description: |
   Получение списка подборок ОН с учётом переданного контекста
 url: "{{baseUrl}}/selections?page=1&limit=10"
 method: POST
+queryParams:
+  - key: "page"
+    value: "1"
+  - key: "limit"
+    value: "10"
 headers:
   Content-Type: application/json
   Accept: application/json

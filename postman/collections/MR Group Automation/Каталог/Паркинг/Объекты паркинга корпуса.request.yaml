@@ -5,6 +5,11 @@ description: |
   список ОН со схемами и пагинацию.
 url: "{{baseUrl}}/realty/projects/{{parkingProjectCode}}/buildings/{{parkingBuildingCode}}/parking/objects?page=1&limit=10"
 method: GET
+queryParams:
+  - key: "page"
+    value: "1"
+  - key: "limit"
+    value: "10"
 headers:
   Accept: application/json
 scripts:

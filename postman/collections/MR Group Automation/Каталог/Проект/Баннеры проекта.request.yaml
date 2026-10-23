@@ -4,6 +4,11 @@ description: |
   Возвращает список баннеров для проекта.
 url: "{{baseUrl}}/realty/projects/{{projectCode}}/banners?page=1&limit=10"
 method: GET
+queryParams:
+  - key: "page"
+    value: "1"
+  - key: "limit"
+    value: "10"
 headers:
   Accept: application/json
 scripts:

@@ -4,6 +4,11 @@ description: |
   Возвращает список промо-блоков для страницы Штаб-квартиры.
 url: "{{baseUrl}}/realty/headquarters/announcements?page=1&limit=10"
 method: GET
+queryParams:
+  - key: "page"
+    value: "1"
+  - key: "limit"
+    value: "10"
 headers:
   Accept: application/json
 scripts:
