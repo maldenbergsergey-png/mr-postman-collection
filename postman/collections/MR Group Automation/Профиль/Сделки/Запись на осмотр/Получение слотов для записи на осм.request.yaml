@@ -2,17 +2,10 @@ $kind: http-request
 name: Получение слотов для записи на осмотр
 description: |
   Метод, который позволяет получить список слотов для записи на осмотр ОН
-url: "{{baseUrl}}/purchase/:purchase-id/schedule/:product-id"
+url: "{{baseUrl}}/purchase/{{idDeal}}/schedule/{{dealProductId}}"
 method: GET
 headers:
   Accept: application/json
-pathVariables:
-  - key: purchase-id
-    value: <string>
-    description: (Required) Внутренний идентификатор сделки
-  - key: product-id
-    value: <string>
-    description: (Required) Внутренний идентификатор ОН
 auth:
   type: bearer
   credentials:
@@ -20,6 +13,13 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
+      // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
+      const missingInputs__ = ["idDeal", "dealProductId"].filter((n) => !pm.variables.get(n));
+      if (missingInputs__.length) {
+        console.warn("Запрос пропущен: нет значений для " + missingInputs__.join(", "));
+        pm.execution.skipRequest();
+      }
+
       // КОНТРАКТЫ МЕТОДА: Schedule
       pm.variables.set("schema", {
         required: [

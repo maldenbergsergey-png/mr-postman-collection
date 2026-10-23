@@ -10,6 +10,20 @@ auth:
   credentials:
     token: "{{bearerToken}}"
 scripts:
+  - type: afterResponse
+    code: |-
+      // Идентификатор ОН сделки нужен методу получения слотов для записи на осмотр
+      (function () {
+        let card = null;
+        try { card = pm.response.json(); } catch (e) { card = null; }
+        const productId = card && Array.isArray(card.products) && card.products[0] ? card.products[0].id : undefined;
+        if (productId !== undefined && productId !== null) {
+          pm.environment.set("dealProductId", String(productId));
+        } else {
+          pm.environment.unset("dealProductId");
+        }
+      })();
+    language: text/javascript
   - type: beforeRequest
     code: |
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется

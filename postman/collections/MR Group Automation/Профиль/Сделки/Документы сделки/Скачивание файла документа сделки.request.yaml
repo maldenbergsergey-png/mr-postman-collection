@@ -8,6 +8,10 @@ url: "{{baseUrl}}/purchase/{{idDeal}}/documents/{{documentDeal}}/{{documentFileI
 method: GET
 headers:
   Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
 scripts:
   - type: beforeRequest
     code: |-
