@@ -1,30 +1,39 @@
 $kind: http-request
-url: https://stage-superapp.mr-group.ru/api/bestbenefits/login
+url: "{{baseUrl}}/bestbenefits/login"
 method: POST
 headers:
   accept: application/json, text/plain, */*
   accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
-  authorization: Bearer {{supabase_service_role_api_key_0z3l}}
-  baggage: sentry-environment=production,sentry-public_key=92aba965495d84b286ecfb5f960a3bae,sentry-trace_id=0d0c0152a7384528894632235dc7d660,sentry-sample_rate=1,sentry-transaction=%2Fcompany%2Fmrclub%2F%3Acategory%2F%3Aoffer%2F,sentry-sampled=true
   content-type: application/json
-  dev-authorization: f5GaD8jxJ8KwEM
-  origin: https://stage-superapp.mr-group.ru
   priority: u=1, i
-  referer: https://stage-superapp.mr-group.ru/company/mrclub/tekhnika/sitilink/
   sec-ch-ua: '"Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"'
   sec-ch-ua-mobile: ?1
   sec-ch-ua-platform: '"Android"'
   sec-fetch-dest: empty
   sec-fetch-mode: cors
   sec-fetch-site: same-origin
-  sentry-trace: 9420b84e4d9d47edbc6d430dbb0cbe75-b21f30e7822d4cb4-1
   user-agent: Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36
-  Cookie: spid=1781776837321_4e388d06b7390de842e87c3a015a7e5b_iq85nurodksxfk0h; _ym_uid=1781351952103903811; _ym_d=1781791262; uxs_uid=243f5fc0-6b1e-11f1-9ae9-cdec35a16701; _ga=GA1.1.1485812863.1781791266; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; scbsid_old=4191994542; USE_COOKIE_CONSENT_STATE={%22session%22:true%2C%22persistent%22:true%2C%22necessary%22:true%2C%22preferences%22:true%2C%22statistics%22:true%2C%22marketing%22:true%2C%22firstParty%22:true%2C%22thirdParty%22:true}; mindboxDeviceUUID=46b68086-c25c-44c2-a164-488e289d9b22; directCrm-session=%7B%22deviceGuid%22%3A%2246b68086-c25c-44c2-a164-488e289d9b22%22%7D; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; _ymab_param=QAr2g6ueEz4RMZNxalJ1dqEAUTxF1C1NC7lgjngSbugNbCOsfuoywyZDaCCL-BRCz1_YUmC0QMcN0tjiCYXpUfcglLY; BITRIX_SM_LOGIN=molodtsov.s%40mr-group.ru; adrcid=A-D34Q80ES-A0l7HdL3k6Yg; adrcid=A-D34Q80ES-A0l7HdL3k6Yg; tmr_lvid=519aa4d5d7f8903a596248f66a133b5f; tmr_lvidTS=1782470608700; BITRIX_SM_SOUND_LOGIN_PLAYED=Y; acs_3=%7B%22hash%22%3A%2278168166d1d84ba31a91bed5b79968efe721107d%22%2C%22nst%22%3A1782811859931%2C%22sl%22%3A%7B%22224%22%3A1782725459931%2C%221228%22%3A1782725459931%7D%7D; SCBnotShow=-1; adrdel=1782803872954; adrdel=1782803872954; acs_3=%7B%22hash%22%3A%2278168166d1d84ba31a91bed5b79968efe721107d%22%2C%22nst%22%3A1782898433856%2C%22sl%22%3A%7B%22224%22%3A1782812033856%2C%221228%22%3A1782812033856%7D%7D; domain_sid=8mntRh2YDmcrhsGmbxAHW%3A1782812258076; _ym_isad=1; smFpId_old_values=%5B%22f6c5702c6ecef0dfdf4db06c312a50de%22%2C%22eef3bf4a78181620145948437eccc4c6%22%2C%222d9e3d570c23067b2b709babe4367b3b%22%2C%225ce8934885a124e829674d644e402965%22%2C%22ce82847c889b0225c9ef08ec76146c74%22%2C%229eb9fb243a7dedfa556f0ca294d4222c%22%2C%22b8045eb8af071dc88c452007e71075de%22%2C%222c1f22f62054028225e1f62fec4eeb2e%22%2C%22b75c2a2250872d7ed0e320041c90e1ec%22%2C%229c04e427c7fd097adbdbb1ea2a4d4e6d%22%5D; spsc=1782906198912_c8893c8906b7a4fe4fcd573ddac3af7c_Wji9n9DrRGNp6tvqfuzDqLS81RHzMQyd4V0sY7UrfSUZ; PHPSESSID=4ai4047mce3hu18lbemtl8drg2; _cmg_csstvfLiQ=1782916200; _comagic_idvfLiQ=12350230248.16936917558.1782916200; SCBporogAct=5000; sma_session_id=2757560854; SCBfrom=; _ga_H5S7YBLWM3=GS2.1.s1782923648$o55$g0$t1782923648$j60$l0$h0; _ga_70ZZHDSCR6=GS2.1.s1782923648$o39$g0$t1782923648$j60$l0$h0; SCBindexAct=11; sma_index_activity=917
 body:
   type: json
   content: |-
     {
         "offer_id": "6637"
     }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "url"
+        ],
+        types: {
+          "url": "string"
+        }
+      });
+    language: text/javascript
 settings: {}
 order: 11000

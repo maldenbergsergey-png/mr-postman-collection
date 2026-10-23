@@ -1,0 +1,41 @@
+$kind: http-request
+name: "Предварительный расчёт онлайн-брони"
+description: |
+  Предварительный расчёт платной онлайн-брони ОН в CRM: срок платной брони, сумма договора
+  бронирования (ДБ) и сумма договора приобретения (ДП). Суммы возвращаются так, как их
+  рассчитала CRM, без пересчёта.
+url: "{{baseUrl}}/user/booking/product/{{product_code}}/precalculation"
+method: POST
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["product_code"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ BookingPrecalculation
+      pm.variables.set("schema", {
+        required: [
+          "bookingContractAmount",
+          "bookingTerm",
+          "salesContractAmount"
+        ],
+        types: {
+          "bookingContractAmount": "number",
+          "bookingTerm": "string?",
+          "salesContractAmount": "number"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 2000

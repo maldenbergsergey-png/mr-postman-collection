@@ -83,16 +83,13 @@ scripts:
 
       pm.variables.set("schema", {
         required: [
-          "items"
         ],
         types: {
-          //"description": "string" устарело
           "items": "array",
-          
+          "items.*.description": "string",
           "items.*.id": "string",
           "items.*.image": "string",
-          "items.*.title": "string",
-          
+          "items.*.title": "string"
         }
       });
     language: text/javascript

@@ -10,6 +10,11 @@ auth:
   type: bearer
   credentials:
     token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("responseKind", "none");
+    language: text/javascript
 settings: {}
 examples: ./.resources/Ознакомление с договором приобрет.resources/examples
 order: 4000

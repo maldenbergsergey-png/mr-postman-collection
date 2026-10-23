@@ -16,24 +16,38 @@ scripts:
       pm.variables.set("schema", {
         required: [
           "items",
+          "items.*.best_benefits",
+          "items.*.best_benefits.id",
+          "items.*.best_benefits.is_offer",
+          "items.*.best_benefits.show_action_button",
+          "items.*.categories",
+          "items.*.categories.*.code",
+          "items.*.categories.*.name",
+          "items.*.code",
+          "items.*.image",
+          "items.*.labels",
+          "items.*.labels.*.text",
+          "items.*.logo",
+          "items.*.name",
+          "items.*.teaser"
         ],
         types: {
           "items": "array",
-
+          "items.*.best_benefits": "object",
+          "items.*.best_benefits.id": "string?",
+          "items.*.best_benefits.is_offer": "boolean",
+          "items.*.best_benefits.show_action_button": "boolean",
           "items.*.categories": "array",
           "items.*.categories.*.code": "string",
           "items.*.categories.*.name": "string",
-
           "items.*.code": "string",
           "items.*.image": "string",
-
           "items.*.labels": "array",
           "items.*.labels.*.text": "string",
-
-          "items.*.logo": "string",   // nullable
+          "items.*.logo": "string?",
           "items.*.name": "string",
-          "items.*.teaser": "string", // nullable
-        },
+          "items.*.teaser": "string?"
+        }
       });
     language: text/javascript
 settings: {}

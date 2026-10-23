@@ -1,0 +1,27 @@
+$kind: http-request
+name: "Стартовый экран ИИ-подборщика"
+description: |
+  Предоставляет текст приветствия и список популярных запросов
+url: "{{baseUrl}}/ai-chat/starters"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ AiChatStartersResponse
+      pm.variables.set("schema", {
+        required: [
+          "suggestions",
+          "suggestions.*.text",
+          "welcome"
+        ],
+        types: {
+          "suggestions": "array",
+          "suggestions.*.text": "string",
+          "welcome": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

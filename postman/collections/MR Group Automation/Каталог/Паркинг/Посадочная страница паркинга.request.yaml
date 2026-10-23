@@ -1,0 +1,103 @@
+$kind: http-request
+name: "Посадочная страница паркинга"
+description: |
+  Возвращает начальные данные посадочной страницы паркинга: суммарные показатели,
+  список корпусов, генплан и правила покупки.
+url: "{{baseUrl}}/realty/projects/{{parkingProjectCode}}/parking-landing"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["parkingProjectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ParkingLanding
+      pm.variables.set("schema", {
+        required: [
+          "advantages",
+          "buildings",
+          "buildings.*.available_levels",
+          "buildings.*.available_types",
+          "buildings.*.boxrooms_count",
+          "buildings.*.code",
+          "buildings.*.crm_id",
+          "buildings.*.deadline",
+          "buildings.*.has_scheme",
+          "buildings.*.id",
+          "buildings.*.min_prices",
+          "buildings.*.min_prices.boxrooms",
+          "buildings.*.min_prices.motorcycles",
+          "buildings.*.min_prices.parkings",
+          "buildings.*.motorcycle_places_count",
+          "buildings.*.name",
+          "buildings.*.parking_places_count",
+          "buildings.*.readiness",
+          "genplan",
+          "purchase_rules",
+          "summary",
+          "summary.boxrooms_count",
+          "summary.motorcycle_places_count",
+          "summary.parking_places_count"
+        ],
+        types: {
+          "advantages": "object?",
+          "advantages.description": "string?",
+          "advantages.title": "string?",
+          "buildings": "array",
+          "buildings.*.available_levels": "array",
+          "buildings.*.available_levels.*": "integer",
+          "buildings.*.available_types": "array",
+          "buildings.*.available_types.*": "string",
+          "buildings.*.boxrooms_count": "integer?",
+          "buildings.*.code": "string",
+          "buildings.*.crm_id": "string?",
+          "buildings.*.deadline": "string?",
+          "buildings.*.has_scheme": "boolean",
+          "buildings.*.id": "integer",
+          "buildings.*.min_prices": "object",
+          "buildings.*.min_prices.boxrooms": "number?",
+          "buildings.*.min_prices.motorcycles": "number?",
+          "buildings.*.min_prices.parkings": "number?",
+          "buildings.*.motorcycle_places_count": "integer?",
+          "buildings.*.name": "string?",
+          "buildings.*.parking_places_count": "integer?",
+          "buildings.*.readiness": "integer?",
+          "genplan": "object?",
+          "genplan.available": "boolean",
+          "genplan.background_image": "string?",
+          "genplan.compass_angle": "number?",
+          "genplan.svg_markup": "string?",
+          "purchase_rules": "object?",
+          "purchase_rules.description": "string",
+          "purchase_rules.title": "string",
+          "summary": "object",
+          "summary.boxrooms_count": "integer",
+          "summary.motorcycle_places_count": "integer?",
+          "summary.parking_places_count": "integer"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Сохраняем код корпуса с паркингом для следующих запросов; при ошибке значение сбрасываем
+      (function () {
+        let body = null;
+        try { body = pm.response.json(); } catch (e) { body = null; }
+        let found;
+        try { found = (function (data) { return data.buildings.map((b) => b.code).find(Boolean); })(body); } catch (e) { found = undefined; }
+        if (found !== undefined && found !== null && found !== "") {
+          pm.environment.set("parkingBuildingCode", String(found));
+        } else {
+          pm.environment.unset("parkingBuildingCode");
+        }
+      })();
+    language: text/javascript
+settings: {}
+order: 2000

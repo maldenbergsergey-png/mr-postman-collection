@@ -27,6 +27,19 @@ auth:
     token: "{{bearerToken}}"
 scripts:
   - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "form_url",
+          "number"
+        ],
+        types: {
+          "form_url": "string",
+          "number": "string"
+        }
+      });
+    language: text/javascript
+  - type: beforeRequest
     code: |+
       // === Получаем текущее окружение ===
       const baseUrl = pm.environment.get("baseUrl");

@@ -1,0 +1,62 @@
+$kind: http-request
+name: "Витрина банков оформления сделки"
+description: |
+  Доступные банки проекта ОН оформления с поиском по названию. Показываются только банки,
+  у которых открывается аккредитив и заполнен идентификатор CRM (банк без него CRM не
+  опознаёт и отвергает выбор клиента); порядок — сперва рекомендованные, затем остальные
+  (см. `DealApplicationBankList`). Если у проекта список банков не заполнен, ограничений
+  нет — отдаются все банки, отвечающие этим двум условиям.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/banks"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["dealApplicationId"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ DealApplicationBankList
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.id",
+          "items.*.is_recommended",
+          "items.*.name"
+        ],
+        types: {
+          "items": "array",
+          "items.*.code": "string?",
+          "items.*.id": "integer",
+          "items.*.is_recommended": "boolean",
+          "items.*.logo": "string?",
+          "items.*.name": "string"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Сохраняем идентификатор банка для следующих запросов; при ошибке значение сбрасываем
+      (function () {
+        let body = null;
+        try { body = pm.response.json(); } catch (e) { body = null; }
+        let found;
+        try { found = (function (data) { return data.items ? data.items.map((b) => b.id).find(Boolean) : (Array.isArray(data) ? data[0].id : undefined); })(body); } catch (e) { found = undefined; }
+        if (found !== undefined && found !== null && found !== "") {
+          pm.environment.set("dealBankId", String(found));
+        } else {
+          pm.environment.unset("dealBankId");
+        }
+      })();
+    language: text/javascript
+settings: {}
+order: 3000

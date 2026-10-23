@@ -1,0 +1,52 @@
+$kind: http-request
+name: "Список способов покупки"
+description: |
+  Получение списка методов покупки
+url: "{{baseUrl}}/purchase/methods"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "context": {
+        "platform": "web"
+      }
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ PurchaseMethodsList
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.attributes",
+          "items.*.attributes.icon",
+          "items.*.attributes.is_show_action",
+          "items.*.attributes.mobile_link",
+          "items.*.attributes.site_link",
+          "items.*.attributes.subtitle",
+          "items.*.attributes.tags",
+          "items.*.attributes.title",
+          "items.*.type"
+        ],
+        types: {
+          "items": "array",
+          "items.*.attributes": "object",
+          "items.*.attributes.icon": "string?",
+          "items.*.attributes.is_show_action": "boolean",
+          "items.*.attributes.mobile_link": "string?",
+          "items.*.attributes.site_link": "string?",
+          "items.*.attributes.subtitle": "string?",
+          "items.*.attributes.tags": "array?",
+          "items.*.attributes.tags.*.image": "string?",
+          "items.*.attributes.tags.*.title": "string",
+          "items.*.attributes.title": "string",
+          "items.*.type": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

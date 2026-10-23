@@ -1,0 +1,31 @@
+$kind: http-request
+name: "Малые баннеры MR Club"
+description: |
+  Возвращает список маленьких баннеров для страницы MR Club.
+url: "{{baseUrl}}/mrclub/banners/small"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ MrClubSmallBannersCollection
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.id",
+          "items.*.picture",
+          "items.*.title"
+        ],
+        types: {
+          "items": "array",
+          "items.*.ad_label": "string?",
+          "items.*.id": "integer",
+          "items.*.link": "string?",
+          "items.*.picture": "string",
+          "items.*.title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 5000

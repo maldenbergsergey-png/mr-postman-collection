@@ -1,0 +1,82 @@
+$kind: http-request
+name: "Меню проектов"
+description: |
+  Возвращает сведения для построения меню проектов.
+url: "{{baseUrl}}/ui/navigation/projects"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ NavigationProjectsListResponse
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.brandbook",
+          "items.*.business_unit",
+          "items.*.code",
+          "items.*.id",
+          "items.*.image",
+          "items.*.is_countryside",
+          "items.*.is_premium",
+          "items.*.is_private",
+          "items.*.is_promoted",
+          "items.*.metro_stations",
+          "items.*.metro_stations.*.color",
+          "items.*.metro_stations.*.distance",
+          "items.*.metro_stations.*.id",
+          "items.*.metro_stations.*.line",
+          "items.*.metro_stations.*.movement_way",
+          "items.*.metro_stations.*.name",
+          "items.*.name",
+          "items.*.title",
+          "items.*.categories",
+          "items.*.categories.*.code",
+          "items.*.categories.*.min_meter_price",
+          "items.*.categories.*.min_price",
+          "items.*.metro",
+          "items.*.metro_distance",
+          "items.*.movement_way"
+        ],
+        types: {
+          "items": "array",
+          "items.*.brandbook": "string",
+          "items.*.business_unit": "string",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.image": "string?",
+          "items.*.is_countryside": "boolean",
+          "items.*.is_premium": "boolean",
+          "items.*.is_private": "boolean",
+          "items.*.is_promoted": "boolean",
+          "items.*.metro_stations": "array",
+          "items.*.metro_stations.*.color": "string?",
+          "items.*.metro_stations.*.distance": "integer?",
+          "items.*.metro_stations.*.id": "integer",
+          "items.*.metro_stations.*.line": "string?",
+          "items.*.metro_stations.*.movement_way": "object?",
+          "items.*.metro_stations.*.movement_way.icon": "string",
+          "items.*.metro_stations.*.movement_way.name": "string",
+          "items.*.metro_stations.*.name": "string",
+          "items.*.name": "string",
+          "items.*.office_class": "object?",
+          "items.*.office_class.code": "string",
+          "items.*.office_class.description": "string?",
+          "items.*.title": "string?",
+          "items.*.categories": "array",
+          "items.*.categories.*.code": "string",
+          "items.*.categories.*.min_meter_price": "number?",
+          "items.*.categories.*.min_price": "number?",
+          "items.*.metro": "object?",
+          "items.*.metro.color": "string?",
+          "items.*.metro.name": "string",
+          "items.*.metro_distance": "integer?",
+          "items.*.movement_way": "object?",
+          "items.*.movement_way.icon": "string",
+          "items.*.movement_way.name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

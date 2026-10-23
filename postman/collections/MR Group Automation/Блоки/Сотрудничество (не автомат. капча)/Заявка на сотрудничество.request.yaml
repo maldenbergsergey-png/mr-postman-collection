@@ -1,0 +1,51 @@
+$kind: http-request
+name: "Заявка на сотрудничество"
+description: |
+  Позволяет потенциальному партнёру или подрядчику отправить заявку на сотрудничество со
+  страницы «Сотрудничество и тендеры»: регистрирует согласие пользователя на обработку
+  персональных данных и отправляет заявку на почту менеджерам.
+url: "{{baseUrl}}/cooperation/request"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+  Captcha-Token: "{{captchaToken}}"
+  Device-Token: "{{deviceToken}}"
+body:
+  type: json
+  content: |-
+    {
+      "meta": {
+        "consents": {
+          "consent_documents": [
+            "123456"
+          ],
+          "device_info": [
+            {
+              "name": "Операционная система",
+              "value": "iOS"
+            }
+          ]
+        }
+      },
+      "data": {
+        "name": "Владимир",
+        "phone": "+70001234567",
+        "surname": "Владимир"
+      }
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ CooperationResponse
+      pm.variables.set("schema", {
+        required: [
+          "id"
+        ],
+        types: {
+          "id": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

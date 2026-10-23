@@ -1,0 +1,34 @@
+$kind: http-request
+name: "Список управляющих компаний"
+description: |
+  Возвращает список [УК](https://confluence.mr-group.ru/pages/viewpage.action?pageId=85858832).
+url: "{{baseUrl}}/residents/exploitation/management-companies"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "data",
+          "data.*.id",
+          "data.*.logo",
+          "data.*.name",
+          "data.*.url"
+        ],
+        types: {
+          "data": "array",
+          "data.*.id": "integer",
+          "data.*.logo": "string?",
+          "data.*.name": "string",
+          "data.*.url": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

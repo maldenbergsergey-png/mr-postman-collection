@@ -25,29 +25,20 @@ scripts:
 
       pm.variables.set("schema", {
         required: [
-          // Корень — массив, каждый элемент — объект с обязательными полями
-          "0.code",
-          "0.title",
-          "0.subtitle",
-          "0.promo_expires",
-          "0.promo_image",
-          "0.background_color"
-          // Если всегда хотя бы 1 элемент — можно добавить "0.*"
-          // Если может быть пусто — убрать
+          "*.background_color",
+          "*.code",
+          "*.promo_expires",
+          "*.promo_image",
+          "*.subtitle",
+          "*.title"
         ],
         types: {
-          // Корень — массив
-          "": "array",  // "" — значит сам ответ — массив
-
-          // Поля внутри каждого элемента
-          "*.code": "string",
-          "*.title": "string",
-          "*.subtitle": "string",
+          "*.background_color": "string?",
+          "*.code": "string?",
           "*.promo_expires": "string?",
           "*.promo_image": "string?",
-          "*.background_color": "string|null?",
-          "*.gradient": "boolean?",     
-          "*.white_text": "boolean?"    
+          "*.subtitle": "string?",
+          "*.title": "string"
         }
       });
     language: text/javascript

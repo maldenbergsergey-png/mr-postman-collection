@@ -1,0 +1,123 @@
+$kind: http-request
+name: "Список подборок"
+description: |
+  Получение списка подборок ОН с учётом переданного контекста
+url: "{{baseUrl}}/selections?page=1&limit=10"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "context": {
+        "platform": "web"
+      }
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "elements",
+          "elements.*.background_variant",
+          "elements.*.illustration_medium",
+          "elements.*.illustration_narrow",
+          "elements.*.illustration_wide",
+          "elements.*.image_default",
+          "elements.*.image_large",
+          "elements.*.image_middle",
+          "elements.*.image_mobile",
+          "elements.*.key_calc_params",
+          "elements.*.mobile_link",
+          "elements.*.realty_list_filter",
+          "elements.*.render_medium",
+          "elements.*.render_narrow",
+          "elements.*.render_wide",
+          "elements.*.show_realty_count",
+          "elements.*.site_link",
+          "elements.*.subtitle",
+          "elements.*.subtitle_type",
+          "elements.*.theme",
+          "elements.*.title_dynamic",
+          "elements.*.title_static",
+          "elements.*.transition_type",
+          "limit",
+          "page",
+          "page_count"
+        ],
+        types: {
+          "elements": "array",
+          "elements.*.background_variant": "string?",
+          "elements.*.illustration_medium": "object?",
+          "elements.*.illustration_medium.description": "string",
+          "elements.*.illustration_medium.src": "string",
+          "elements.*.illustration_medium.height": "integer",
+          "elements.*.illustration_medium.width": "integer",
+          "elements.*.illustration_narrow": "object?",
+          "elements.*.illustration_narrow.description": "string",
+          "elements.*.illustration_narrow.src": "string",
+          "elements.*.illustration_narrow.height": "integer",
+          "elements.*.illustration_narrow.width": "integer",
+          "elements.*.illustration_wide": "object?",
+          "elements.*.illustration_wide.description": "string",
+          "elements.*.illustration_wide.src": "string",
+          "elements.*.illustration_wide.height": "integer",
+          "elements.*.illustration_wide.width": "integer",
+          "elements.*.image_default": "object?",
+          "elements.*.image_default.description": "string",
+          "elements.*.image_default.src": "string",
+          "elements.*.image_large": "object?",
+          "elements.*.image_large.description": "string",
+          "elements.*.image_large.src": "string",
+          "elements.*.image_middle": "object?",
+          "elements.*.image_middle.description": "string",
+          "elements.*.image_middle.src": "string",
+          "elements.*.image_mobile": "object?",
+          "elements.*.image_mobile.description": "string",
+          "elements.*.image_mobile.src": "string",
+          "elements.*.key_calc_params": "object?",
+          "elements.*.key_calc_params.max_area": "number?",
+          "elements.*.key_calc_params.max_discount": "number?",
+          "elements.*.key_calc_params.min_area": "number?",
+          "elements.*.key_calc_params.min_meter_price": "number?",
+          "elements.*.key_calc_params.min_price": "number?",
+          "elements.*.key_calc_params.objects_count": "integer",
+          "elements.*.mobile_link": "string?",
+          "elements.*.realty_list_filter": "string?",
+          "elements.*.render_medium": "object?",
+          "elements.*.render_medium.description": "string",
+          "elements.*.render_medium.src": "string",
+          "elements.*.render_medium.height": "integer",
+          "elements.*.render_medium.width": "integer",
+          "elements.*.render_narrow": "object?",
+          "elements.*.render_narrow.description": "string",
+          "elements.*.render_narrow.src": "string",
+          "elements.*.render_narrow.height": "integer",
+          "elements.*.render_narrow.width": "integer",
+          "elements.*.render_wide": "object?",
+          "elements.*.render_wide.description": "string",
+          "elements.*.render_wide.src": "string",
+          "elements.*.render_wide.height": "integer",
+          "elements.*.render_wide.width": "integer",
+          "elements.*.show_realty_count": "string",
+          "elements.*.site_link": "string?",
+          "elements.*.subtitle": "string?",
+          "elements.*.subtitle_type": "string",
+          "elements.*.theme": "object?",
+          "elements.*.theme.background_color": "string",
+          "elements.*.theme.brandbook": "string",
+          "elements.*.theme.code": "string",
+          "elements.*.theme.text_color": "string",
+          "elements.*.title_dynamic": "string",
+          "elements.*.title_static": "string?",
+          "elements.*.transition_type": "string",
+          "limit": "integer",
+          "page": "integer",
+          "page_count": "integer"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

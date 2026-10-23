@@ -1,0 +1,124 @@
+$kind: http-request
+name: "Отправка сообщения ИИ-подборщику"
+description: |
+  Создаёт диалог (если нет активного), сохраняет историю диалога, вызывает AI-сервис с историей и возвращает очищенный
+  и обогащённый ответ.
+url: "{{baseUrl}}/ai-chat/message"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "message": "Найди двухкомнатную квартиру для всей семьи. Бюджет до 50 млн",
+      "type": "text"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ AiChatMessageResponse
+      pm.variables.set("schema", {
+        required: [
+          "answer",
+          "created_dt",
+          "filters",
+          "has_more",
+          "intent",
+          "lot_count",
+          "lots",
+          "lots.*.area",
+          "lots.*.building_deadline",
+          "lots.*.code",
+          "lots.*.floor",
+          "lots.*.floors_number",
+          "lots.*.functional_layout",
+          "lots.*.metro",
+          "lots.*.price",
+          "lots.*.project_name",
+          "lots.*.rooms_number",
+          "title"
+        ],
+        types: {
+          "answer": "string?",
+          "created_dt": "string",
+          "filters": "object",
+          "filters.additional_windows": "array",
+          "filters.additional_windows.*": "string",
+          "filters.area_max": "number",
+          "filters.area_min": "number",
+          "filters.building": "array",
+          "filters.building.*": "string",
+          "filters.category": "string",
+          "filters.configuration": "array",
+          "filters.configuration.*": "string",
+          "filters.decoration": "array",
+          "filters.decoration.*": "string",
+          "filters.features": "array",
+          "filters.features.*": "string",
+          "filters.floor_max": "integer",
+          "filters.floor_min": "integer",
+          "filters.glazing_type": "array",
+          "filters.glazing_type.*": "string",
+          "filters.glazing_typology": "array",
+          "filters.glazing_typology.*": "string",
+          "filters.has_kitchen": "boolean",
+          "filters.is_premium": "boolean",
+          "filters.layout_options": "array",
+          "filters.layout_options.*": "string",
+          "filters.place": "array",
+          "filters.place.*": "string",
+          "filters.price_max": "number",
+          "filters.price_meter_max": "number",
+          "filters.price_meter_min": "number",
+          "filters.price_min": "number",
+          "filters.private_filter": "boolean",
+          "filters.project": "array",
+          "filters.project.*": "string",
+          "filters.region": "array",
+          "filters.region.*": "string",
+          "filters.release": "array",
+          "filters.release.*": "string",
+          "filters.resale": "boolean",
+          "filters.rooms": "array",
+          "filters.rooms.*": "integer",
+          "filters.sort": "string",
+          "filters.tier_quantity": "array",
+          "filters.tier_quantity.*": "integer",
+          "filters.unique_format": "array",
+          "filters.unique_format.*": "string",
+          "filters.views_from_window": "array",
+          "filters.views_from_window.*": "string",
+          "has_more": "boolean",
+          "intent": "string",
+          "lot_count": "integer",
+          "lots": "array",
+          "lots.*.area": "number?",
+          "lots.*.building_deadline": "string?",
+          "lots.*.code": "string",
+          "lots.*.floor": "integer?",
+          "lots.*.floors_number": "integer?",
+          "lots.*.functional_layout": "string?",
+          "lots.*.metro": "object?",
+          "lots.*.metro.color": "string?",
+          "lots.*.metro.distance": "integer?",
+          "lots.*.metro.id": "integer",
+          "lots.*.metro.line": "string?",
+          "lots.*.metro.movement_way": "object?",
+          "lots.*.metro.movement_way.icon": "string",
+          "lots.*.metro.movement_way.name": "string",
+          "lots.*.metro.name": "string",
+          "lots.*.price": "number",
+          "lots.*.project_name": "string?",
+          "lots.*.rooms_number": "integer?",
+          "title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

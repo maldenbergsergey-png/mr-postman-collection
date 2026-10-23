@@ -20,43 +20,62 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [  // проверка обязательности параметров
-
+        required: [
           "*.brandbook",
           "*.business_unit",
           "*.code",
           "*.id",
           "*.image",
+          "*.is_countryside",
+          "*.is_premium",
           "*.is_private",
+          "*.is_promoted",
+          "*.metro_stations",
+          "*.metro_stations.*.color",
+          "*.metro_stations.*.distance",
+          "*.metro_stations.*.id",
+          "*.metro_stations.*.line",
+          "*.metro_stations.*.movement_way",
+          "*.metro_stations.*.name",
           "*.name",
           "*.title",
           "*.metro",
           "*.metro_distance",
           "*.movement_way"
         ],
-        types: { //проверка типов данных
-
-        "*.brandbook" : "string",
-        "*.business_unit" : "string",
-        "*.code" : "string",
-        "*.id" : "integer",
-        "*.image" : "string?",
-        "*.is_private" : "boolean",
-        "*.name" : "string",
-        "*.title" : "string?",
-
-        "*.metro" : "object?",
-        "*.metro.color" : "string?",
-        "*.metro.name" : "string",
-
-        "*.metro_distance" : "integer?",
-
-        "*.movement_way" : "object?",
-        "*.movement_way.icon" : "string",
-        "*.movement_way.name" : "string",
-        
+        types: {
+          "*.brandbook": "string",
+          "*.business_unit": "string",
+          "*.code": "string",
+          "*.id": "integer",
+          "*.image": "string?",
+          "*.is_countryside": "boolean",
+          "*.is_premium": "boolean",
+          "*.is_private": "boolean",
+          "*.is_promoted": "boolean",
+          "*.metro_stations": "array",
+          "*.metro_stations.*.color": "string?",
+          "*.metro_stations.*.distance": "integer?",
+          "*.metro_stations.*.id": "integer",
+          "*.metro_stations.*.line": "string?",
+          "*.metro_stations.*.movement_way": "object?",
+          "*.metro_stations.*.movement_way.icon": "string",
+          "*.metro_stations.*.movement_way.name": "string",
+          "*.metro_stations.*.name": "string",
+          "*.name": "string",
+          "*.office_class": "object?",
+          "*.office_class.code": "string",
+          "*.office_class.description": "string?",
+          "*.title": "string?",
+          "*.metro": "object?",
+          "*.metro.color": "string?",
+          "*.metro.name": "string",
+          "*.metro_distance": "integer?",
+          "*.movement_way": "object?",
+          "*.movement_way.icon": "string",
+          "*.movement_way.name": "string"
         }
-        });
+      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка проектов с ходом.resources/examples

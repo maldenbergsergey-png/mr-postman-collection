@@ -29,6 +29,13 @@ variables:
   supabase_service_role_api_key_0z3l: ""
   bearer_token_0ie3: ""
 scripts:
+  - type: http:beforeRequest
+    code: |-
+      // Локальные переменные живут весь прогон: сбрасываем схему и тип ответа,
+      // чтобы они не переходили из предыдущего запроса в следующий
+      pm.variables.unset("schema");
+      pm.variables.unset("responseKind");
+    language: text/javascript
   - type: http:afterResponse
     code: |-
       // ----------------------------------
@@ -77,6 +84,20 @@ scripts:
         });
 
         return; // Завершаем, дальше JSON не проверяем
+      }
+
+      // --- Ответ без JSON-тела, заданный в самом запросе:
+      //     pm.variables.set("responseKind", "application/pdf" | "application/xml" | "application/octet-stream" | "none")
+      //     "none" — документированный успешный ответ без тела/типа в контракте: проверяется только статус
+      const responseKind = pm.variables.get("responseKind");
+      if (responseKind) {
+        if (responseKind !== "none") {
+          pm.test(`Content-Type ответа: ${responseKind}`, function () {
+            const contentType = pm.response.headers.get("Content-Type") || "";
+            pm.expect(contentType.toLowerCase()).to.include(responseKind);
+          });
+        }
+        return;
       }
 
       // --- Для всех остальных запросов → ответ должен быть JSON
@@ -183,42 +204,46 @@ scripts:
         }
 
         schema.required.forEach((path) => {
-          // Вариант верхнего уровня: "*.field"
-          if (path.startsWith("*.")) {
-            const fieldPath = path.slice(2);
-            if (!Array.isArray(body)) {
-              missing.push(path);
-              return;
-            }
+          const parts = path.split(".");
 
-            body.forEach((item, i) => {
-              if (getValue(item, fieldPath) === undefined) {
-                missing.push(`[${i}].${fieldPath}`);
+          // Рекурсивный обход пути. "*" — элемент массива (корень или вложенный).
+          // Если на месте "*" не массив — отсутствует весь путь.
+          // Если промежуточный объект отсутствует или null — вложенные поля не проверяются
+          // (необязательный родитель).
+          function visit(node, idx, shown) {
+            if (idx === parts.length) return;
+            const seg = parts[idx];
+            const last = idx === parts.length - 1;
+
+            if (seg === "*") {
+              if (!Array.isArray(node)) {
+                missing.push(path);
+                return;
               }
-            });
-            return;
-          }
-
-          // Вариант "items.*.field"
-          if (path.includes(".*.")) {
-            const [arrPath, field] = path.split(".*.");
-            const arr = getValue(body, arrPath);
-
-            if (!Array.isArray(arr)) {
-              missing.push(path);
+              node.forEach((item, i) => {
+                if (last) return;
+                visit(item, idx + 1, `${shown}[${i}]`);
+              });
               return;
             }
 
-            arr.forEach((item, i) => {
-              if (item[field] === undefined) missing.push(`${arrPath}[${i}].${field}`);
-            });
-            return;
+            if (node === null || typeof node !== "object") return;
+            const label = shown ? `${shown}.${seg}` : seg;
+            const value = node[seg];
+
+            if (last) {
+              if (value === undefined) missing.push(label);
+              return;
+            }
+            if (value === undefined && parts[idx + 1] === "*") {
+              // массив, который сам обязателен, проверяется отдельной записью required
+              return;
+            }
+            if (value === undefined || value === null) return;
+            visit(value, idx + 1, label);
           }
 
-          // Обычный путь
-          if (getValue(body, path) === undefined) {
-            missing.push(path);
-          }
+          visit(body, 0, "");
         });
 
         // Если нет ошибок — успешно

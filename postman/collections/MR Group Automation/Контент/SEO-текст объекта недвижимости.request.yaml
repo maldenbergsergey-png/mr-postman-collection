@@ -1,0 +1,35 @@
+$kind: http-request
+name: "SEO-текст объекта недвижимости"
+description: |
+  Метод возвращает SEO-текст для указанного элемента.
+url: "{{baseUrl}}/content/description/realty_object/{{product_code}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["product_code"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ SeoText
+      pm.variables.set("schema", {
+        required: [
+          "description",
+          "short_description",
+          "title"
+        ],
+        types: {
+          "description": "string?",
+          "short_description": "string?",
+          "title": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 12000

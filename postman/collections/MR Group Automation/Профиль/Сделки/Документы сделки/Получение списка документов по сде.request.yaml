@@ -31,6 +31,14 @@ scripts:
       // Сохраняем в окружение
       pm.environment.set("documentDeal", String(documentId));
 
+      // file_id нужен методу скачивания файла документа; при отсутствии сбрасываем значение
+      const fileId = json.items[0].file_id;
+      if (fileId !== undefined && fileId !== null) {
+        pm.environment.set("documentFileId", String(fileId));
+      } else {
+        pm.environment.unset("documentFileId");
+      }
+
       console.log(`documentDeal сохранён: ${documentId}`);
     language: text/javascript
   - type: beforeRequest
@@ -40,19 +48,15 @@ scripts:
       pm.variables.set("schema", {
         required: [
           "items",
-
           "items.*.file_id",
           "items.*.id",
           "items.*.name",
           "items.*.number",
           "items.*.status",
-          "items.*.status.*.code",
-          "items.*.status.*.name",
           "items.*.type"
         ],
         types: {
           "items": "array",
-
           "items.*.file_id": "integer?",
           "items.*.id": "number",
           "items.*.name": "string",

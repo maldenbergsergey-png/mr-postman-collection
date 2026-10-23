@@ -3,7 +3,6 @@ url: https://stageproxy.mr-group.ru/internal/api/core/fcm/v1/domopult/messages:s
 method: POST
 headers:
   Content-Type: application/json
-  Cookie: PHPSESSID=ohacekjjdq2lj1roo9bnjrg0n1
 body:
   type: json
   content: |-

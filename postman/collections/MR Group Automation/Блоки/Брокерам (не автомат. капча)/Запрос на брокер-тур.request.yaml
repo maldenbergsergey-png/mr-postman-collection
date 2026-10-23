@@ -1,0 +1,38 @@
+$kind: http-request
+name: "Запрос на брокер-тур"
+description: |
+  Запрос на брокер-тур
+url: "{{baseUrl}}/brokers/tour"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+  Captcha-Token: "{{captchaToken}}"
+  Device-Token: "{{deviceToken}}"
+body:
+  type: json
+  content: |-
+    {
+      "meta": {
+        "consents": {
+          "consent_documents": [
+            "123456"
+          ],
+          "device_info": [
+            {
+              "name": "Операционная система",
+              "value": "iOS"
+            }
+          ]
+        }
+      },
+      "data": {
+        "company": "IDA",
+        "name": "Владимир",
+        "participants_count": 7,
+        "phone": "+70001234567",
+        "project": "MOD"
+      }
+    }
+settings: {}
+order: 2000

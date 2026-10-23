@@ -1,0 +1,42 @@
+$kind: http-request
+name: "Промо-баннер MR Club"
+description: |
+  Возвращает промо-баннер, отображаемый в листинге предложений MR Club.
+url: "{{baseUrl}}/mrclub/banners/promo"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "banner"
+        ],
+        types: {
+          "banner": "object?",
+          "banner.ad_label": "string?",
+          "banner.description": "string?",
+          "banner.id": "integer",
+          "banner.image_desktop": "object",
+          "banner.image_desktop.description": "string",
+          "banner.image_desktop.src": "string",
+          "banner.image_desktop.height": "integer",
+          "banner.image_desktop.width": "integer",
+          "banner.image_mobile": "object?",
+          "banner.image_mobile.description": "string",
+          "banner.image_mobile.src": "string",
+          "banner.image_mobile.height": "integer",
+          "banner.image_mobile.width": "integer",
+          "banner.image_tablet": "object?",
+          "banner.image_tablet.description": "string",
+          "banner.image_tablet.src": "string",
+          "banner.image_tablet.height": "integer",
+          "banner.image_tablet.width": "integer",
+          "banner.link": "string?",
+          "banner.title": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 6000

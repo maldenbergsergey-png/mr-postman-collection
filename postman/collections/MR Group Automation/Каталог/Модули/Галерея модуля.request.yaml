@@ -1,0 +1,55 @@
+$kind: http-request
+name: "Галерея модуля"
+description: |
+  Возвращает коллекцию элементов галереи модуля.
+url: "{{baseUrl}}/realty/modules/{{moduleCode}}/gallery"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["moduleCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      pm.variables.set("schema", {
+        required: [
+          "*.description",
+          "*.id",
+          "*.items",
+          "*.items.*.id",
+          "*.items.*.image",
+          "*.items.*.image.src",
+          "*.items.*.image.height",
+          "*.items.*.image.width",
+          "*.items.*.image_mobile",
+          "*.items.*.title",
+          "*.name",
+          "*.title"
+        ],
+        types: {
+          "*.description": "string?",
+          "*.id": "integer",
+          "*.items": "array",
+          "*.items.*.id": "integer",
+          "*.items.*.image": "object",
+          "*.items.*.image.description": "string",
+          "*.items.*.image.src": "string",
+          "*.items.*.image.height": "integer",
+          "*.items.*.image.width": "integer",
+          "*.items.*.image_mobile": "object?",
+          "*.items.*.image_mobile.description": "string",
+          "*.items.*.image_mobile.src": "string",
+          "*.items.*.title": "string?",
+          "*.name": "string",
+          "*.title": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 3000

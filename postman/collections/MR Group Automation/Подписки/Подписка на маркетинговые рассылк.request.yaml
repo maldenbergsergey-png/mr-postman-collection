@@ -33,6 +33,20 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      // КОНТРАКТ NewSubscriptionResult
+      pm.variables.set("schema", {
+        required: [
+          "message",
+          "success"
+        ],
+        types: {
+          "message": "string",
+          "success": "boolean"
+        }
+      });
+    language: text/javascript
+  - type: beforeRequest
+    code: |-
       // Загружаем сохранённую карту
       let raw = pm.environment.get("formsConsentsMap") || "{}";
       let formsConsentsMap = {};

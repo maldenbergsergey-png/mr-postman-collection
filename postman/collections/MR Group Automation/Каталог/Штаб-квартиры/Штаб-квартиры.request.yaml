@@ -1,0 +1,113 @@
+$kind: http-request
+name: "Штаб-квартиры"
+description: |
+  Получение штаб-квартир.
+url: "{{baseUrl}}/realty/headquarters"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "*.building",
+          "*.building.code",
+          "*.building.compass_angle",
+          "*.building.deadline",
+          "*.building.floors_number",
+          "*.building.id",
+          "*.building.name",
+          "*.building.readiness",
+          "*.building.scheme",
+          "*.building.altitude",
+          "*.building.area",
+          "*.building.seats",
+          "*.description",
+          "*.images",
+          "*.presentation",
+          "*.project",
+          "*.project.brandbook",
+          "*.project.business_unit",
+          "*.project.code",
+          "*.project.id",
+          "*.project.image",
+          "*.project.is_countryside",
+          "*.project.is_premium",
+          "*.project.is_private",
+          "*.project.is_promoted",
+          "*.project.metro_stations",
+          "*.project.metro_stations.*.color",
+          "*.project.metro_stations.*.distance",
+          "*.project.metro_stations.*.id",
+          "*.project.metro_stations.*.line",
+          "*.project.metro_stations.*.movement_way",
+          "*.project.metro_stations.*.name",
+          "*.project.name",
+          "*.project.office_class",
+          "*.project.title",
+          "*.project.latitude",
+          "*.project.longitude",
+          "*.tags",
+          "*.tags.*.image",
+          "*.tags.*.theme",
+          "*.tags.*.title"
+        ],
+        types: {
+          "*.building": "object",
+          "*.building.code": "string",
+          "*.building.compass_angle": "number?",
+          "*.building.deadline": "string?",
+          "*.building.floors_number": "integer?",
+          "*.building.id": "integer",
+          "*.building.name": "string?",
+          "*.building.readiness": "integer?",
+          "*.building.scheme": "string?",
+          "*.building.altitude": "number?",
+          "*.building.area": "number?",
+          "*.building.seats": "number?",
+          "*.description": "string?",
+          "*.images": "array",
+          "*.images.*": "string",
+          "*.presentation": "object?",
+          "*.presentation.description": "string",
+          "*.presentation.src": "string",
+          "*.project": "object",
+          "*.project.brandbook": "string",
+          "*.project.business_unit": "string",
+          "*.project.code": "string",
+          "*.project.id": "integer",
+          "*.project.image": "string?",
+          "*.project.is_countryside": "boolean",
+          "*.project.is_premium": "boolean",
+          "*.project.is_private": "boolean",
+          "*.project.is_promoted": "boolean",
+          "*.project.metro_stations": "array",
+          "*.project.metro_stations.*.color": "string?",
+          "*.project.metro_stations.*.distance": "integer?",
+          "*.project.metro_stations.*.id": "integer",
+          "*.project.metro_stations.*.line": "string?",
+          "*.project.metro_stations.*.movement_way": "object?",
+          "*.project.metro_stations.*.movement_way.icon": "string",
+          "*.project.metro_stations.*.movement_way.name": "string",
+          "*.project.metro_stations.*.name": "string",
+          "*.project.name": "string",
+          "*.project.office_class": "object?",
+          "*.project.office_class.code": "string",
+          "*.project.office_class.description": "string?",
+          "*.project.title": "string?",
+          "*.project.latitude": "number",
+          "*.project.longitude": "number",
+          "*.tags": "array",
+          "*.tags.*.image": "string?",
+          "*.tags.*.theme": "object?",
+          "*.tags.*.theme.background_color": "string",
+          "*.tags.*.theme.brandbook": "string",
+          "*.tags.*.theme.code": "string",
+          "*.tags.*.theme.text_color": "string",
+          "*.tags.*.title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

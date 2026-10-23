@@ -10,6 +10,11 @@ headers:
   - key: Accept
     value: application/xml
     disabled: true
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("responseKind", "application/xml");
+    language: text/javascript
 settings: {}
 examples: ./.resources/Фид новостроек.resources/examples
 order: 1000

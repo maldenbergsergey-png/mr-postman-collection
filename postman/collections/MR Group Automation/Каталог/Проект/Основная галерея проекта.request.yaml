@@ -1,0 +1,65 @@
+$kind: http-request
+name: "Основная галерея проекта"
+description: |
+  Возвращает сведения об элементах основной галереи проекта.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/gallery"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectMainGalleryResponse
+      pm.variables.set("schema", {
+        required: [
+          "categories",
+          "categories.*.id",
+          "categories.*.items",
+          "categories.*.items.*.id",
+          "categories.*.items.*.image",
+          "categories.*.items.*.image.src",
+          "categories.*.items.*.image.height",
+          "categories.*.items.*.image.width",
+          "categories.*.items.*.image_mobile",
+          "categories.*.items.*.image_mobile.src",
+          "categories.*.items.*.section_id",
+          "categories.*.items.*.title",
+          "categories.*.name",
+          "sections",
+          "sections.*.accent_name",
+          "sections.*.id",
+          "sections.*.secondary_name"
+        ],
+        types: {
+          "categories": "array",
+          "categories.*.id": "integer",
+          "categories.*.items": "array",
+          "categories.*.items.*.id": "integer",
+          "categories.*.items.*.image": "object",
+          "categories.*.items.*.image.description": "string",
+          "categories.*.items.*.image.src": "string",
+          "categories.*.items.*.image.height": "integer",
+          "categories.*.items.*.image.width": "integer",
+          "categories.*.items.*.image_mobile": "object",
+          "categories.*.items.*.image_mobile.description": "string",
+          "categories.*.items.*.image_mobile.src": "string",
+          "categories.*.items.*.section_id": "integer",
+          "categories.*.items.*.title": "string",
+          "categories.*.name": "string",
+          "sections": "array",
+          "sections.*.accent_name": "string",
+          "sections.*.id": "integer",
+          "sections.*.secondary_name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 13000

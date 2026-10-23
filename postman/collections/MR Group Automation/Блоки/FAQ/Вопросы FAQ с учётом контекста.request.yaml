@@ -1,0 +1,58 @@
+$kind: http-request
+name: "Вопросы FAQ с учётом контекста"
+description: |
+  Возвращает список вопросов с учётом переданного контекста.
+url: "{{baseUrl}}/faq/questions?page=1&limit=10"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "context": {
+        "platform": "web"
+      }
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ FaqContextList
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+          "items.*.attributes",
+          "items.*.attributes.answer",
+          "items.*.attributes.category_code",
+          "items.*.attributes.category_name",
+          "items.*.attributes.question",
+          "items.*.attributes.question_id",
+          "items.*.attributes.subcategory_code",
+          "items.*.attributes.subcategory_name",
+          "items.*.type",
+          "limit",
+          "page",
+          "page_count"
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*.attributes": "object",
+          "items.*.attributes.answer": "string",
+          "items.*.attributes.category_code": "string",
+          "items.*.attributes.category_name": "string",
+          "items.*.attributes.question": "string",
+          "items.*.attributes.question_id": "integer",
+          "items.*.attributes.subcategory_code": "string?",
+          "items.*.attributes.subcategory_name": "string?",
+          "items.*.type": "string",
+          "limit": "integer",
+          "page": "integer",
+          "page_count": "integer"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 4000

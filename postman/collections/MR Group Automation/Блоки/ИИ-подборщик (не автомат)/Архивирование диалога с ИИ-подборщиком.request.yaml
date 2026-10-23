@@ -1,0 +1,14 @@
+$kind: http-request
+name: "Архивирование диалога с ИИ-подборщиком"
+description: |
+  Архивирует активный диалог
+url: "{{baseUrl}}/ai-chat/reset"
+method: POST
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+order: 2000

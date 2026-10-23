@@ -1,0 +1,57 @@
+$kind: http-request
+name: "Баннеры проекта"
+description: |
+  Возвращает список баннеров для проекта.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/banners?page=1&limit=10"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectBannerListResponse
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+          "items.*.id",
+          "items.*.image",
+          "items.*.name",
+          "items.*.type",
+          "items.*.video",
+          "limit",
+          "page",
+          "page_count"
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*.id": "integer",
+          "items.*.image": "object?",
+          "items.*.image.image_desktop": "string",
+          "items.*.image.image_desktop_big": "string?",
+          "items.*.image.image_mobile": "string",
+          "items.*.image.image_tablet": "string?",
+          "items.*.name": "string",
+          "items.*.type": "string",
+          "items.*.video": "object?",
+          "items.*.video.image_preview_desktop": "string",
+          "items.*.video.image_preview_mobile": "string",
+          "items.*.video.video_desktop": "string",
+          "items.*.video.video_mobile": "string",
+          "limit": "integer",
+          "page": "integer",
+          "page_count": "integer"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 15000

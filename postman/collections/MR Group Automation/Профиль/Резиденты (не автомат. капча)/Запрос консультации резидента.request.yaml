@@ -1,0 +1,42 @@
+$kind: http-request
+name: "Запрос консультации резидента"
+description: |
+  Позволяет жителю отправить запрос на консультацию.
+
+  Если пользователь не аутентифицирован, то JWT передавать не надо, но поля `name` и `phone`
+  обязательны.
+url: "{{baseUrl}}/residents/consultations"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+  Captcha-Token: "{{captchaToken}}"
+  Device-Token: "{{deviceToken}}"
+body:
+  type: json
+  content: |-
+    {
+      "name": "Автотест",
+      "phone": "+70000000000",
+      "description": "Автоматизированная проверка"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "data",
+          "data.id"
+        ],
+        types: {
+          "data": "object",
+          "data.id": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

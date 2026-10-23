@@ -1,0 +1,113 @@
+$kind: http-request
+name: "Категория гида по району проекта"
+description: |
+  Возвращает детальную информации о категории гида по району для выбранного проекта.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/neighborhood-guide/{{neighborhoodCategoryCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode", "neighborhoodCategoryCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectNeighborhoodGuideCategory
+      pm.variables.set("schema", {
+        required: [
+          "blocks",
+          "blocks.*.description",
+          "blocks.*.id",
+          "blocks.*.items",
+          "blocks.*.items.*.id",
+          "blocks.*.items.*.image",
+          "blocks.*.items.*.image.src",
+          "blocks.*.items.*.image.height",
+          "blocks.*.items.*.image.width",
+          "blocks.*.items.*.image_mobile",
+          "blocks.*.items.*.title",
+          "blocks.*.name",
+          "blocks.*.title",
+          "category",
+          "category.code",
+          "category.name",
+          "description",
+          "id",
+          "project",
+          "project.brandbook",
+          "project.business_unit",
+          "project.code",
+          "project.id",
+          "project.image",
+          "project.is_countryside",
+          "project.is_premium",
+          "project.is_private",
+          "project.is_promoted",
+          "project.metro_stations",
+          "project.metro_stations.*.color",
+          "project.metro_stations.*.distance",
+          "project.metro_stations.*.id",
+          "project.metro_stations.*.line",
+          "project.metro_stations.*.movement_way",
+          "project.metro_stations.*.name",
+          "project.name",
+          "project.title",
+          "title"
+        ],
+        types: {
+          "blocks": "array",
+          "blocks.*.description": "string?",
+          "blocks.*.id": "integer",
+          "blocks.*.items": "array",
+          "blocks.*.items.*.id": "integer",
+          "blocks.*.items.*.image": "object",
+          "blocks.*.items.*.image.description": "string",
+          "blocks.*.items.*.image.src": "string",
+          "blocks.*.items.*.image.height": "integer",
+          "blocks.*.items.*.image.width": "integer",
+          "blocks.*.items.*.image_mobile": "object?",
+          "blocks.*.items.*.image_mobile.description": "string",
+          "blocks.*.items.*.image_mobile.src": "string",
+          "blocks.*.items.*.title": "string?",
+          "blocks.*.name": "string?",
+          "blocks.*.title": "string?",
+          "category": "object",
+          "category.code": "string",
+          "category.name": "string",
+          "description": "string",
+          "id": "integer",
+          "project": "object",
+          "project.brandbook": "string",
+          "project.business_unit": "string",
+          "project.code": "string",
+          "project.id": "integer",
+          "project.image": "string?",
+          "project.is_countryside": "boolean",
+          "project.is_premium": "boolean",
+          "project.is_private": "boolean",
+          "project.is_promoted": "boolean",
+          "project.metro_stations": "array",
+          "project.metro_stations.*.color": "string?",
+          "project.metro_stations.*.distance": "integer?",
+          "project.metro_stations.*.id": "integer",
+          "project.metro_stations.*.line": "string?",
+          "project.metro_stations.*.movement_way": "object?",
+          "project.metro_stations.*.movement_way.icon": "string",
+          "project.metro_stations.*.movement_way.name": "string",
+          "project.metro_stations.*.name": "string",
+          "project.name": "string",
+          "project.office_class": "object?",
+          "project.office_class.code": "string",
+          "project.office_class.description": "string?",
+          "project.title": "string?",
+          "title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 19000

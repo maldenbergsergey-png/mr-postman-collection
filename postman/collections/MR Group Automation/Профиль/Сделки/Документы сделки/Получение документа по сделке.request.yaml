@@ -17,33 +17,27 @@ scripts:
       pm.variables.set("schema", {
         required: [
           "attributes",
-          "document",
-
           "attributes.*.code",
           "attributes.*.extra_value",
           "attributes.*.formatted_value",
           "attributes.*.name",
           "attributes.*.value",
-
+          "document",
           "document.file_id",
           "document.id",
           "document.name",
           "document.number",
           "document.status",
-          "document.status.code",
-          "document.status.name",
           "document.type"
         ],
         types: {
           "attributes": "array",
-          "document": "object",
-
           "attributes.*.code": "string",
           "attributes.*.extra_value": "string?",
           "attributes.*.formatted_value": "string",
           "attributes.*.name": "string",
-          "attributes.*.value": "string|number|integer",
-
+          "attributes.*.value": "integer|number|string",
+          "document": "object",
           "document.file_id": "integer?",
           "document.id": "number",
           "document.name": "string",

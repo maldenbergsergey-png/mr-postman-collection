@@ -51,7 +51,7 @@ scripts:
   - type: beforeRequest
     code: |
       pm.variables.set("schema", {
-      required: [
+        required: [
           "*.apartments_count",
           "*.floor_number",
           "*.max_discount",
@@ -59,36 +59,29 @@ scripts:
           "*.min_payment",
           "*.min_price",
           "*.plan",
-          "*.price_table", 
-         
-      ],
-      types: {
+          "*.price_table"
+        ],
+        types: {
           "*.apartments_count": "integer",
-          "*.floors_number": "integer",    
+          "*.floor_number": "integer",
           "*.max_discount": "number?",
           "*.min_area": "number",
           "*.min_payment": "number?",
-          "*.min_price": "number?",  
+          "*.min_price": "number?",
           "*.plan": "object?",
-          "*.plan.background_image": "string",
+          "*.plan.background_image": "string?",
           "*.plan.compass_angle": "number?",
           "*.plan.floor": "number?",
           "*.plan.items_level": "string?",
           "*.plan.level": "string",
-          "*.plan.level_plan": "string",//устаревшее 
+          "*.plan.level_plan": "any",
           "*.plan.object_type": "string",
+          "*.plan.object_types": "array",
+          "*.plan.object_types.*": "string",
           "*.plan.price_table_variant": "string",
-          "*.plan.svg_markup": "string",
-          "*.price_table": "array?",
-          "*.price_table.*.min_area": "number",
-          "*.price_table.*.min_price": "number",
-          "*.price_table.*.object_count": "integer",
-          "*.price_table.*.filter": "integer",
-          "*.price_table.*.min_area": "number",
-          "*.price_table.*.min_price": "number",
-          "*.price_table.*.name": "string",   
-
-      }
+          "*.plan.svg_markup": "string?",
+          "*.price_table": "array?"
+        }
       });
     language: text/javascript
 settings: {}

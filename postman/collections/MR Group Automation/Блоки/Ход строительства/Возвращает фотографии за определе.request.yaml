@@ -50,23 +50,15 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [  // проверка обязательности параметров
-
-          "month",
-          "photo",
-          "year",
-
+        required: [
         ],
-        types: { //проверка типов данных
-
-        "." : "object?",
-        ".month" : "integer",
-        ".photo" : "array",
-        ".photo" : "string",
-        ".year" : "integer",
-
+        types: {
+          "month": "integer",
+          "photo": "array",
+          "photo.*": "string",
+          "year": "integer"
         }
-        });
+      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Возвращает фотографии за определе.resources/examples

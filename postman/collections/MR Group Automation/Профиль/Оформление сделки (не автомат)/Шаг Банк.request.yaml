@@ -1,0 +1,95 @@
+$kind: http-request
+name: "Шаг Банк"
+description: |
+  Сохраняет выбранный банк и наличие дебетового счёта. Без обращения к CRM.
+
+  Банк обязан быть в витрине оформления (`GET /deal-application/{id}/banks`), иначе 422:
+  показ и сохранение сверяются с одним правилом годности, чтобы в CRM не ушёл банк, которого
+  клиент не мог выбрать.
+
+  Позиция в ответе (`current_step`) зависит от ответа про дебетовый счёт:
+  `1_bank_conditions`, пока клиент не ответил, и `1_date`, когда ответил.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/bank"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "bank_id": {{dealBankId}},
+      "has_debit_account": false
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["dealApplicationId", "dealBankId"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ DealApplicationState
+      pm.variables.set("schema", {
+        required: [
+          "booking_date",
+          "contract_price",
+          "current_step",
+          "id",
+          "realty_object",
+          "realty_object.article",
+          "realty_object.id",
+          "realty_object.project_name",
+          "realty_object.type_title",
+          "status"
+        ],
+        types: {
+          "bank_code": "string?",
+          "bank_id": "integer?",
+          "booking_date": "string",
+          "contract_price": "number",
+          "crm_deal_id": "string?",
+          "current_step": "string",
+          "deal_date": "string?",
+          "deal_type": "string?",
+          "has_debit_account": "boolean?",
+          "has_non_rf_citizen": "boolean?",
+          "has_proxy": "boolean?",
+          "has_underage": "boolean?",
+          "id": "integer",
+          "manager": "object?",
+          "manager.email": "string?",
+          "manager.full_name": "string",
+          "manager.phone": "string?",
+          "offline_reason": "string?",
+          "ownership_form": "string?",
+          "participants_count": "integer?",
+          "payment_form": "string?",
+          "realty_object": "object",
+          "realty_object.area": "number?",
+          "realty_object.article": "string",
+          "realty_object.building": "string?",
+          "realty_object.category": "object?",
+          "realty_object.category.code": "string",
+          "realty_object.floor": "integer?",
+          "realty_object.id": "integer",
+          "realty_object.number": "string?",
+          "realty_object.product_code": "string?",
+          "realty_object.project_code": "string?",
+          "realty_object.project_name": "string",
+          "realty_object.rooms": "integer?",
+          "realty_object.type_title": "string",
+          "realty_object.url": "string?",
+          "status": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 4000

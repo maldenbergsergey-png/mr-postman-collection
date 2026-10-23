@@ -1,0 +1,45 @@
+$kind: http-request
+name: "События пути клиента"
+description: |
+  Дополняет сквозной журнал действий клиента событиями с `source=ui` (открытие экрана,
+  «Далее»/«Назад», подтверждение/отмена в модалке, календарь, консультация/чат, уход в ЛК).
+  Запись асинхронная — ответ `202` не означает, что событие уже в журнале.
+  `client_event_id` — идемпотентность: повтор пачки после сбоя сети не создаёт дублей.
+  Батч атомарный: неизвестный (не-UI) `event_type` или пачка длиннее 100 событий отклоняют
+  её целиком.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/events"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "events": [
+        {
+          "client_event_id": "{{$guid}}",
+          "event_type": "back_clicked",
+          "occurred_at": "{{$isoTimestamp}}"
+        }
+      ]
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["dealApplicationId"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      pm.variables.set("responseKind", "none");
+    language: text/javascript
+settings: {}
+order: 8000

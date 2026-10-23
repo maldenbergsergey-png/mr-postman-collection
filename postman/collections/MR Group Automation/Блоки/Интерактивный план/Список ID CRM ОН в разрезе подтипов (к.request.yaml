@@ -55,22 +55,21 @@ scripts:
   - type: beforeRequest
     code: |+
       pm.variables.set("schema", {
-      required: [
+        required: [
           "*.code",
           "*.description",
           "*.icon",
           "*.name",
-          "*.objects",
-            
-      ],
-      types: {
+          "*.objects"
+        ],
+        types: {
           "*.code": "string",
           "*.description": "string",
           "*.icon": "string?",
           "*.name": "string",
           "*.objects": "array",
-
-      }
+          "*.objects.*": "string"
+        }
       });
 
     language: text/javascript

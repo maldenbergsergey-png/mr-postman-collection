@@ -1,0 +1,77 @@
+$kind: http-request
+name: "Промо-блоки проекта"
+description: |
+  Возвращает список промо-блоков для карточки проекта.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/announcements?page=1&limit=10"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectPromoBlockListResponse
+      pm.variables.set("schema", {
+        required: [
+          "count",
+          "items",
+          "items.*.action_element",
+          "items.*.action_element.action_type",
+          "items.*.action_element.mobile_url",
+          "items.*.action_element.show",
+          "items.*.action_element.site_url",
+          "items.*.action_element.text",
+          "items.*.expires_at",
+          "items.*.id",
+          "items.*.tags",
+          "items.*.tags.*.image",
+          "items.*.tags.*.theme",
+          "items.*.tags.*.title",
+          "items.*.timer",
+          "items.*.timer.show",
+          "items.*.timer.text",
+          "items.*.title",
+          "items.*.type",
+          "limit",
+          "page",
+          "page_count"
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*.action_element": "object",
+          "items.*.action_element.action_type": "string?",
+          "items.*.action_element.mobile_url": "string?",
+          "items.*.action_element.show": "boolean",
+          "items.*.action_element.site_url": "string?",
+          "items.*.action_element.text": "string?",
+          "items.*.expires_at": "string?",
+          "items.*.id": "integer",
+          "items.*.tags": "array",
+          "items.*.tags.*.image": "string?",
+          "items.*.tags.*.theme": "object?",
+          "items.*.tags.*.theme.background_color": "string",
+          "items.*.tags.*.theme.brandbook": "string",
+          "items.*.tags.*.theme.code": "string",
+          "items.*.tags.*.theme.text_color": "string",
+          "items.*.tags.*.title": "string",
+          "items.*.timer": "object",
+          "items.*.timer.show": "boolean",
+          "items.*.timer.text": "string?",
+          "items.*.title": "string",
+          "items.*.type": "string",
+          "limit": "integer",
+          "page": "integer",
+          "page_count": "integer"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 14000

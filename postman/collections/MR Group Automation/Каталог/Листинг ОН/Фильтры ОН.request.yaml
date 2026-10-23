@@ -152,63 +152,67 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: ["categories","count", "filters","projects_count", "sorts", "typical_objects_count"],
+        required: [
+          "categories",
+          "categories.*.additional_info",
+          "categories.*.available",
+          "categories.*.checked",
+          "categories.*.name",
+          "categories.*.value",
+          "count",
+          "filters",
+          "filters.*.code",
+          "filters.*.type",
+          "projects_count",
+          "sorts",
+          "sorts.*.code",
+          "sorts.*.name",
+          "typical_objects_count"
+        ],
         types: {
-          "categories" : "array",
-          "count" : "integer",
-          "filters" : "array",
-          "projects_count" : "integer",
-          "sorts" : "array",
-          "typical_objects_count" : "integer",
-
-          //categories[]
-          "categories.*.additional_info": "any?",
+          "categories": "array",
+          "categories.*.additional_info": "any",
           "categories.*.available": "boolean",
           "categories.*.checked": "boolean",
           "categories.*.name": "string",
           "categories.*.value": "string",
-          // filters[*] — тип может быть один из нескольких (boolean/floatRange/intRange/select)
+          "count": "integer",
+          "filters": "array",
           "filters.*.available": "boolean",
           "filters.*.checked": "boolean",
           "filters.*.code": "string",
           "filters.*.name": "string",
           "filters.*.type": "string",
-          "filters.*.projects_count": "integer",
           "filters.*.global_range": "object",
+          "filters.*.global_range.max": "integer",
+          "filters.*.global_range.min": "integer",
           "filters.*.range": "object",
+          "filters.*.range.max": "integer",
+          "filters.*.range.min": "integer",
           "filters.*.values": "array",
-          //"filters.*.global_range"
-          "filters.*.global_range.max" : "number",
-          "filters.*.global_range.min" : "number",
-          //"filters.*.range"
-          "filters.*.range.max": "number",
-          "filters.*.range.min": "number",
-          // filters.*.values[*] 
           "filters.*.values.*.additional_info": "object?",
+          "filters.*.values.*.additional_info.image": "string?",
+          "filters.*.values.*.additional_info.metro_color": "string?",
+          "filters.*.values.*.additional_info.metro_distance": "integer?",
+          "filters.*.values.*.additional_info.metro_line": "string?",
+          "filters.*.values.*.additional_info.min_price": "number?",
+          "filters.*.values.*.additional_info.movement_way": "string?",
+          "filters.*.values.*.additional_info.project_id": "integer?",
+          "filters.*.values.*.additional_info.project_name": "string?",
+          "filters.*.values.*.additional_info.quater": "integer?",
+          "filters.*.values.*.additional_info.released": "boolean?",
+          "filters.*.values.*.additional_info.year": "string?",
+          "filters.*.values.*.additional_info.area_id": "integer?",
+          "filters.*.values.*.additional_info.area_name": "string?",
           "filters.*.values.*.available": "boolean",
           "filters.*.values.*.checked": "boolean",
-          "filters.*.values.*.name": "string", 
-          "filters.*.values.*.value": "string|integer",
-      // filters.*.values[*].additional_info
-      "filters.*.values.*.additional_info.image": "string?",
-      "filters.*.values.*.additional_info.metro_color": "string?",
-      "filters.*.values.*.additional_info.metro_distance": "integer?",
-      "filters.*.values.*.additional_info.metro_line": "string?",
-      "filters.*.values.*.additional_info.metro_name": "string?",   // ✅ добавлено
-      "filters.*.values.*.additional_info.min_price": "number?",
-      "filters.*.values.*.additional_info.movement_way": "string?",
-      "filters.*.values.*.additional_info.project_id": "integer?",
-      "filters.*.values.*.additional_info.project_name": "string?",
-      "filters.*.values.*.additional_info.quater": "integer?",
-      "filters.*.values.*.additional_info.quarter": "integer?",      // ✅ добавлено (встречается в новых данных)
-      "filters.*.values.*.additional_info.released": "boolean?",
-      "filters.*.values.*.additional_info.year": "string?",
-      "filters.*.values.*.additional_info.area_id": "integer?",
-      "filters.*.values.*.additional_info.area_name": "string?",
-
-      //sorts[]
-      "sorts.*.code": "string",
-      "sorts.*.name": "string",
+          "filters.*.values.*.name": "string",
+          "filters.*.values.*.value": "integer|string",
+          "projects_count": "integer",
+          "sorts": "array",
+          "sorts.*.code": "string",
+          "sorts.*.name": "string",
+          "typical_objects_count": "integer"
         }
       });
     language: text/javascript

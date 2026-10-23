@@ -11,23 +11,25 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [  // проверка обязательности параметров
-
-          "offers"
-
+        required: [
+          "offers",
+          "offers.*.background_color",
+          "offers.*.description",
+          "offers.*.font_color",
+          "offers.*.image",
+          "offers.*.note",
+          "offers.*.title"
         ],
-        types: { //проверка типов данных
-
-        "offers" : "array",
-        "offers.*.background_color" : "string",
-        "offers.*.description" : "string",
-        "offers.*.font_color" : "string",
-        "offers.*.image" : "string?",
-        "offers.*.note" : "string",
-        "offers.*.title" : "string",
-
+        types: {
+          "offers": "array",
+          "offers.*.background_color": "string",
+          "offers.*.description": "string",
+          "offers.*.font_color": "string",
+          "offers.*.image": "string?",
+          "offers.*.note": "string",
+          "offers.*.title": "string"
         }
-        });
+      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Список предложений.resources/examples

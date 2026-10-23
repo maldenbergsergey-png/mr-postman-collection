@@ -22,29 +22,29 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [  // проверка обязательности параметров
+        required: [
           "count",
           "items",
+          "items.*.answer",
           "items.*.category_code",
-          "items.*.question"
-
+          "items.*.category_name",
+          "items.*.question",
+          "items.*.question_id",
+          "items.*.subcategory_code",
+          "items.*.subcategory_name"
         ],
-        types: { //проверка типов данных
-
-        "count" : "integer",
-
-        "items" : "array",
-        "items.*.answer" : "string",
-        "items.*.category_code" : "string",
-        "items.*.category_name" : "string",
-        "items.*.question" : "string",
-        "items.*.question_id" : "string",
-        "items.*.subcategory_code" : "string",
-        "items.*.subcategory_name" : "string",
-
-        
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*.answer": "string",
+          "items.*.category_code": "string",
+          "items.*.category_name": "string",
+          "items.*.question": "string",
+          "items.*.question_id": "integer",
+          "items.*.subcategory_code": "string?",
+          "items.*.subcategory_name": "string?"
         }
-        });
+      });
     language: text/javascript
   - type: afterResponse
     code: |-

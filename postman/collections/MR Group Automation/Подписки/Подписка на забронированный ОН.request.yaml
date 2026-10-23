@@ -7,7 +7,6 @@ method: POST
 headers:
   accept: application/json, text/plain, */*
   accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
-  authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjV1E3bDdrRER1TWtvS21OUkYzQU9VdzJGUlJEVC1wa2VnaXI0ZUY3ZElFIn0.eyJleHAiOjE3NjE4MzM1OTQsImlhdCI6MTc2MTgyOTk5NCwiYXV0aF90aW1lIjoxNzYxODI5OTkzLCJqdGkiOiI5NTA5MWMzZS03MzlhLTQ4YmItODFiZC0xYWExYTFkYTFkYzkiLCJpc3MiOiJodHRwczovL2tleWRldi5tci1ncm91cC5ydS9yZWFsbXMvc3RhZ2UiLCJzdWIiOiJkNzU0MjBlYi05YTQ4LTQ2NWMtYTU4My0yOTFkM2IyMDJkYmMiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsInNpZCI6ImZiMDlmNDdkLThjZDQtNGZhMy05ZWM5LTk0NjNiMDRiNjNlZSIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgcGhvbmUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwidXNlcl9pZCI6IjU4Iiwicm9sZXMiOlsiY2xpZW50Il0sIm5hbWUiOiLQmNCy0LDQvSDQotC10YHRgtC-0LLRi9C5IiwicGhvbmVfbnVtYmVyIjoiKzc5OTUxMTA4Mzk0IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiMWVlOGZjM2QtNjE4YS00NGExLTk4N2ItMjEyMmEyZjBkZmNiIiwiZ2l2ZW5fbmFtZSI6ItCY0LLQsNC9IiwiZmFtaWx5X25hbWUiOiLQotC10YHRgtC-0LLRi9C5IiwiZW1haWwiOiJtYWxkZW5iZXJnQG1haWwucnUifQ.D4AD_9gSguRqQr58QqNqXgI3kEH5j_JFOpQRKQR0J43pzr5y8qd3vE3BEhoxQFofhIWeFeYrQoAh3i0MyIRdTnIHKibxA5iCRFZBN21XUhyc_CgWg8aZ4tR365WK9Xz8CDBiNW8qtWpC_MtvN803CtHpWHMtozWFmBpPPQaWhXNBKsUMh3278Hssqzt8X_d67haiN_vG_SLyNv-9xjEzHeP3SCayTlw1dOL5JhT0wjBYEPF1NdwvZMv89v1Yt1VMFxmVXH_H6iQioJMtKmWiqtSgmRaMH7i5swxq7_UQT2pKDp8s0XpPQ6OE2PJMQdUF0RPOb7gXxW1xw7VIsPlKGQ
   baggage: sentry-environment=production,sentry-public_key=92aba965495d84b286ecfb5f960a3bae,sentry-trace_id=a0cb9d839b61462280bf534e6dd2eefd,sentry-sample_rate=1,sentry-transaction=%2Fcatalog%2Fapartments%2F%3Aslug%2F,sentry-sampled=true
   content-type: application/json
   dev-authorization: f5GaD8jxJ8KwEM
@@ -22,7 +21,6 @@ headers:
   sec-fetch-site: same-origin
   sentry-trace: a0cb9d839b61462280bf534e6dd2eefd-82bcf843034c631f-1
   user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36
-  Cookie: _ym_uid=171603766569483036; _ym_d=1758021068; _ga=GA1.1.801204973.1758021070; BITRIX_SM_UIDH=NdbtzuXcVaYLWP5McrkvJFKsYmmvy2Q2; BITRIX_SM_UIDL=chernova.ekaterina%40adv.ru; scbsid_old=2733650130; mindboxDeviceUUID=d4875f40-077d-4b02-a170-6e7d7739f24d; directCrm-session=%7B%22deviceGuid%22%3A%22d4875f40-077d-4b02-a170-6e7d7739f24d%22%7D; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; USE_COOKIE_CONSENT_STATE={%22session%22:true%2C%22persistent%22:true%2C%22necessary%22:true%2C%22preferences%22:true%2C%22statistics%22:true%2C%22marketing%22:true%2C%22firstParty%22:true%2C%22thirdParty%22:true}; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; spid=1758639905764_33992ffc471ff1e2ee1cfd1571fdf441_m8cb38ik138rm9dg; spsc=1760708114567_89bff62bdb2fb8513d32cfd8045320fa_Wji9n9DrRGNp6tvqfuzDqK5U.YVX6hl53Bm9BmWnA9gZ; tmr_lvid=9a6a8069ccc986973c7c28e8c9401e82; tmr_lvidTS=1716793362581; adrcid=AJOsenZzsKD607kjJx_dJDQ; adrcid=AJOsenZzsKD607kjJx_dJDQ; domain_sid=6c3KWaTu3_E-ioq3Cp0gg%3A1761753532422; acs_3=%7B%22hash%22%3A%221aa3f9523ee6c2690cb34fc702d4143056487c0d%22%2C%22nst%22%3A1761839938253%2C%22sl%22%3A%7B%22224%22%3A1761753538253%2C%221228%22%3A1761753538253%7D%7D; acs_3=%7B%22hash%22%3A%221aa3f9523ee6c2690cb34fc702d4143056487c0d%22%2C%22nst%22%3A1761839938253%2C%22sl%22%3A%7B%22224%22%3A1761753538253%2C%221228%22%3A1761753538253%7D%7D; _ym_isad=2; adrdel=1761817380679; adrdel=1761817380679; _ym_visorc=b; _cmg_csstvfLiQ=1761829856; _comagic_idvfLiQ=11130476403.15512020813.1761829856; PHPSESSID=tr8h3678hfd2oqh0n2b61e1sbl; sessionId=17618298617448086497; sma_session_id=2479465282; SCBfrom=; SCBnotShow=-1; SCBporogAct=5000; SCBstart=1761829864120; smFpId_old_values=%5B%2276fedb373a022ebcdf33fa87546779eb%22%2C%22e0c56b7a86816b3eda219ee38369ba26%22%2C%22efdc602f935bcdeb65f990199881f623%22%2C%2251c25ee68fb163d7175e7bad25ff3bff%22%2C%22e6263a07992d4e307087b23f74dcfbe5%22%2C%2299669a86ed8d6d36e13f583c8d1c92cf%22%2C%22d3bde6b47da92c029ab5f895e405467c%22%2C%220900133801e86140e8291769dc570699%22%5D; sma_postview_ready=1; tmr_detect=0%7C1761831567207; _ga_70ZZHDSCR6=GS2.1.s1761829856$o120$g1$t1761831576$j35$l0$h0; _ga_H5S7YBLWM3=GS2.1.s17618298617448086497$o117$g1$t1761831578$j31$l0$h0; sma_index_activity=27734; SCBindexAct=4161
 body:
   type: json
   content: |-
@@ -45,6 +43,20 @@ body:
         }
     }
 scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ NewSubscriptionResult
+      pm.variables.set("schema", {
+        required: [
+          "message",
+          "success"
+        ],
+        types: {
+          "message": "string",
+          "success": "boolean"
+        }
+      });
+    language: text/javascript
   - type: beforeRequest
     code: |-
       

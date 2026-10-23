@@ -1,0 +1,25 @@
+$kind: http-request
+name: "Скачивание файла документа сделки"
+description: |
+  Возвращает файл документа, связанного со сделкой.
+
+  Файл доступен только покупателям по этой сделке.
+url: "{{baseUrl}}/purchase/{{idDeal}}/documents/{{documentDeal}}/{{documentFileId}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["idDeal", "documentDeal", "documentFileId"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      pm.variables.set("responseKind", "application/octet-stream");
+    language: text/javascript
+settings: {}
+order: 5000

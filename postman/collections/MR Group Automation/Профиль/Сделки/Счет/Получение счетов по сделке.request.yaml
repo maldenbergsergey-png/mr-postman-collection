@@ -17,25 +17,21 @@ scripts:
       pm.variables.set("schema", {
         required: [
           "items",
-
           "items.*.amount",
           "items.*.description",
           "items.*.expiration_dt",
           "items.*.payment_link",
           "items.*.status",
-
-          "items.*.status.*.code",
-          "items.*.status.*.name"
+          "items.*.status.code",
+          "items.*.status.name"
         ],
         types: {
           "items": "array",
-
           "items.*.amount": "number",
           "items.*.description": "string",
           "items.*.expiration_dt": "string?",
           "items.*.payment_link": "string?",
           "items.*.status": "object",
-
           "items.*.status.code": "string",
           "items.*.status.name": "string"
         }

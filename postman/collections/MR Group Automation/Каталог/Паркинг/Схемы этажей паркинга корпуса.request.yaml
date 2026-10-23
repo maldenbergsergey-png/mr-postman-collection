@@ -1,0 +1,85 @@
+$kind: http-request
+name: "Схемы этажей паркинга корпуса"
+description: |
+  Возвращает схемы этажей выбранного корпуса паркинга и CRM ID объектов, которые есть
+  на SVG-разметке каждого этажа.
+
+  Метод является парковочной обёрткой над данными интерактивного плана и поддерживает
+  несколько типов ОН в одном запросе.
+
+  Если `types[]` не передан, backend использует все доступные парковочные типы для корпуса.
+url: "{{baseUrl}}/realty/projects/{{parkingProjectCode}}/buildings/{{parkingBuildingCode}}/parking/plan/floors"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["parkingProjectCode", "parkingBuildingCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ParkingPlanFloorsResponse
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.floor",
+          "items.*.objects",
+          "items.*.objects.*.crm_id",
+          "items.*.objects.*.parking_types",
+          "items.*.objects.*.status",
+          "items.*.objects.*.status.code",
+          "items.*.objects.*.status.name",
+          "items.*.objects.*.stop_sales",
+          "items.*.objects.*.type",
+          "items.*.plan",
+          "items.*.plan.available",
+          "items.*.plan.background_image",
+          "items.*.plan.compass_angle",
+          "items.*.plan.floor",
+          "items.*.plan.id",
+          "items.*.plan.items_level",
+          "items.*.plan.level",
+          "items.*.plan.level_plan",
+          "items.*.plan.object_type",
+          "items.*.plan.object_types",
+          "items.*.plan.price_table_variant",
+          "items.*.plan.section_id",
+          "items.*.plan.svg_markup"
+        ],
+        types: {
+          "items": "array",
+          "items.*.floor": "integer?",
+          "items.*.objects": "array",
+          "items.*.objects.*.crm_id": "string",
+          "items.*.objects.*.parking_types": "array",
+          "items.*.objects.*.parking_types.*": "string",
+          "items.*.objects.*.status": "object",
+          "items.*.objects.*.status.code": "string",
+          "items.*.objects.*.status.name": "string",
+          "items.*.objects.*.stop_sales": "boolean",
+          "items.*.objects.*.type": "string",
+          "items.*.plan": "object",
+          "items.*.plan.available": "boolean",
+          "items.*.plan.background_image": "string?",
+          "items.*.plan.compass_angle": "number?",
+          "items.*.plan.floor": "integer?",
+          "items.*.plan.id": "integer",
+          "items.*.plan.items_level": "string?",
+          "items.*.plan.level": "string?",
+          "items.*.plan.level_plan": "string?",
+          "items.*.plan.object_type": "string?",
+          "items.*.plan.object_types": "array",
+          "items.*.plan.object_types.*": "string",
+          "items.*.plan.price_table_variant": "string?",
+          "items.*.plan.section_id": "integer?",
+          "items.*.plan.svg_markup": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 4000

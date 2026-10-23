@@ -78,41 +78,36 @@ scripts:
         required: [
           "count",
           "items",
-
+          "items.*.description",
+          "items.*.disclaimer",
           "items.*.id",
           "items.*.name",
           "items.*.options",
-
           "items.*.options.*.3d",
           "items.*.options.*.booklet",
           "items.*.options.*.description",
           "items.*.options.*.id",
           "items.*.options.*.image",
           "items.*.options.*.image_pins",
-          "items.*.options.*.name",
-
           "items.*.options.*.image_pins.*.label",
           "items.*.options.*.image_pins.*.x",
-          "items.*.options.*.image_pins.*.y"
+          "items.*.options.*.image_pins.*.y",
+          "items.*.options.*.name"
         ],
         types: {
           "count": "integer",
-
           "items": "array",
-          "items.*": "object",
           "items.*.description": "string?",
+          "items.*.disclaimer": "string?",
           "items.*.id": "integer",
           "items.*.name": "string",
           "items.*.options": "array",
-
-          "items.*.options.*": "object",
           "items.*.options.*.3d": "string?",
           "items.*.options.*.booklet": "string?",
           "items.*.options.*.description": "string?",
           "items.*.options.*.id": "integer",
           "items.*.options.*.image": "string",
           "items.*.options.*.image_pins": "array",
-          "items.*.options.*.image_pins.*": "object",
           "items.*.options.*.image_pins.*.label": "string",
           "items.*.options.*.image_pins.*.x": "number",
           "items.*.options.*.image_pins.*.y": "number",

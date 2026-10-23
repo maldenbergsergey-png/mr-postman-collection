@@ -9,6 +9,11 @@ auth:
   type: bearer
   credentials:
     token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("responseKind", "application/octet-stream");
+    language: text/javascript
 settings: {}
 examples: ./.resources/Получение приватного файла.resources/examples
 order: 3000

@@ -11,20 +11,16 @@ scripts:
       // КОНТРАКТЫ МЕТОДА
       pm.variables.set("schema", {
         required: [
-          "items",
-          "items.*.name",
         ],
         types: {
           "items": "array",
-
+          "items.*.address": "string?",
+          "items.*.email": "string?",
+          "items.*.latitude": "number?",
+          "items.*.longitude": "number?",
           "items.*.name": "string",
-          "items.*.phone": "string",
-
-          "items.*.address": "string|null?",
-          "items.*.email": "string|null?",
-          "items.*.latitude": "number|null?",
-          "items.*.longitude": "number|null?",
-          "items.*.schedule": "string|null?"
+          "items.*.phone": "string?",
+          "items.*.schedule": "string?"
         }
       });
     language: text/javascript

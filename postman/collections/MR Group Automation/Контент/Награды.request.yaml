@@ -13,16 +13,18 @@ scripts:
         required: [
           "items",
           "items.*.awards",
-          "items.*.year",
-          "items.*.awards.*.title"
+          "items.*.awards.*.title",
+          "items.*.year"
         ],
         types: {
           "awards_qty": "integer",
           "items": "array",
-          "items.*.year": "integer",
           "items.*.awards": "array",
+          "items.*.awards.*.description": "string",
+          "items.*.awards.*.description_en": "string?",
           "items.*.awards.*.title": "string",
-          "items.*.awards.*.description": "string"
+          "items.*.awards.*.title_en": "string?",
+          "items.*.year": "integer"
         }
       });
     language: text/javascript

@@ -66,18 +66,17 @@ scripts:
         required: [
           "data",
           "data.*.consents",
-          "data.*.id",
           "data.*.consents.*.caption",
           "data.*.consents.*.consent_document",
+          "data.*.consents.*.consent_document.id",
+          "data.*.consents.*.consent_document.name",
+          "data.*.consents.*.consent_document.url_name",
           "data.*.consents.*.display_condition",
           "data.*.consents.*.required",
-          "data.*.consents.*.consent_document.*.id",
-          "data.*.consents.*.consent_document.*.name",
-          "data.*.consents.*.consent_document.*.url_name"
+          "data.*.id"
         ],
         types: {
           "data": "array",
-          "data.*.id": "string",
           "data.*.consents": "array",
           "data.*.consents.*.caption": "string",
           "data.*.consents.*.consent_document": "object",
@@ -85,7 +84,8 @@ scripts:
           "data.*.consents.*.consent_document.name": "string",
           "data.*.consents.*.consent_document.url_name": "string",
           "data.*.consents.*.display_condition": "string",
-          "data.*.consents.*.required": "boolean"
+          "data.*.consents.*.required": "boolean",
+          "data.*.id": "string"
         }
       });
     language: text/javascript

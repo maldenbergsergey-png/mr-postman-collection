@@ -14,6 +14,11 @@ body:
         "phoneNumber": "+79935905959",
         "code": 1111
     }
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("responseKind", "none");
+    language: text/javascript
 settings: {}
 examples: ./.resources/Проверка кода СМС.resources/examples
 order: 1000

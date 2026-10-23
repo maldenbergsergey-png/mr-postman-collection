@@ -1,0 +1,42 @@
+$kind: http-request
+name: "Контакты для страницы MR.BRO"
+description: |
+  Возвращает контент для блока "Контакты" на странице "MR.BRO".
+url: "{{baseUrl}}/brokers/contacts"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "*.email",
+          "*.icon",
+          "*.id",
+          "*.name",
+          "*.notice",
+          "*.persons",
+          "*.persons.*.id",
+          "*.persons.*.name",
+          "*.persons.*.phone",
+          "*.phone",
+          "*.responsibility"
+        ],
+        types: {
+          "*.email": "string?",
+          "*.icon": "string?",
+          "*.id": "number",
+          "*.name": "string",
+          "*.notice": "string?",
+          "*.persons": "array",
+          "*.persons.*.id": "number",
+          "*.persons.*.name": "string",
+          "*.persons.*.phone": "string",
+          "*.phone": "string?",
+          "*.responsibility": "string?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 1000

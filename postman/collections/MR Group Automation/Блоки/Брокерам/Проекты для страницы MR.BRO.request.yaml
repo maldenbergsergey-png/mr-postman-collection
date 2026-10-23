@@ -1,0 +1,101 @@
+$kind: http-request
+name: "Проекты для страницы MR.BRO"
+description: |
+  Возвращает список проект для страницы "MR.BRO"
+url: "{{baseUrl}}/brokers/projects"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "*.project",
+          "*.project.brandbook",
+          "*.project.business_unit",
+          "*.project.code",
+          "*.project.id",
+          "*.project.image",
+          "*.project.is_countryside",
+          "*.project.is_premium",
+          "*.project.is_private",
+          "*.project.is_promoted",
+          "*.project.metro_stations",
+          "*.project.metro_stations.*.color",
+          "*.project.metro_stations.*.distance",
+          "*.project.metro_stations.*.id",
+          "*.project.metro_stations.*.line",
+          "*.project.metro_stations.*.movement_way",
+          "*.project.metro_stations.*.name",
+          "*.project.name",
+          "*.project.title",
+          "*.project.categories",
+          "*.project.categories.*.code",
+          "*.project.categories.*.name",
+          "*.project.categories.*.background_color",
+          "*.project.categories.*.description",
+          "*.project.categories.*.image",
+          "*.project.categories.*.in_sale_object_count",
+          "*.project.categories.*.is_main_type",
+          "*.project.categories.*.max_area",
+          "*.project.categories.*.max_discount",
+          "*.project.categories.*.min_area",
+          "*.project.categories.*.min_meter_price",
+          "*.project.categories.*.min_price",
+          "*.project.categories.*.object_count",
+          "*.project.categories.*.show_in",
+          "*.project.categories.*.show_in.catalog",
+          "*.project.metro",
+          "*.tour_participants_count"
+        ],
+        types: {
+          "*.project": "object",
+          "*.project.brandbook": "string",
+          "*.project.business_unit": "string",
+          "*.project.code": "string",
+          "*.project.id": "integer",
+          "*.project.image": "string?",
+          "*.project.is_countryside": "boolean",
+          "*.project.is_premium": "boolean",
+          "*.project.is_private": "boolean",
+          "*.project.is_promoted": "boolean",
+          "*.project.metro_stations": "array",
+          "*.project.metro_stations.*.color": "string?",
+          "*.project.metro_stations.*.distance": "integer?",
+          "*.project.metro_stations.*.id": "integer",
+          "*.project.metro_stations.*.line": "string?",
+          "*.project.metro_stations.*.movement_way": "object?",
+          "*.project.metro_stations.*.movement_way.icon": "string",
+          "*.project.metro_stations.*.movement_way.name": "string",
+          "*.project.metro_stations.*.name": "string",
+          "*.project.name": "string",
+          "*.project.office_class": "object?",
+          "*.project.office_class.code": "string",
+          "*.project.office_class.description": "string?",
+          "*.project.title": "string?",
+          "*.project.categories": "array",
+          "*.project.categories.*.code": "string",
+          "*.project.categories.*.name": "string",
+          "*.project.categories.*.background_color": "string?",
+          "*.project.categories.*.description": "string?",
+          "*.project.categories.*.image": "string?",
+          "*.project.categories.*.in_sale_object_count": "integer",
+          "*.project.categories.*.is_main_type": "boolean",
+          "*.project.categories.*.max_area": "number?",
+          "*.project.categories.*.max_discount": "number?",
+          "*.project.categories.*.min_area": "number?",
+          "*.project.categories.*.min_meter_price": "number?",
+          "*.project.categories.*.min_price": "number?",
+          "*.project.categories.*.object_count": "integer",
+          "*.project.categories.*.show_in": "object",
+          "*.project.categories.*.show_in.catalog": "boolean",
+          "*.project.metro": "object?",
+          "*.project.metro.color": "string?",
+          "*.project.metro.name": "string",
+          "*.tour_participants_count": "number?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 3000

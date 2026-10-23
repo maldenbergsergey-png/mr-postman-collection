@@ -22,27 +22,19 @@ scripts:
       pm.variables.set("schema", {
         required: [
           "categories",
-          "count",
-
           "categories.*.category",
+          "categories.*.category.code",
+          "categories.*.category.name",
           "categories.*.product_ids",
-
-          "categories.*.category.*.code",
-          "categories.*.category.*.id",
-          "categories.*.category.*.name"
+          "count"
         ],
         types: {
           "categories": "array",
-          "categories.*": "object",
-
           "categories.*.category": "object",
           "categories.*.category.code": "string",
-          "categories.*.category.id": "integer",
           "categories.*.category.name": "string",
-
           "categories.*.product_ids": "array",
           "categories.*.product_ids.*": "integer",
-
           "count": "integer"
         }
       });

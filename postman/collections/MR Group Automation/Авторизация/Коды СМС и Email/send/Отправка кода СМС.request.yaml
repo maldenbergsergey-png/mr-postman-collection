@@ -23,6 +23,19 @@ body:
     }
 auth:
   type: noauth
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ SendCodeResponse
+      pm.variables.set("schema", {
+        required: [
+          "refresh"
+        ],
+        types: {
+          "refresh": "string"
+        }
+      });
+    language: text/javascript
 settings: {}
 examples: ./.resources/Отправка кода СМС.resources/examples
 order: 1000

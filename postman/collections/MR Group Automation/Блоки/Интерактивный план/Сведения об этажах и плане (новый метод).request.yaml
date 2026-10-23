@@ -1,0 +1,58 @@
+$kind: http-request
+name: "Сведения об этажах и плане (новый метод)"
+description: |
+  Метод возвращает информацию об этажах и план, который следует открыть
+
+  **Внимание!** Этот метод является заменой для `GET /sale/plan/floors`.
+url: "{{baseUrl}}/realty/plan/floors?category={{categoryHasPlan}}&building={{buildingHasPlan}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["categoryHasPlan", "buildingHasPlan"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ FloorPlansList
+      pm.variables.set("schema", {
+        required: [
+          "*.apartments_count",
+          "*.floor_number",
+          "*.max_discount",
+          "*.min_area",
+          "*.min_payment",
+          "*.min_price",
+          "*.plan",
+          "*.price_table"
+        ],
+        types: {
+          "*.apartments_count": "integer",
+          "*.floor_number": "integer",
+          "*.max_discount": "number?",
+          "*.min_area": "number",
+          "*.min_payment": "number?",
+          "*.min_price": "number?",
+          "*.plan": "object?",
+          "*.plan.background_image": "string?",
+          "*.plan.compass_angle": "number?",
+          "*.plan.floor": "number?",
+          "*.plan.items_level": "string?",
+          "*.plan.level": "string",
+          "*.plan.level_plan": "any",
+          "*.plan.object_type": "string",
+          "*.plan.object_types": "array",
+          "*.plan.object_types.*": "string",
+          "*.plan.price_table_variant": "string",
+          "*.plan.svg_markup": "string?",
+          "*.price_table": "array?"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 12000

@@ -10,26 +10,55 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [],
+        required: [
+          "*.id",
+          "*.items",
+          "*.items.*.description",
+          "*.items.*.hide_description",
+          "*.items.*.id",
+          "*.items.*.image",
+          "*.items.*.image_mobile",
+          "*.items.*.image_with_dimensions",
+          "*.items.*.image_with_dimensions.height",
+          "*.items.*.image_with_dimensions.size",
+          "*.items.*.image_with_dimensions.src",
+          "*.items.*.image_with_dimensions.type",
+          "*.items.*.image_with_dimensions.width",
+          "*.items.*.link_3d",
+          "*.items.*.name",
+          "*.items.*.pins",
+          "*.items.*.pins.*.description",
+          "*.items.*.pins.*.id",
+          "*.items.*.pins.*.x",
+          "*.items.*.pins.*.y",
+          "*.items.*.type",
+          "*.items.*.video_link",
+          "*.name"
+        ],
         types: {
-          "*": "object",
           "*.id": "integer",
-          "*.name": "string",
           "*.items": "array",
-
-         "*.items.*.id": "integer",
-          "*.items.*.description": "string",
+          "*.items.*.description": "string?",
           "*.items.*.hide_description": "boolean",
+          "*.items.*.id": "integer",
           "*.items.*.image": "string",
-          "*.items.*.link_3d": "string?",     
+          "*.items.*.image_mobile": "string?",
+          "*.items.*.image_with_dimensions": "object",
+          "*.items.*.image_with_dimensions.height": "integer",
+          "*.items.*.image_with_dimensions.size": "integer",
+          "*.items.*.image_with_dimensions.src": "string",
+          "*.items.*.image_with_dimensions.type": "string",
+          "*.items.*.image_with_dimensions.width": "integer",
+          "*.items.*.link_3d": "string?",
+          "*.items.*.name": "string?",
           "*.items.*.pins": "array",
+          "*.items.*.pins.*.description": "string?",
+          "*.items.*.pins.*.id": "integer",
+          "*.items.*.pins.*.x": "number",
+          "*.items.*.pins.*.y": "number",
           "*.items.*.type": "string",
           "*.items.*.video_link": "string?",
-
-           "*.items.*.pins.*.description": "string?", 
-           "*.items.*.pins.*.id": "integer", 
-           "*.items.*.pins.*.x": "number", 
-           "*.items.*.pins.*.y": "number"
+          "*.name": "string"
         }
       });
     language: text/javascript

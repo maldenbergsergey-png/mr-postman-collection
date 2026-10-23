@@ -5,7 +5,6 @@ method: POST
 headers:
   accept: application/json, text/plain, */*
   accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
-  authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjV1E3bDdrRER1TWtvS21OUkYzQU9VdzJGUlJEVC1wa2VnaXI0ZUY3ZElFIn0.eyJleHAiOjE3NjE5MDE3NTIsImlhdCI6MTc2MTg5ODE1MiwiYXV0aF90aW1lIjoxNzYxODI5OTkzLCJqdGkiOiI3MjAyMmUwMi01ZWEwLTQyMWYtOTllYS1lMWY1NjBjNzU1MTciLCJpc3MiOiJodHRwczovL2tleWRldi5tci1ncm91cC5ydS9yZWFsbXMvc3RhZ2UiLCJzdWIiOiJkNzU0MjBlYi05YTQ4LTQ2NWMtYTU4My0yOTFkM2IyMDJkYmMiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsInNpZCI6ImZiMDlmNDdkLThjZDQtNGZhMy05ZWM5LTk0NjNiMDRiNjNlZSIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgcGhvbmUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwidXNlcl9pZCI6IjU4Iiwicm9sZXMiOlsiY2xpZW50Il0sIm5hbWUiOiLQmNCy0LDQvSDQotC10YHRgtC-0LLRi9C5IiwicGhvbmVfbnVtYmVyIjoiKzc5OTUxMTA4Mzk0IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiMWVlOGZjM2QtNjE4YS00NGExLTk4N2ItMjEyMmEyZjBkZmNiIiwiZ2l2ZW5fbmFtZSI6ItCY0LLQsNC9IiwiZmFtaWx5X25hbWUiOiLQotC10YHRgtC-0LLRi9C5IiwiZW1haWwiOiJtYWxkZW5iZXJnQG1haWwucnUifQ.MdYCY9HBNTtxrU3RgvlmgmNs1_cNL7rG995XyWtdlkxZSgWzIrelPPo_l2BOmU7WP4_NYYfd7f7yM8HHrKd78aeTGehs1P6uquF1jKpnRsmv_aDBv4fZ2OVW-cJqULZMRmBDErZXMkxeY2wOSoGBY2YXV1TWaKUVvxAkWFJjCMa2IHdOKoi7n01GCwbiAdI0sX744jsOV5_I7zM0qRV2TfIlJz0U15-Co6I7505tNNdkqW1I8iUaQJqCzvmqbRaFnM_zzucpsdhOOHH36w4rZbF6cszCgQQWx1KPXJ1SAzNw04NTeKHwooWiTkpgr1S4-KNBjPaiHSijIYRPgxyagA
   baggage: sentry-environment=production,sentry-public_key=92aba965495d84b286ecfb5f960a3bae,sentry-trace_id=e547c7c7ca854fde8193e3515cb2fcae,sentry-sample_rate=1,sentry-transaction=%2Fprojects%2F%3Acode%2F,sentry-sampled=true
   content-type: application/json
   dev-authorization: f5GaD8jxJ8KwEM
@@ -20,7 +19,6 @@ headers:
   sec-fetch-site: same-origin
   sentry-trace: e547c7c7ca854fde8193e3515cb2fcae-989671bd3e616dd9-1
   user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36
-  Cookie: _ym_uid=171603766569483036; _ym_d=1758021068; _ga=GA1.1.801204973.1758021070; BITRIX_SM_UIDH=NdbtzuXcVaYLWP5McrkvJFKsYmmvy2Q2; BITRIX_SM_UIDL=chernova.ekaterina%40adv.ru; scbsid_old=2733650130; mindboxDeviceUUID=d4875f40-077d-4b02-a170-6e7d7739f24d; directCrm-session=%7B%22deviceGuid%22%3A%22d4875f40-077d-4b02-a170-6e7d7739f24d%22%7D; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; USE_COOKIE_CONSENT_STATE={%22session%22:true%2C%22persistent%22:true%2C%22necessary%22:true%2C%22preferences%22:true%2C%22statistics%22:true%2C%22marketing%22:true%2C%22firstParty%22:true%2C%22thirdParty%22:true}; popmechanic_sbjs_migrations=popmechanic_1418474375998%3D1%7C%7C%7C1471519752600%3D1%7C%7C%7C1471519752605%3D1; spid=1758639905764_33992ffc471ff1e2ee1cfd1571fdf441_m8cb38ik138rm9dg; spsc=1760708114567_89bff62bdb2fb8513d32cfd8045320fa_Wji9n9DrRGNp6tvqfuzDqK5U.YVX6hl53Bm9BmWnA9gZ; tmr_lvid=9a6a8069ccc986973c7c28e8c9401e82; tmr_lvidTS=1716793362581; adrcid=AJOsenZzsKD607kjJx_dJDQ; adrcid=AJOsenZzsKD607kjJx_dJDQ; SCBnotShow=-1; smFpId_old_values=%5B%2276fedb373a022ebcdf33fa87546779eb%22%2C%22e0c56b7a86816b3eda219ee38369ba26%22%2C%22efdc602f935bcdeb65f990199881f623%22%2C%2251c25ee68fb163d7175e7bad25ff3bff%22%2C%22e6263a07992d4e307087b23f74dcfbe5%22%2C%2299669a86ed8d6d36e13f583c8d1c92cf%22%2C%22d3bde6b47da92c029ab5f895e405467c%22%2C%220900133801e86140e8291769dc570699%22%2C%22f083abd91f1afebac39752772c9b3e42%22%5D; acs_3=%7B%22hash%22%3A%221aa3f9523ee6c2690cb34fc702d4143056487c0d%22%2C%22nst%22%3A1761982143663%2C%22sl%22%3A%7B%22224%22%3A1761895743663%2C%221228%22%3A1761895743663%7D%7D; acs_3=%7B%22hash%22%3A%221aa3f9523ee6c2690cb34fc702d4143056487c0d%22%2C%22nst%22%3A1761982143663%2C%22sl%22%3A%7B%22224%22%3A1761895743663%2C%221228%22%3A1761895743663%7D%7D; sma_session_id=2480266918; _ym_isad=2; _ym_visorc=b; _cmg_csstvfLiQ=1761898153; _comagic_idvfLiQ=11130476403.15516251798.1761898153; domain_sid=6c3KWaTu3_E-ioq3Cp0gg%3A1761898153870; tmr_detect=0%7C1761898154849; PHPSESSID=6dh2leuoh788c2p1dut2ru9iek; sessionId=17618981651215861581; adrdel=1761898166928; adrdel=1761898166928; SCBstart=1761898167499; SCBFormsAlreadyPulled=true; sma_postview_ready=1; SCBporogAct=5000; _ga_H5S7YBLWM3=GS2.1.s17618981651215861581$o118$g1$t1761898315$j30$l0$h0; _ga_70ZZHDSCR6=GS2.1.s1761896637$o121$g1$t1761898315$j30$l0$h0; SCBindexAct=1858; sma_index_activity=14126
 body:
   type: json
   content: |-
@@ -49,6 +47,17 @@ auth:
   credentials:
     token: "{{bearerToken}}"
 scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "id"
+        ],
+        types: {
+          "id": "string"
+        }
+      });
+    language: text/javascript
   - type: beforeRequest
     code: |-
       //

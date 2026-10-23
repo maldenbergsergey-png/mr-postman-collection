@@ -12,16 +12,16 @@ scripts:
 
       pm.variables.set("schema", {
         required: [
-          "items"
+          "items",
+          "items.*.file",
+          "items.*.image",
+          "items.*.title"
         ],
         types: {
           "items": "array",
-         
-
           "items.*.file": "string",
           "items.*.image": "string",
-          "items.*.title": "string",
-           
+          "items.*.title": "string"
         }
       });
     language: text/javascript

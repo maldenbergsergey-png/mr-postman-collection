@@ -15,6 +15,11 @@ body:
         "mail": "test@mail.ru",
         "code": 1111
     }
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("responseKind", "none");
+    language: text/javascript
 settings: {}
 examples: ./.resources/Проверка кода EMAIL.resources/examples
 order: 2000

@@ -1,5 +1,7 @@
 name: PROD
 values:
+  - key: bearerToken
+    value: ""
   - key: baseUrl
     value: https://www.mr-group.ru/api
   - key: projectCode

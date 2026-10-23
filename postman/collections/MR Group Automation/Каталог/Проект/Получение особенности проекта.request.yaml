@@ -37,11 +37,15 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [],
+        required: [
+          "content",
+          "title",
+          "video"
+        ],
         types: {
           "content": "string?",
           "title": "string",
-          "video": "string?"       
+          "video": "string?"
         }
       });
     language: text/javascript

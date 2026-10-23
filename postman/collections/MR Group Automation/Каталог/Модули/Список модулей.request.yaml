@@ -1,0 +1,158 @@
+$kind: http-request
+name: "Список модулей"
+description: |
+  Возвращает список модулей проектов с учётом фильтров.
+url: "{{baseUrl}}/realty/modules?page=1&limit=10"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ RealtyModulesList
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.category",
+          "items.*.category.code",
+          "items.*.category.name",
+          "items.*.code",
+          "items.*.id",
+          "items.*.key_calc_params",
+          "items.*.key_param_variant",
+          "items.*.project",
+          "items.*.project.brandbook",
+          "items.*.project.business_unit",
+          "items.*.project.code",
+          "items.*.project.id",
+          "items.*.project.image",
+          "items.*.project.is_countryside",
+          "items.*.project.is_premium",
+          "items.*.project.is_private",
+          "items.*.project.is_promoted",
+          "items.*.project.metro_stations",
+          "items.*.project.metro_stations.*.color",
+          "items.*.project.metro_stations.*.distance",
+          "items.*.project.metro_stations.*.id",
+          "items.*.project.metro_stations.*.line",
+          "items.*.project.metro_stations.*.movement_way",
+          "items.*.project.metro_stations.*.name",
+          "items.*.project.name",
+          "items.*.project.title",
+          "items.*.queues",
+          "items.*.queues.*.buildings",
+          "items.*.queues.*.deadline",
+          "items.*.queues.*.id",
+          "items.*.queues.*.is_sales_stopped",
+          "items.*.queues.*.marketing_deadline",
+          "items.*.queues.*.marketing_name",
+          "items.*.queues.*.name",
+          "items.*.queues.*.number",
+          "items.*.image_horizontal",
+          "items.*.image_vertical",
+          "items.*.show_deadline",
+          "items.*.tags",
+          "items.*.tags.*.image",
+          "items.*.tags.*.theme",
+          "items.*.tags.*.title",
+          "items.*.title",
+          "limit",
+          "page",
+          "page_count"
+        ],
+        types: {
+          "items": "array",
+          "items.*.category": "object",
+          "items.*.category.code": "string",
+          "items.*.category.name": "string",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.key_calc_params": "object?",
+          "items.*.key_calc_params.max_area": "number?",
+          "items.*.key_calc_params.max_discount": "number?",
+          "items.*.key_calc_params.min_area": "number?",
+          "items.*.key_calc_params.min_meter_price": "number?",
+          "items.*.key_calc_params.min_price": "number?",
+          "items.*.key_calc_params.objects_count": "integer",
+          "items.*.key_param_variant": "string",
+          "items.*.project": "object",
+          "items.*.project.brandbook": "string",
+          "items.*.project.business_unit": "string",
+          "items.*.project.code": "string",
+          "items.*.project.id": "integer",
+          "items.*.project.image": "string?",
+          "items.*.project.is_countryside": "boolean",
+          "items.*.project.is_premium": "boolean",
+          "items.*.project.is_private": "boolean",
+          "items.*.project.is_promoted": "boolean",
+          "items.*.project.metro_stations": "array",
+          "items.*.project.metro_stations.*.color": "string?",
+          "items.*.project.metro_stations.*.distance": "integer?",
+          "items.*.project.metro_stations.*.id": "integer",
+          "items.*.project.metro_stations.*.line": "string?",
+          "items.*.project.metro_stations.*.movement_way": "object?",
+          "items.*.project.metro_stations.*.movement_way.icon": "string",
+          "items.*.project.metro_stations.*.movement_way.name": "string",
+          "items.*.project.metro_stations.*.name": "string",
+          "items.*.project.name": "string",
+          "items.*.project.office_class": "object?",
+          "items.*.project.office_class.code": "string",
+          "items.*.project.office_class.description": "string?",
+          "items.*.project.title": "string?",
+          "items.*.queues": "array",
+          "items.*.queues.*.buildings": "array",
+          "items.*.queues.*.buildings.*": "object?",
+          "items.*.queues.*.buildings.*.code": "string",
+          "items.*.queues.*.buildings.*.compass_angle": "number?",
+          "items.*.queues.*.buildings.*.deadline": "string?",
+          "items.*.queues.*.buildings.*.floors_number": "integer?",
+          "items.*.queues.*.buildings.*.id": "integer",
+          "items.*.queues.*.buildings.*.name": "string?",
+          "items.*.queues.*.buildings.*.readiness": "integer?",
+          "items.*.queues.*.buildings.*.scheme": "string?",
+          "items.*.queues.*.deadline": "string?",
+          "items.*.queues.*.id": "integer",
+          "items.*.queues.*.is_sales_stopped": "boolean",
+          "items.*.queues.*.marketing_deadline": "string?",
+          "items.*.queues.*.marketing_name": "string?",
+          "items.*.queues.*.name": "string?",
+          "items.*.queues.*.number": "integer?",
+          "items.*.image_horizontal": "object?",
+          "items.*.image_horizontal.description": "string",
+          "items.*.image_horizontal.src": "string",
+          "items.*.image_vertical": "object?",
+          "items.*.image_vertical.description": "string",
+          "items.*.image_vertical.src": "string",
+          "items.*.show_deadline": "boolean",
+          "items.*.tags": "array",
+          "items.*.tags.*.image": "string?",
+          "items.*.tags.*.theme": "object?",
+          "items.*.tags.*.theme.background_color": "string",
+          "items.*.tags.*.theme.brandbook": "string",
+          "items.*.tags.*.theme.code": "string",
+          "items.*.tags.*.theme.text_color": "string",
+          "items.*.tags.*.title": "string",
+          "items.*.title": "string",
+          "limit": "integer",
+          "page": "integer",
+          "page_count": "integer"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Сохраняем код модуля для следующих запросов; при ошибке значение сбрасываем
+      (function () {
+        let body = null;
+        try { body = pm.response.json(); } catch (e) { body = null; }
+        let found;
+        try { found = (function (data) { return data.items.map((i) => i.code).find(Boolean); })(body); } catch (e) { found = undefined; }
+        if (found !== undefined && found !== null && found !== "") {
+          pm.environment.set("moduleCode", String(found));
+        } else {
+          pm.environment.unset("moduleCode");
+        }
+      })();
+    language: text/javascript
+settings: {}
+order: 1000

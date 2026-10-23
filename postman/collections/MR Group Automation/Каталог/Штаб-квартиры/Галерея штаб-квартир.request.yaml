@@ -1,0 +1,43 @@
+$kind: http-request
+name: "Галерея штаб-квартир"
+description: |
+  Получение галереи штаб-квартир.
+url: "{{baseUrl}}/realty/headquarters/gallery"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "*.id",
+          "*.items",
+          "*.items.*.id",
+          "*.items.*.image",
+          "*.items.*.image.src",
+          "*.items.*.image.height",
+          "*.items.*.image.width",
+          "*.items.*.image_mobile",
+          "*.items.*.title",
+          "*.name"
+        ],
+        types: {
+          "*.id": "integer",
+          "*.items": "array",
+          "*.items.*.id": "integer",
+          "*.items.*.image": "object",
+          "*.items.*.image.description": "string",
+          "*.items.*.image.src": "string",
+          "*.items.*.image.height": "integer",
+          "*.items.*.image.width": "integer",
+          "*.items.*.image_mobile": "object?",
+          "*.items.*.image_mobile.description": "string",
+          "*.items.*.image_mobile.src": "string",
+          "*.items.*.title": "string?",
+          "*.name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 4000

@@ -35,18 +35,20 @@ scripts:
         ],
         types: {
           "faq_linked_section": "array?",
+          "faq_linked_section.*": "string",
           "main_button": "object?",
+          "main_button.link_app": "string?",
+          "main_button.link_web": "string?",
+          "main_button.text": "string?",
           "main_description": "string?",
+          "main_description_en": "string?",
           "main_image_desk": "string?",
           "main_image_mob": "string?",
           "main_title": "string",
+          "main_title_en": "string?",
           "second_description": "string?",
           "second_title": "string?",
-          "steps_block_code": "string?",
-          "main_button.link_app": "string?",
-          "main_button.link_web": "string?",
-          "main_button.text": "string?"
-          
+          "steps_block_code": "string?"
         }
       });
     language: text/javascript

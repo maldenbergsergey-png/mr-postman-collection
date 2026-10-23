@@ -19,7 +19,6 @@ scripts:
         ],
         types: {
           "items": "array",
-          "items.*": "object",
           "items.*.icon": "string",
           "items.*.name": "string",
           "items.*.type": "string",

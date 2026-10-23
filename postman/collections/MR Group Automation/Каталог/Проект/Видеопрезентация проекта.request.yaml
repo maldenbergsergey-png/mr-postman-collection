@@ -1,0 +1,115 @@
+$kind: http-request
+name: "Видеопрезентация проекта"
+description: |
+  Возвращает данные для отображения блока Видеопрезентация проекта.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/video-presentation"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectVideoPresentationData
+      pm.variables.set("schema", {
+        required: [
+          "additional_materials",
+          "additional_materials.*.action_element",
+          "additional_materials.*.action_element.action_type",
+          "additional_materials.*.action_element.mobile_url",
+          "additional_materials.*.action_element.show",
+          "additional_materials.*.action_element.site_url",
+          "additional_materials.*.additional_ui_element",
+          "additional_materials.*.background_variant",
+          "additional_materials.*.description",
+          "additional_materials.*.download_file",
+          "additional_materials.*.illustration_horizontal",
+          "additional_materials.*.illustration_horizontal_mobile",
+          "additional_materials.*.illustration_vertical",
+          "additional_materials.*.render_horizontal",
+          "additional_materials.*.render_horizontal_mobile",
+          "additional_materials.*.render_vertical",
+          "additional_materials.*.theme",
+          "additional_materials.*.title",
+          "gallery_categories",
+          "gallery_categories.*.id",
+          "gallery_categories.*.items",
+          "gallery_categories.*.items.*.content_type",
+          "gallery_categories.*.items.*.id",
+          "gallery_categories.*.items.*.image",
+          "gallery_categories.*.items.*.image_mobile",
+          "gallery_categories.*.items.*.link_3d",
+          "gallery_categories.*.items.*.subtitle",
+          "gallery_categories.*.items.*.title",
+          "gallery_categories.*.items.*.video",
+          "gallery_categories.*.name"
+        ],
+        types: {
+          "additional_materials": "array",
+          "additional_materials.*.action_element": "object",
+          "additional_materials.*.action_element.action_type": "string?",
+          "additional_materials.*.action_element.mobile_url": "string?",
+          "additional_materials.*.action_element.show": "boolean",
+          "additional_materials.*.action_element.site_url": "string?",
+          "additional_materials.*.additional_ui_element": "string?",
+          "additional_materials.*.background_variant": "string",
+          "additional_materials.*.description": "string?",
+          "additional_materials.*.download_file": "object?",
+          "additional_materials.*.download_file.description": "string",
+          "additional_materials.*.download_file.src": "string",
+          "additional_materials.*.illustration_horizontal": "object?",
+          "additional_materials.*.illustration_horizontal.description": "string",
+          "additional_materials.*.illustration_horizontal.src": "string",
+          "additional_materials.*.illustration_horizontal_mobile": "object?",
+          "additional_materials.*.illustration_horizontal_mobile.description": "string",
+          "additional_materials.*.illustration_horizontal_mobile.src": "string",
+          "additional_materials.*.illustration_vertical": "object?",
+          "additional_materials.*.illustration_vertical.description": "string",
+          "additional_materials.*.illustration_vertical.src": "string",
+          "additional_materials.*.render_horizontal": "object?",
+          "additional_materials.*.render_horizontal.description": "string",
+          "additional_materials.*.render_horizontal.src": "string",
+          "additional_materials.*.render_horizontal_mobile": "object?",
+          "additional_materials.*.render_horizontal_mobile.description": "string",
+          "additional_materials.*.render_horizontal_mobile.src": "string",
+          "additional_materials.*.render_vertical": "object?",
+          "additional_materials.*.render_vertical.description": "string",
+          "additional_materials.*.render_vertical.src": "string",
+          "additional_materials.*.theme": "object?",
+          "additional_materials.*.theme.background_color": "string",
+          "additional_materials.*.theme.brandbook": "string",
+          "additional_materials.*.theme.code": "string",
+          "additional_materials.*.theme.text_color": "string",
+          "additional_materials.*.title": "string",
+          "gallery_categories": "array",
+          "gallery_categories.*.id": "integer",
+          "gallery_categories.*.items": "array",
+          "gallery_categories.*.items.*.content_type": "string",
+          "gallery_categories.*.items.*.id": "integer",
+          "gallery_categories.*.items.*.image": "object?",
+          "gallery_categories.*.items.*.image.description": "string",
+          "gallery_categories.*.items.*.image.src": "string",
+          "gallery_categories.*.items.*.image.height": "integer",
+          "gallery_categories.*.items.*.image.width": "integer",
+          "gallery_categories.*.items.*.image_mobile": "object?",
+          "gallery_categories.*.items.*.image_mobile.description": "string",
+          "gallery_categories.*.items.*.image_mobile.src": "string",
+          "gallery_categories.*.items.*.link_3d": "string?",
+          "gallery_categories.*.items.*.subtitle": "string?",
+          "gallery_categories.*.items.*.title": "string?",
+          "gallery_categories.*.items.*.video": "object?",
+          "gallery_categories.*.items.*.video.duration": "integer?",
+          "gallery_categories.*.items.*.video.src": "string",
+          "gallery_categories.*.name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 17000

@@ -14,6 +14,11 @@ auth:
   type: bearer
   credentials:
     token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("responseKind", "none");
+    language: text/javascript
 settings: {}
 examples: ./.resources/Выбор заявки в банк в качестве осно.resources/examples
 order: 3000

@@ -1,0 +1,20 @@
+$kind: http-request
+name: "Регистрация согласий пользователя"
+description: |
+  Метод регистрирует согласия пользователя с переданным на вход списком согласий.
+  Используется для регистрации согласий с обновлённым документом или новыми согласиями из пакета согласий.
+url: "{{baseUrl}}/legal/consents"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {}
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+order: 1000

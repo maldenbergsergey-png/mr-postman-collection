@@ -1,0 +1,183 @@
+$kind: http-request
+name: "Список проектов для паркинга"
+description: |
+  Возвращает список проектов, предназначенных для раздела "Паркинг".
+  Метод возвращает только проекты, соответствующие следующим условиям:
+    - проект содержит код, оканчивающийся на "_parking";
+    - проект активен в разделе "Паркинг" (PROPERTY_PARKING_ACTIVE=true);
+    - сортировка проектов выполняется по полю PROPERTY_PARKING_SORT (по возрастанию);
+    - учитываются доступные машиноместа (ММ) и кладовые (КЛ).
+
+  Параметр `types` влияет на фильтрацию проектов по наличию ММ и/или КЛ:
+    - `parkings` - только проекты с машиноместами;
+    - `boxrooms` - только проекты с кладовыми;
+    - комбинированный режим (`parkings` + `boxrooms`) - проекты, имеющие машиноместа или кладовые.
+
+  Поля `min_price` и `max_discount` рассчитываются для каждого проекта:
+    - `min_price` - минимальная цена среди всех ММ и КЛ проекта, независимо от выбранного фильтра `types`;
+    - `max_discount` - максимальная скидка среди всех ММ и КЛ проекта, независимо от выбранного фильтра `types`.
+
+  Дополнительно метод возвращает:
+    - `available_types` - массив типов ОН, реально доступных в проекте, используется для фронтенда;
+    - другие поля соответствуют структуре ProjectListItem.
+url: "{{baseUrl}}/realty/parking/projects"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ ParkingProjectList
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.brandbook",
+          "items.*.business_unit",
+          "items.*.code",
+          "items.*.id",
+          "items.*.image",
+          "items.*.is_countryside",
+          "items.*.is_premium",
+          "items.*.is_private",
+          "items.*.is_promoted",
+          "items.*.metro_stations",
+          "items.*.metro_stations.*.color",
+          "items.*.metro_stations.*.distance",
+          "items.*.metro_stations.*.id",
+          "items.*.metro_stations.*.line",
+          "items.*.metro_stations.*.movement_way",
+          "items.*.metro_stations.*.name",
+          "items.*.name",
+          "items.*.title",
+          "items.*.air_3d",
+          "items.*.categories",
+          "items.*.categories.*.code",
+          "items.*.categories.*.name",
+          "items.*.categories.*.background_color",
+          "items.*.categories.*.description",
+          "items.*.categories.*.image",
+          "items.*.categories.*.in_sale_object_count",
+          "items.*.categories.*.is_main_type",
+          "items.*.categories.*.max_area",
+          "items.*.categories.*.max_discount",
+          "items.*.categories.*.min_area",
+          "items.*.categories.*.min_meter_price",
+          "items.*.categories.*.min_price",
+          "items.*.categories.*.object_count",
+          "items.*.categories.*.show_in",
+          "items.*.categories.*.show_in.catalog",
+          "items.*.completion_date",
+          "items.*.external",
+          "items.*.is_completed",
+          "items.*.key_project",
+          "items.*.latitude",
+          "items.*.logo",
+          "items.*.longitude",
+          "items.*.main_3d",
+          "items.*.max_discount",
+          "items.*.metro",
+          "items.*.metro_distance",
+          "items.*.min_price",
+          "items.*.movement_way",
+          "items.*.partners",
+          "items.*.partners.*.logo",
+          "items.*.partners.*.name",
+          "items.*.project_usp",
+          "items.*.project_usp.*.icon",
+          "items.*.project_usp.*.name",
+          "items.*.queues"
+        ],
+        types: {
+          "items": "array",
+          "items.*.brandbook": "string",
+          "items.*.business_unit": "string",
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.image": "string?",
+          "items.*.is_countryside": "boolean",
+          "items.*.is_premium": "boolean",
+          "items.*.is_private": "boolean",
+          "items.*.is_promoted": "boolean",
+          "items.*.metro_stations": "array",
+          "items.*.metro_stations.*.color": "string?",
+          "items.*.metro_stations.*.distance": "integer?",
+          "items.*.metro_stations.*.id": "integer",
+          "items.*.metro_stations.*.line": "string?",
+          "items.*.metro_stations.*.movement_way": "object?",
+          "items.*.metro_stations.*.movement_way.icon": "string",
+          "items.*.metro_stations.*.movement_way.name": "string",
+          "items.*.metro_stations.*.name": "string",
+          "items.*.name": "string",
+          "items.*.office_class": "object?",
+          "items.*.office_class.code": "string",
+          "items.*.office_class.description": "string?",
+          "items.*.title": "string?",
+          "items.*.air_3d": "string?",
+          "items.*.categories": "array",
+          "items.*.categories.*.code": "string",
+          "items.*.categories.*.name": "string",
+          "items.*.categories.*.background_color": "string?",
+          "items.*.categories.*.description": "string?",
+          "items.*.categories.*.image": "string?",
+          "items.*.categories.*.in_sale_object_count": "integer",
+          "items.*.categories.*.is_main_type": "boolean",
+          "items.*.categories.*.max_area": "number?",
+          "items.*.categories.*.max_discount": "number?",
+          "items.*.categories.*.min_area": "number?",
+          "items.*.categories.*.min_meter_price": "number?",
+          "items.*.categories.*.min_price": "number?",
+          "items.*.categories.*.object_count": "integer",
+          "items.*.categories.*.show_in": "object",
+          "items.*.categories.*.show_in.catalog": "boolean",
+          "items.*.completion_date": "string?",
+          "items.*.external": "boolean",
+          "items.*.is_completed": "boolean",
+          "items.*.key_project": "boolean",
+          "items.*.latitude": "number",
+          "items.*.logo": "string?",
+          "items.*.longitude": "number",
+          "items.*.main_3d": "string?",
+          "items.*.max_discount": "number?",
+          "items.*.metro": "object?",
+          "items.*.metro.color": "string?",
+          "items.*.metro.name": "string",
+          "items.*.metro_distance": "integer?",
+          "items.*.min_price": "number?",
+          "items.*.movement_way": "object?",
+          "items.*.movement_way.icon": "string",
+          "items.*.movement_way.name": "string",
+          "items.*.partners": "array",
+          "items.*.partners.*.logo": "string",
+          "items.*.partners.*.name": "string",
+          "items.*.project_usp": "array",
+          "items.*.project_usp.*.icon": "string",
+          "items.*.project_usp.*.name": "string",
+          "items.*.queues": "object?",
+          "items.*.queues.*": "array",
+          "items.*.queues.*.*": "string",
+          "items.*.available_types": "array",
+          "items.*.available_types.*": "string",
+          "items.*.min_prices": "object",
+          "items.*.min_prices.boxrooms": "number?",
+          "items.*.min_prices.parkings": "number?",
+          "items.*.parking_sort": "integer?"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Сохраняем код проекта с паркингом для следующих запросов; при ошибке значение сбрасываем
+      (function () {
+        let body = null;
+        try { body = pm.response.json(); } catch (e) { body = null; }
+        let found;
+        try { found = (function (data) { return data.items.map((i) => i.code).find(Boolean); })(body); } catch (e) { found = undefined; }
+        if (found !== undefined && found !== null && found !== "") {
+          pm.environment.set("parkingProjectCode", String(found));
+        } else {
+          pm.environment.unset("parkingProjectCode");
+        }
+      })();
+    language: text/javascript
+settings: {}
+order: 1000

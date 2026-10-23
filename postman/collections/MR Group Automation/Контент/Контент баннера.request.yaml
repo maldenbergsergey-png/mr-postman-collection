@@ -77,18 +77,24 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: ["items", "main_title"],
+        required: [
+          "items",
+          "main_title"
+        ],
         types: {
           "items": "array",
           "items.*.background_color": "string?",
           "items.*.description": "string?",
+          "items.*.description_en": "string?",
           "items.*.font_color": "string?",
           "items.*.icon": "string?",
           "items.*.image": "string?",
           "items.*.title": "object",
           "items.*.title.font_size": "integer?",
           "items.*.title.text": "string?",
-          "main_title": "string"
+          "items.*.title.text_en": "string?",
+          "main_title": "string",
+          "main_title_en": "string?"
         }
       });
     language: text/javascript

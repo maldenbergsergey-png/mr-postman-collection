@@ -1,0 +1,34 @@
+$kind: http-request
+name: "Преимущества штаб-квартир"
+description: |
+  Получение преимуществ штаб-квартир.
+url: "{{baseUrl}}/realty/headquarters/advantages"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "*.description",
+          "*.image_horizontal",
+          "*.image_horizontal.src",
+          "*.image_vertical",
+          "*.image_vertical.src",
+          "*.name"
+        ],
+        types: {
+          "*.description": "string?",
+          "*.image_horizontal": "object",
+          "*.image_horizontal.description": "string",
+          "*.image_horizontal.src": "string",
+          "*.image_vertical": "object",
+          "*.image_vertical.description": "string",
+          "*.image_vertical.src": "string",
+          "*.name": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 2000

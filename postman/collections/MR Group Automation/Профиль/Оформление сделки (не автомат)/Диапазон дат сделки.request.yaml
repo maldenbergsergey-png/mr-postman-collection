@@ -1,0 +1,60 @@
+$kind: http-request
+name: "Диапазон дат сделки"
+description: |
+  Диапазон дат от текущего дня до срока окончания устной брони с разметкой доступности по
+  графику рабочих дней CRM (синхронный запрос к CRM; репликация таблиц не требуется).
+  Недоступны только праздничные выходные из графика CRM (`days_off`). Рабочая неделя графика
+  (`work_week`) не учитывается: продажи работают семь дней в неделю, поэтому суббота и
+  воскресенье доступны, если их нет в `days_off`.
+  При недоступности CRM запрос повторяется (до трёх попыток), затем — `503`.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/date-range"
+method: GET
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["dealApplicationId"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ DealApplicationDateRange
+      pm.variables.set("schema", {
+        required: [
+          "date_from",
+          "date_to",
+          "disabled_dates"
+        ],
+        types: {
+          "date_from": "string",
+          "date_to": "string",
+          "disabled_dates": "array",
+          "disabled_dates.*": "string"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Сохраняем первая доступная дата сделки для следующих запросов; при ошибке значение сбрасываем
+      (function () {
+        let body = null;
+        try { body = pm.response.json(); } catch (e) { body = null; }
+        let found;
+        try { found = (function (data) { return data.date_from; })(body); } catch (e) { found = undefined; }
+        if (found !== undefined && found !== null && found !== "") {
+          pm.environment.set("dealDate", String(found));
+        } else {
+          pm.environment.unset("dealDate");
+        }
+      })();
+    language: text/javascript
+settings: {}
+order: 7000

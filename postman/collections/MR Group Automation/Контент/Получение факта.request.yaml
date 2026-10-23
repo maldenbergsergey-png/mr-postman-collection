@@ -38,8 +38,10 @@ scripts:
         ],
         types: {
           "facts": "array",
+          "facts.*.description": "string",
+          "facts.*.description_en": "string?",
           "facts.*.title": "string",
-          "facts.*.description": "string"
+          "facts.*.title_en": "string?"
         }
       });
     language: text/javascript

@@ -16,10 +16,12 @@ scripts:
         ],
         types: {
           "items": "array",
-          "items.*.year": "integer",
-          "items.*.title": "string",
           "items.*.description": "string",
-          "items.*.image": "string"
+          "items.*.description_en": "string?",
+          "items.*.image": "string",
+          "items.*.title": "string",
+          "items.*.title_en": "string?",
+          "items.*.year": "integer"
         }
       });
     language: text/javascript

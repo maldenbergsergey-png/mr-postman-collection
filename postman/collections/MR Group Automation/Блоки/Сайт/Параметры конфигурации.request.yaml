@@ -11,9 +11,11 @@ scripts:
       // КОНТРАКТЫ МЕТОДА:
 
       pm.variables.set("schema", {
-        required: [],
+        required: [
+        ],
         types: {
           "address": "string",
+          "ai_search_enabled": "boolean",
           "email_support": "string",
           "footer_copyright": "string",
           "phone_support": "string",

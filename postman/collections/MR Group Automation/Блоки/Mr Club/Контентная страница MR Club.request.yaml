@@ -1,0 +1,46 @@
+$kind: http-request
+name: "Контентная страница MR Club"
+description: |
+  Возвращает одну контентную страницу MR Club.
+  Входные данные: переменная mrClubContentPageCode (код страницы) задаётся вручную, в API нет метода со списком кодов; без неё запрос пропускается.
+url: "{{baseUrl}}/mrclub/content-pages/{{mrClubContentPageCode}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["mrClubContentPageCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ MrClubContentPage
+      pm.variables.set("schema", {
+        required: [
+          "ad_label",
+          "code",
+          "cta_btn_text",
+          "date",
+          "image",
+          "teaser",
+          "text",
+          "title"
+        ],
+        types: {
+          "ad_label": "string?",
+          "code": "string",
+          "cta_btn_text": "string?",
+          "date": "string",
+          "image": "string?",
+          "teaser": "string",
+          "text": "string",
+          "title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 7000

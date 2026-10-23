@@ -11,18 +11,26 @@ scripts:
 
       pm.variables.set("schema", {
         required: [
-          "items"
+          "items",
+          "items.*.code",
+          "items.*.id",
+          "items.*.link",
+          "items.*.marketing_image",
+          "items.*.name",
+          "items.*.phone",
+          "items.*.title",
+          "items.*.video"
         ],
         types: {
           "items": "array",
-          "items.*.code": "string",            
-          "items.*.id": "integer",             
-          "items.*.link": "string?",           
-          "items.*.marketing_image": "string?",  
-          "items.*.name": "string",            
-          "items.*.phone": "string?",           
-          "items.*.title": "string",           
-          "items.*.video": "string?" 
+          "items.*.code": "string",
+          "items.*.id": "integer",
+          "items.*.link": "string?",
+          "items.*.marketing_image": "string?",
+          "items.*.name": "string",
+          "items.*.phone": "string?",
+          "items.*.title": "string",
+          "items.*.video": "string?"
         }
       });
     language: text/javascript

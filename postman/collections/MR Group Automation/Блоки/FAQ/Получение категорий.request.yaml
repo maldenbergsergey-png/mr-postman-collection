@@ -48,30 +48,22 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [  // проверка обязательности параметров
+        required: [
           "categories",
           "categories.*.code",
-          "categories.*.name",
-          "categories.*.subcategories.*.code",
-          "categories.*.subcategories.*.name",
-
+          "categories.*.name"
         ],
-        types: { //проверка типов данных
-
-        "categories" : "array",
-        "categories.*.code" : "string",
-        "categories.*.image" : "string",
-        "categories.*.name" : "string",
-
-        "categories.*.subcategories" : "array",
-        "categories.*.subcategories.*.code" : "string",
-        "categories.*.subcategories.*.image" : "string",
-        "categories.*.subcategories.*.name" : "string",
-
-       
-
+        types: {
+          "categories": "array",
+          "categories.*.code": "string",
+          "categories.*.image": "string",
+          "categories.*.name": "string",
+          "categories.*.subcategories": "array",
+          "categories.*.subcategories.*.code": "string",
+          "categories.*.subcategories.*.image": "string",
+          "categories.*.subcategories.*.name": "string"
         }
-        });
+      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение категорий.resources/examples

@@ -12,32 +12,33 @@ scripts:
       // КОНТРАКТЫ МЕТОДА: 
 
       pm.variables.set("schema", {
-        required: [  // проверка обязательности параметров
+        required: [
           "count",
-          "items"
-
+          "items",
+          "items.*.id",
+          "items.*.image",
+          "items.*.name",
+          "items.*.type",
+          "items.*.video"
         ],
-        types: { //проверка типов данных
-        "count": "integer",
-        "items": "array?",
-        "items.*.id": "integer",
-        "items.*.name": "string",
-        "items.*.type": "string",
-
-        "items.*.image": "object?",
-        "items.*.image.image_desktop": "string",
-        "items.*.image.image_desktop_big": "string?",
-        "items.*.image.image_mobile": "string",
-        "items.*.image.image_tablet": "string?",
-
-        "items.*.video": "object?",
-        "items.*.video.image_preview_desktop": "string",
-        "items.*.video.image_preview_mobile": "string",
-        "items.*.video.video_desktop": "string",
-        "items.*.video.video_mobile": "string",
-
-          }
-        });
+        types: {
+          "count": "integer",
+          "items": "array?",
+          "items.*.id": "integer",
+          "items.*.image": "object?",
+          "items.*.image.image_desktop": "string",
+          "items.*.image.image_desktop_big": "string?",
+          "items.*.image.image_mobile": "string",
+          "items.*.image.image_tablet": "string?",
+          "items.*.name": "string",
+          "items.*.type": "string",
+          "items.*.video": "object?",
+          "items.*.video.image_preview_desktop": "string",
+          "items.*.video.image_preview_mobile": "string",
+          "items.*.video.video_desktop": "string",
+          "items.*.video.video_mobile": "string"
+        }
+      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Список баннеров для разводящей стр.resources/examples

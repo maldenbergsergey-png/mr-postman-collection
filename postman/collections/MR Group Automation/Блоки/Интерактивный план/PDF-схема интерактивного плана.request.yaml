@@ -1,0 +1,24 @@
+$kind: http-request
+name: "PDF-схема интерактивного плана"
+description: |
+  Возвращает PDF с подложкой интерактивного плана.
+  Входные данные: переменная planId (идентификатор плана) задаётся вручную, в ответах других методов он не возвращается; без неё запрос пропускается.
+url: "{{baseUrl}}/realty/plan/{{planId}}/scheme.pdf"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["planId"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      pm.variables.set("responseKind", "application/pdf");
+    language: text/javascript
+settings: {}
+order: 13000

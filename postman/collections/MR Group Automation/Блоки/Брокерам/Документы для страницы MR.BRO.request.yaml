@@ -1,0 +1,66 @@
+$kind: http-request
+name: "Документы для страницы MR.BRO"
+description: |
+  Возвращает контент для блока с документами на странице "MR.BRO"
+url: "{{baseUrl}}/brokers/documents"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("schema", {
+        required: [
+          "*.highlighted_document",
+          "*.highlighted_document.date_end",
+          "*.highlighted_document.date_start",
+          "*.highlighted_document.file",
+          "*.highlighted_document.group",
+          "*.highlighted_document.group.disclaimer",
+          "*.highlighted_document.group.id",
+          "*.highlighted_document.group.name",
+          "*.highlighted_document.id",
+          "*.highlighted_document.name",
+          "*.id",
+          "*.items",
+          "*.items.*.date_end",
+          "*.items.*.date_start",
+          "*.items.*.file",
+          "*.items.*.group",
+          "*.items.*.group.disclaimer",
+          "*.items.*.group.id",
+          "*.items.*.group.name",
+          "*.items.*.id",
+          "*.items.*.name",
+          "*.name",
+          "*.title"
+        ],
+        types: {
+          "*.highlighted_document": "object?",
+          "*.highlighted_document.date_end": "string?",
+          "*.highlighted_document.date_start": "string?",
+          "*.highlighted_document.file": "string",
+          "*.highlighted_document.group": "object?",
+          "*.highlighted_document.group.disclaimer": "string?",
+          "*.highlighted_document.group.id": "number",
+          "*.highlighted_document.group.name": "string",
+          "*.highlighted_document.id": "number",
+          "*.highlighted_document.name": "string",
+          "*.id": "number",
+          "*.items": "array",
+          "*.items.*.date_end": "string?",
+          "*.items.*.date_start": "string?",
+          "*.items.*.file": "string",
+          "*.items.*.group": "object?",
+          "*.items.*.group.disclaimer": "string?",
+          "*.items.*.group.id": "number",
+          "*.items.*.group.name": "string",
+          "*.items.*.id": "number",
+          "*.items.*.name": "string",
+          "*.name": "string",
+          "*.title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 2000

@@ -12,7 +12,6 @@ scripts:
 
       pm.variables.set("schema", {
         required: [
-          "files.*.src"
         ],
         types: {
           "block_main": "object",
@@ -20,22 +19,18 @@ scripts:
           "block_main.button_text": "string",
           "block_main.text": "string",
           "block_main.title": "string",
-
           "block1": "object",
           "block1.accent_text": "string",
           "block1.additional_text": "string",
-
           "block2": "object",
           "block2.accent_text": "string",
           "block2.additional_text": "string",
-
           "block3": "object",
           "block3.accent_text": "string",
           "block3.additional_text": "string",
-
           "files": "array",
-          "files.*.src": "string",
-          "files.*.description": "string"
+          "files.*.description": "string",
+          "files.*.src": "string"
         }
       });
     language: text/javascript

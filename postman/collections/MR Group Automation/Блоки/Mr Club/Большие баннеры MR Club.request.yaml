@@ -1,0 +1,36 @@
+$kind: http-request
+name: "Большие баннеры MR Club"
+description: |
+  Возвращает список больших баннеров для страницы MR Club.
+url: "{{baseUrl}}/mrclub/banners/big"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ MrClubBigBannersCollection
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.color",
+          "items.*.id",
+          "items.*.title"
+        ],
+        types: {
+          "items": "array",
+          "items.*.ad_label": "string?",
+          "items.*.btn_link": "string?",
+          "items.*.btn_text": "string?",
+          "items.*.color": "string",
+          "items.*.desktop_picture": "string?",
+          "items.*.id": "integer",
+          "items.*.link": "string?",
+          "items.*.mobile_picture": "string?",
+          "items.*.tablet_picture": "string?",
+          "items.*.title": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 4000

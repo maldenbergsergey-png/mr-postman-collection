@@ -1,0 +1,96 @@
+$kind: http-request
+name: "Отправка оформления сделки в CRM"
+description: |
+  Сохраняет дату сделки и отправляет полный пакет в CRM. По ответу — online (Этап 2),
+  offline (ведёт менеджер, отдаётся карточка) или отказ. Если недоступен график рабочих дней
+  CRM — `503`, дата сделки не сохраняется. Если недоступен сам вызов CRM или он ответил
+  негодно (сеть, `401`, `403`, `404`, `5xx`) — `503`, дата сделки уже сохранена, повтор
+  допустим. В обоих случаях состояние оформления не меняется: `status` остаётся `DRAFT`,
+  `current_step` — тот, что был до отправки. Если CRM отклонила параметры сделки (`400`,
+  `409` или `422` на проверке параметров) — `422` с текстом «CRM отклонила параметры сделки:
+  <причина от CRM>», состояние оформления также не меняется. Выбранный банк не резолвится в
+  идентификатор CRM (не найден в справочнике либо без него) — `422`. Оформление, ушедшее в
+  офлайн на шаге «Оплата», в CRM не отправляется: метод отвечает 422.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/submit"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "deal_date": "{{dealDate}}"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["dealApplicationId", "dealDate"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ DealApplicationState
+      pm.variables.set("schema", {
+        required: [
+          "booking_date",
+          "contract_price",
+          "current_step",
+          "id",
+          "realty_object",
+          "realty_object.article",
+          "realty_object.id",
+          "realty_object.project_name",
+          "realty_object.type_title",
+          "status"
+        ],
+        types: {
+          "bank_code": "string?",
+          "bank_id": "integer?",
+          "booking_date": "string",
+          "contract_price": "number",
+          "crm_deal_id": "string?",
+          "current_step": "string",
+          "deal_date": "string?",
+          "deal_type": "string?",
+          "has_debit_account": "boolean?",
+          "has_non_rf_citizen": "boolean?",
+          "has_proxy": "boolean?",
+          "has_underage": "boolean?",
+          "id": "integer",
+          "manager": "object?",
+          "manager.email": "string?",
+          "manager.full_name": "string",
+          "manager.phone": "string?",
+          "offline_reason": "string?",
+          "ownership_form": "string?",
+          "participants_count": "integer?",
+          "payment_form": "string?",
+          "realty_object": "object",
+          "realty_object.area": "number?",
+          "realty_object.article": "string",
+          "realty_object.building": "string?",
+          "realty_object.category": "object?",
+          "realty_object.category.code": "string",
+          "realty_object.floor": "integer?",
+          "realty_object.id": "integer",
+          "realty_object.number": "string?",
+          "realty_object.product_code": "string?",
+          "realty_object.project_code": "string?",
+          "realty_object.project_name": "string",
+          "realty_object.rooms": "integer?",
+          "realty_object.type_title": "string",
+          "realty_object.url": "string?",
+          "status": "string"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 9000

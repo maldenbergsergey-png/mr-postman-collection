@@ -16,11 +16,10 @@ scripts:
           "name"
         ],
         types: {
-          "name": "string",
           "description": "string?",
+          "name": "string",
           "note": "string?",
-          "title": "string?",
-          "document": "string?" // в контрактах нет данного параметра, есть в требованиях
+          "title": "string?"
         }
       });
     language: text/javascript

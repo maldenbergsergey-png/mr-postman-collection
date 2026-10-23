@@ -1,0 +1,52 @@
+$kind: http-request
+name: "Настройки страницы проекта"
+description: |
+  Возвращает сведения о конфигурации карточки проекта.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/page-settings"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectPageSettings
+      pm.variables.set("schema", {
+        required: [
+          "additional_data",
+          "blocks",
+          "blocks.*.code",
+          "blocks.*.teaser",
+          "blocks.*.title",
+          "slider",
+          "slider.autoplay",
+          "slider.speed",
+          "subtitle",
+          "title",
+          "use_new_card_design"
+        ],
+        types: {
+          "additional_data": "object?",
+          "additional_data.*": "any",
+          "blocks": "array",
+          "blocks.*.code": "string",
+          "blocks.*.teaser": "string?",
+          "blocks.*.title": "string",
+          "slider": "object",
+          "slider.autoplay": "boolean",
+          "slider.speed": "integer",
+          "subtitle": "string?",
+          "title": "string",
+          "use_new_card_design": "boolean"
+        }
+      });
+    language: text/javascript
+settings: {}
+order: 16000

@@ -1,0 +1,103 @@
+$kind: http-request
+name: "Список акций (новый метод)"
+description: |
+  Получение списка акций (new)
+url: "{{baseUrl}}/promotions"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "context": {
+        "platform": "web"
+      }
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      // КОНТРАКТ PromotionsList
+      pm.variables.set("schema", {
+        required: [
+          "items",
+          "items.*.attributes",
+          "items.*.attributes.background_color",
+          "items.*.attributes.background_variant",
+          "items.*.attributes.code",
+          "items.*.attributes.explanation",
+          "items.*.attributes.illustration_medium",
+          "items.*.attributes.illustration_narrow",
+          "items.*.attributes.illustration_wide",
+          "items.*.attributes.is_gradient",
+          "items.*.attributes.is_show_button",
+          "items.*.attributes.is_show_date_promo",
+          "items.*.attributes.is_show_terms",
+          "items.*.attributes.mobile_link",
+          "items.*.attributes.promo_expires",
+          "items.*.attributes.promo_image",
+          "items.*.attributes.promo_title_main",
+          "items.*.attributes.promo_title_secondary",
+          "items.*.attributes.render_medium",
+          "items.*.attributes.render_narrow",
+          "items.*.attributes.render_wide",
+          "items.*.attributes.show_transition",
+          "items.*.attributes.site_link",
+          "items.*.attributes.subtitle",
+          "items.*.attributes.terms_text",
+          "items.*.attributes.terms_variant",
+          "items.*.attributes.title",
+          "items.*.attributes.transition_text",
+          "items.*.type"
+        ],
+        types: {
+          "items": "array",
+          "items.*.attributes": "object",
+          "items.*.attributes.background_color": "string?",
+          "items.*.attributes.background_variant": "string",
+          "items.*.attributes.code": "string?",
+          "items.*.attributes.explanation": "string?",
+          "items.*.attributes.illustration_medium": "string?",
+          "items.*.attributes.illustration_narrow": "string?",
+          "items.*.attributes.illustration_wide": "string?",
+          "items.*.attributes.is_gradient": "boolean",
+          "items.*.attributes.is_show_button": "boolean",
+          "items.*.attributes.is_show_date_promo": "boolean",
+          "items.*.attributes.is_show_terms": "boolean",
+          "items.*.attributes.mobile_link": "string?",
+          "items.*.attributes.promo_expires": "string?",
+          "items.*.attributes.promo_image": "string?",
+          "items.*.attributes.promo_title_main": "string?",
+          "items.*.attributes.promo_title_secondary": "string?",
+          "items.*.attributes.render_medium": "string?",
+          "items.*.attributes.render_narrow": "string?",
+          "items.*.attributes.render_wide": "string?",
+          "items.*.attributes.show_transition": "string?",
+          "items.*.attributes.site_link": "string?",
+          "items.*.attributes.subtitle": "string?",
+          "items.*.attributes.terms_text": "string?",
+          "items.*.attributes.terms_variant": "string",
+          "items.*.attributes.title": "string",
+          "items.*.attributes.transition_text": "string?",
+          "items.*.type": "string"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Сохраняем код акции для следующих запросов; при ошибке значение сбрасываем
+      (function () {
+        let body = null;
+        try { body = pm.response.json(); } catch (e) { body = null; }
+        let found;
+        try { found = (function (data) { return data.items.map((i) => i.attributes && i.attributes.code).find(Boolean); })(body); } catch (e) { found = undefined; }
+        if (found !== undefined && found !== null && found !== "") {
+          pm.environment.set("promotionCode", String(found));
+        } else {
+          pm.environment.unset("promotionCode");
+        }
+      })();
+    language: text/javascript
+settings: {}
+order: 3000

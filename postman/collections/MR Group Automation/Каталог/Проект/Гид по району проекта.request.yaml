@@ -1,0 +1,59 @@
+$kind: http-request
+name: "Гид по району проекта"
+description: |
+  Возвращает массив всех доступных категорий гида по району проекта.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/neighborhood-guide"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: beforeRequest
+    code: |-
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      pm.variables.set("schema", {
+        required: [
+          "*.code",
+          "*.image_horizontal",
+          "*.image_horizontal.src",
+          "*.image_vertical",
+          "*.image_vertical.src",
+          "*.teaser",
+          "*.title"
+        ],
+        types: {
+          "*.code": "string",
+          "*.image_horizontal": "object",
+          "*.image_horizontal.description": "string",
+          "*.image_horizontal.src": "string",
+          "*.image_vertical": "object",
+          "*.image_vertical.description": "string",
+          "*.image_vertical.src": "string",
+          "*.teaser": "string?",
+          "*.title": "string"
+        }
+      });
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      // Сохраняем код категории гида по району для следующих запросов; при ошибке значение сбрасываем
+      (function () {
+        let body = null;
+        try { body = pm.response.json(); } catch (e) { body = null; }
+        let found;
+        try { found = (function (data) { return data[0].code; })(body); } catch (e) { found = undefined; }
+        if (found !== undefined && found !== null && found !== "") {
+          pm.environment.set("neighborhoodCategoryCode", String(found));
+        } else {
+          pm.environment.unset("neighborhoodCategoryCode");
+        }
+      })();
+    language: text/javascript
+settings: {}
+order: 18000
