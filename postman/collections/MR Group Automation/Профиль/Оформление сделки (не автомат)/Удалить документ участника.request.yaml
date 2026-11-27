@@ -1,0 +1,33 @@
+$kind: http-request
+name: "Удалить документ участника"
+description: |-
+  Удаление одного документа участника вместе с файлом в S3: остальные файлы слота
+  (у `marriage_contract` их может быть несколько) остаются. Сброс OCR при перезагрузке.
+  Удаление `passport_main` при ИНН из БП — очистка ИНН на User. Документ удаляется только
+  на шагах загрузки (`passport_upload`, `snils_upload`, `inn_upload`, `family_docs`,
+  `marriage_contract`; на `registration_upload` — только `passport_registration`) и на
+  `ocr_review` (любой слот, видимость слота не проверяется), иначе `409`. Удаление шаг не
+  меняет. Удаление на любой из этих фаз снимает отметку «проверка пройдена», если она стоит:
+  клиент подтверждает данные заново через `submit`. У клиента типа `existing` отметка остаётся. ИНН в данных участника при этом не очищается, флаг
+  дозагрузки регистрации не ставится.
+
+  Используйте документ, загруженный для этого прогона, и этап, на котором разрешено удаление.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/participant/documents/{{dealDocumentId}}"
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"204": []});
+      const required = ["dealApplicationId", "dealDocumentId", "bearerToken"];
+      const missing = required.filter((key) => !pm.variables.get(key));
+      if (missing.length) {
+        console.warn("Нужны входные данные: " + missing.join(", "));
+        pm.execution.skipRequest();
+      }
+    language: text/javascript
+settings: {}
+order: 15000

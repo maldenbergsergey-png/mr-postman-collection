@@ -10,22 +10,26 @@ body:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
-        required: [  // проверка обязательности параметров
+        rootType: "object",
+        required: [
           "items",
           "items.*.name",
-          "items.*.partners"
+          "items.*.partners",
         ],
-        types: { //проверка типов данных
+        types: {
           "items": "array",
+          "items.*": "object",
           "items.*.name": "string",
           "items.*.partners": "array",
+          "items.*.partners.*": "object",
           "items.*.partners.*.image": "string",
-          "items.*.partners.*.web_link": "string?"
-        }
+          "items.*.partners.*.web_link": "string?",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Партнеры.resources/examples

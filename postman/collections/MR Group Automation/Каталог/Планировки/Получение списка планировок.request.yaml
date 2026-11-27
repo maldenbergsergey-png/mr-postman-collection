@@ -1,5 +1,8 @@
 $kind: http-request
-description: Получение списка планировок
+description: |-
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
+  Получение списка планировок
 url: "{{baseUrl}}/sale/typicalobjects?category=flats"
 method: GET
 headers:
@@ -188,7 +191,7 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
       pm.variables.set("schema", {
         required: [

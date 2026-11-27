@@ -1,6 +1,9 @@
 $kind: http-request
 name: Список ID CRM ОН в разрезе подтипов (категорий)
-description: Метод возвращает список ID CRM ОН в разрезе подтипов (категорий)
+description: |-
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
+  Метод возвращает список ID CRM ОН в разрезе подтипов (категорий)
 url: "{{baseUrl}}/sale/plan/subtype_objects?category={{categoryHasPlan}}&building={{buildingHasPlan}}&floor={{floorNumberHasPlan}}"
 method: GET
 headers:

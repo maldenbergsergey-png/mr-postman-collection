@@ -8,23 +8,26 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.name",
           "items.*.type",
-          "items.*.value"
+          "items.*.value",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.icon": "string",
           "items.*.name": "string",
           "items.*.type": "string",
-          "items.*.value": "string"
-        }
+          "items.*.value": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Контакты.resources/examples

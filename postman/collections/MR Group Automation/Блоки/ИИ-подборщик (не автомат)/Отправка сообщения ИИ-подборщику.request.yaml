@@ -22,8 +22,9 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ AiChatMessageResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "answer",
           "created_dt",
@@ -39,10 +40,18 @@ scripts:
           "lots.*.floors_number",
           "lots.*.functional_layout",
           "lots.*.metro",
+          "lots.*.metro.color",
+          "lots.*.metro.distance",
+          "lots.*.metro.id",
+          "lots.*.metro.line",
+          "lots.*.metro.movement_way",
+          "lots.*.metro.movement_way.icon",
+          "lots.*.metro.movement_way.name",
+          "lots.*.metro.name",
           "lots.*.price",
           "lots.*.project_name",
           "lots.*.rooms_number",
-          "title"
+          "title",
         ],
         types: {
           "answer": "string?",
@@ -98,6 +107,7 @@ scripts:
           "intent": "string",
           "lot_count": "integer",
           "lots": "array",
+          "lots.*": "object",
           "lots.*.area": "number?",
           "lots.*.building_deadline": "string?",
           "lots.*.code": "string",
@@ -113,12 +123,14 @@ scripts:
           "lots.*.metro.movement_way.icon": "string",
           "lots.*.metro.movement_way.name": "string",
           "lots.*.metro.name": "string",
+          "lots.*.metro.name_en": "string?",
           "lots.*.price": "number",
           "lots.*.project_name": "string?",
           "lots.*.rooms_number": "integer?",
-          "title": "string"
-        }
+          "title": "string",
+        },
       });
+      // КОНТРАКТ AiChatMessageResponse
     language: text/javascript
 settings: {}
 order: 1000

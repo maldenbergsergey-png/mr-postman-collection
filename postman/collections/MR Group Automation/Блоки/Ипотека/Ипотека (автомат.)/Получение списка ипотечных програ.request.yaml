@@ -9,9 +9,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
@@ -25,11 +25,12 @@ scripts:
           "items.*.note",
           "items.*.rate",
           "items.*.short_name",
-          "items.*.term"
+          "items.*.term",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.amount": "string",
           "items.*.background_color": "string",
           "items.*.code": "string",
@@ -40,9 +41,11 @@ scripts:
           "items.*.note": "string",
           "items.*.rate": "string",
           "items.*.short_name": "string",
-          "items.*.term": "string"
-        }
+          "items.*.term": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка ипотечных програ.resources/examples

@@ -45,21 +45,23 @@ body:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ NewSubscriptionResult
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "message",
-          "success"
+          "success",
         ],
         types: {
           "message": "string",
-          "success": "boolean"
-        }
+          "success": "boolean",
+        },
       });
+      // КОНТРАКТ NewSubscriptionResult
     language: text/javascript
   - type: beforeRequest
     code: |-
-      
+
       // 1) Загружаем карту formCode -> consentIds
       //
       let raw = pm.environment.get("formsConsentsMap") || "{}";
@@ -154,7 +156,7 @@ scripts:
         }
       );
 
-      // 
+      //
 
       // 6) timestamp
       //

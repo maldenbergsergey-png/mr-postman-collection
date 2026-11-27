@@ -12,50 +12,31 @@ auth:
 scripts:
   - type: afterResponse
     code: |-
-      // Проверяем, что ответ корректный JSON
-      let respData;
+      if (pm.response.code !== 200) return;
+      let data;
       try {
-          respData = pm.response.json();
-      } catch (e) {
-          pm.test("Ответ не является корректным JSON", function () {
-              pm.expect.fail("Ошибка парсинга JSON");
-          });
+        data = pm.response.json();
+      } catch {
+        return;
       }
+      if (!Array.isArray(data?.items)) return;
 
-      // Проверяем наличие массива items
-      pm.test("Проверяем, что есть массив items", function () {
-          pm.expect(respData).to.have.property("items");
-          pm.expect(respData.items).to.be.an("array").that.is.not.empty;
-      });
-
-      // Ищем первую сделку, где массив products не пуст
-      let validDeal = null;
-      if (Array.isArray(respData.items) && respData.items.length > 0) {
-          validDeal = respData.items.find(item => 
-              Array.isArray(item.products) && item.products.length > 0
-          );
-      }
-
-      // Проверяем, что нашли подходящую сделку
-      pm.test("Проверяем, что есть сделка с непустым products", function () {
-          pm.expect(validDeal, "Не найдено ни одной сделки с непустым products").to.not.be.undefined;
-      });
-
-      // Сохраняем id подходящей сделки
-      if (validDeal) {
-          pm.environment.set("idDeal", validDeal.id);
-          console.log(`Переменная idDeal сохранена: ${validDeal.id}`);
+      const deal = data.items.find((item) =>
+        typeof item?.id === "number" && Number.isFinite(item.id)
+        && Array.isArray(item.products) && item.products.length > 0
+      );
+      if (deal) {
+        pm.environment.set("idDeal", String(deal.id));
       } else {
-          console.warn("Не найдено ни одной сделки с непустым products — idDeal не сохранена");
+        console.info("Для карточки сделки нужен ID из списка с непустым products.");
       }
     language: text/javascript
   - type: beforeRequest
     code: |
-      // Tests (Postman)
-      // Контракт: PurchasesList
-      // (*) — обязательные поля (должны быть в ответе). nullable:true => тип с "?"
-
+      pm.environment.unset("idDeal");
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "active_purchases_qty",
           "canceled_purchases_qty",
@@ -63,17 +44,37 @@ scripts:
           "items",
           "items.*.cancel_dt",
           "items.*.complete_dt",
+          "items.*.deal_summary.continue.button_label",
+          "items.*.deal_summary.continue.type",
+          "items.*.deal_summary.online_progress.current",
+          "items.*.deal_summary.online_progress.label",
+          "items.*.deal_summary.online_progress.total",
+          "items.*.deal_summary.status.text",
+          "items.*.deal_summary.step_label",
           "items.*.expiration_dt",
           "items.*.free_booking_dt",
           "items.*.id",
           "items.*.is_online_purchase_available",
+          "items.*.manager.name",
+          "items.*.manager.phone",
+          "items.*.manager.photo",
           "items.*.phase",
           "items.*.phase.code",
           "items.*.phase.name",
           "items.*.phase.number",
           "items.*.phase.phases_qty",
           "items.*.products",
+          "items.*.products.*.area",
           "items.*.products.*.assignment",
+          "items.*.products.*.building",
+          "items.*.products.*.building.code",
+          "items.*.products.*.building.compass_angle",
+          "items.*.products.*.building.deadline",
+          "items.*.products.*.building.floors_number",
+          "items.*.products.*.building.id",
+          "items.*.products.*.building.name",
+          "items.*.products.*.building.readiness",
+          "items.*.products.*.building.scheme",
           "items.*.products.*.category",
           "items.*.products.*.category.code",
           "items.*.products.*.category.name",
@@ -84,36 +85,44 @@ scripts:
           "items.*.products.*.name",
           "items.*.products.*.number",
           "items.*.products.*.plot",
-          "items.*.products.*.resale",
-          "items.*.products.*.rooms_number",
-          "items.*.products.*.status",
-          "items.*.products.*.status.code",
-          "items.*.products.*.status.name",
-          "items.*.products.*.tier_quantity",
-          "items.*.products.*.area",
-          "items.*.products.*.building",
+          "items.*.products.*.plot.exists",
+          "items.*.products.*.plot.size",
           "items.*.products.*.project",
           "items.*.products.*.project.brandbook",
           "items.*.products.*.project.business_unit",
           "items.*.products.*.project.code",
+          "items.*.products.*.project.description",
           "items.*.products.*.project.id",
           "items.*.products.*.project.image",
           "items.*.products.*.project.is_countryside",
           "items.*.products.*.project.is_premium",
           "items.*.products.*.project.is_private",
           "items.*.products.*.project.is_promoted",
+          "items.*.products.*.project.marketing_image",
           "items.*.products.*.project.metro_stations",
           "items.*.products.*.project.metro_stations.*.color",
           "items.*.products.*.project.metro_stations.*.distance",
           "items.*.products.*.project.metro_stations.*.id",
           "items.*.products.*.project.metro_stations.*.line",
           "items.*.products.*.project.metro_stations.*.movement_way",
+          "items.*.products.*.project.metro_stations.*.movement_way.icon",
+          "items.*.products.*.project.metro_stations.*.movement_way.name",
           "items.*.products.*.project.metro_stations.*.name",
           "items.*.products.*.project.name",
-          "items.*.products.*.project.title",
-          "items.*.products.*.project.description",
-          "items.*.products.*.project.marketing_image",
           "items.*.products.*.project.occupancy_schedule",
+          "items.*.products.*.project.occupancy_schedule.buildings",
+          "items.*.products.*.project.occupancy_schedule.buildings.*.date",
+          "items.*.products.*.project.occupancy_schedule.buildings.*.id",
+          "items.*.products.*.project.occupancy_schedule.buildings.*.name",
+          "items.*.products.*.project.occupancy_schedule.sections",
+          "items.*.products.*.project.occupancy_schedule.sections.*.building_id",
+          "items.*.products.*.project.occupancy_schedule.sections.*.date",
+          "items.*.products.*.project.occupancy_schedule.sections.*.id",
+          "items.*.products.*.project.occupancy_schedule.sections.*.name",
+          "items.*.products.*.project.office_class.code",
+          "items.*.products.*.project.title",
+          "items.*.products.*.resale",
+          "items.*.products.*.rooms_number",
           "items.*.products.*.section",
           "items.*.products.*.section.building_id",
           "items.*.products.*.section.description",
@@ -123,16 +132,23 @@ scripts:
           "items.*.products.*.section.id",
           "items.*.products.*.section.marketing_name",
           "items.*.products.*.section.name",
+          "items.*.products.*.status",
+          "items.*.products.*.status.code",
+          "items.*.products.*.status.name",
+          "items.*.products.*.subcategory.code",
+          "items.*.products.*.subcategory.name",
           "items.*.products.*.technical_layout",
+          "items.*.products.*.tier_quantity",
           "items.*.status",
           "items.*.status.code",
-          "items.*.status.name"
+          "items.*.status.name",
         ],
         types: {
           "active_purchases_qty": "integer",
           "canceled_purchases_qty": "integer",
           "completed_purchases_qty": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.cancel_dt": "string?",
           "items.*.complete_dt": "string?",
           "items.*.deal_summary": "object?",
@@ -165,29 +181,9 @@ scripts:
           "items.*.phase.number": "number",
           "items.*.phase.phases_qty": "number",
           "items.*.products": "array",
-          "items.*.products.*.assignment": "boolean",
-          "items.*.products.*.category": "object",
-          "items.*.products.*.category.code": "string",
-          "items.*.products.*.category.name": "string",
-          "items.*.products.*.code": "string",
-          "items.*.products.*.crm_id": "string",
-          "items.*.products.*.floor": "integer?",
-          "items.*.products.*.id": "integer",
-          "items.*.products.*.name": "string",
-          "items.*.products.*.number": "string?",
-          "items.*.products.*.plot": "object?",
-          "items.*.products.*.plot.exists": "boolean",
-          "items.*.products.*.plot.size": "number?",
-          "items.*.products.*.resale": "boolean",
-          "items.*.products.*.rooms_number": "integer?",
-          "items.*.products.*.status": "object",
-          "items.*.products.*.status.code": "string",
-          "items.*.products.*.status.name": "string",
-          "items.*.products.*.subcategory": "object?",
-          "items.*.products.*.subcategory.code": "string",
-          "items.*.products.*.subcategory.name": "string",
-          "items.*.products.*.tier_quantity": "number?",
+          "items.*.products.*": "object",
           "items.*.products.*.area": "number?",
+          "items.*.products.*.assignment": "boolean",
           "items.*.products.*.building": "object?",
           "items.*.products.*.building.code": "string",
           "items.*.products.*.building.compass_angle": "number?",
@@ -197,18 +193,33 @@ scripts:
           "items.*.products.*.building.name": "string?",
           "items.*.products.*.building.readiness": "integer?",
           "items.*.products.*.building.scheme": "string?",
+          "items.*.products.*.category": "object",
+          "items.*.products.*.category.code": "string",
+          "items.*.products.*.category.name": "string",
+          "items.*.products.*.code": "string",
           "items.*.products.*.contract_price": "number",
+          "items.*.products.*.crm_id": "string",
+          "items.*.products.*.floor": "integer?",
+          "items.*.products.*.id": "integer",
+          "items.*.products.*.name": "string",
+          "items.*.products.*.number": "string?",
+          "items.*.products.*.plot": "object?",
+          "items.*.products.*.plot.exists": "boolean",
+          "items.*.products.*.plot.size": "number?",
           "items.*.products.*.project": "object",
           "items.*.products.*.project.brandbook": "string",
           "items.*.products.*.project.business_unit": "string",
           "items.*.products.*.project.code": "string",
+          "items.*.products.*.project.description": "string?",
           "items.*.products.*.project.id": "integer",
           "items.*.products.*.project.image": "string?",
           "items.*.products.*.project.is_countryside": "boolean",
           "items.*.products.*.project.is_premium": "boolean",
           "items.*.products.*.project.is_private": "boolean",
           "items.*.products.*.project.is_promoted": "boolean",
+          "items.*.products.*.project.marketing_image": "string?",
           "items.*.products.*.project.metro_stations": "array",
+          "items.*.products.*.project.metro_stations.*": "object",
           "items.*.products.*.project.metro_stations.*.color": "string?",
           "items.*.products.*.project.metro_stations.*.distance": "integer?",
           "items.*.products.*.project.metro_stations.*.id": "integer",
@@ -217,23 +228,27 @@ scripts:
           "items.*.products.*.project.metro_stations.*.movement_way.icon": "string",
           "items.*.products.*.project.metro_stations.*.movement_way.name": "string",
           "items.*.products.*.project.metro_stations.*.name": "string",
+          "items.*.products.*.project.metro_stations.*.name_en": "string?",
           "items.*.products.*.project.name": "string",
-          "items.*.products.*.project.office_class": "object?",
-          "items.*.products.*.project.office_class.code": "string",
-          "items.*.products.*.project.office_class.description": "string?",
-          "items.*.products.*.project.title": "string?",
-          "items.*.products.*.project.description": "string?",
-          "items.*.products.*.project.marketing_image": "string?",
+          "items.*.products.*.project.name_en": "string?",
           "items.*.products.*.project.occupancy_schedule": "object?",
           "items.*.products.*.project.occupancy_schedule.buildings": "array",
+          "items.*.products.*.project.occupancy_schedule.buildings.*": "object",
           "items.*.products.*.project.occupancy_schedule.buildings.*.date": "string",
           "items.*.products.*.project.occupancy_schedule.buildings.*.id": "integer",
           "items.*.products.*.project.occupancy_schedule.buildings.*.name": "string",
           "items.*.products.*.project.occupancy_schedule.sections": "array",
+          "items.*.products.*.project.occupancy_schedule.sections.*": "object",
+          "items.*.products.*.project.occupancy_schedule.sections.*.building_id": "integer",
           "items.*.products.*.project.occupancy_schedule.sections.*.date": "string",
           "items.*.products.*.project.occupancy_schedule.sections.*.id": "integer",
           "items.*.products.*.project.occupancy_schedule.sections.*.name": "string",
-          "items.*.products.*.project.occupancy_schedule.sections.*.building_id": "integer",
+          "items.*.products.*.project.office_class": "object?",
+          "items.*.products.*.project.office_class.code": "string",
+          "items.*.products.*.project.office_class.description": "string?",
+          "items.*.products.*.project.title": "string?",
+          "items.*.products.*.resale": "boolean",
+          "items.*.products.*.rooms_number": "integer?",
           "items.*.products.*.section": "object",
           "items.*.products.*.section.building_id": "integer",
           "items.*.products.*.section.description": "string?",
@@ -243,12 +258,23 @@ scripts:
           "items.*.products.*.section.id": "integer",
           "items.*.products.*.section.marketing_name": "string?",
           "items.*.products.*.section.name": "string?",
+          "items.*.products.*.status": "object",
+          "items.*.products.*.status.code": "string",
+          "items.*.products.*.status.name": "string",
+          "items.*.products.*.subcategory": "object?",
+          "items.*.products.*.subcategory.code": "string",
+          "items.*.products.*.subcategory.name": "string",
           "items.*.products.*.technical_layout": "string?",
+          "items.*.products.*.tier_quantity": "number?",
           "items.*.status": "object",
           "items.*.status.code": "string",
-          "items.*.status.name": "string"
-        }
+          "items.*.status.name": "string",
+        },
       });
+      // Tests (Postman)
+      // Контракт: PurchasesList
+      // (*) — обязательные поля (должны быть в ответе). nullable:true => тип с "?"
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка сделок.resources/examples

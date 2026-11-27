@@ -9,7 +9,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "array",
         required: [
           "*.highlighted_document",
           "*.highlighted_document.date_end",
@@ -33,9 +35,10 @@ scripts:
           "*.items.*.id",
           "*.items.*.name",
           "*.name",
-          "*.title"
+          "*.title",
         ],
         types: {
+          "*": "object",
           "*.highlighted_document": "object?",
           "*.highlighted_document.date_end": "string?",
           "*.highlighted_document.date_start": "string?",
@@ -48,6 +51,7 @@ scripts:
           "*.highlighted_document.name": "string",
           "*.id": "number",
           "*.items": "array",
+          "*.items.*": "object",
           "*.items.*.date_end": "string?",
           "*.items.*.date_start": "string?",
           "*.items.*.file": "string",
@@ -58,8 +62,8 @@ scripts:
           "*.items.*.id": "number",
           "*.items.*.name": "string",
           "*.name": "string",
-          "*.title": "string"
-        }
+          "*.title": "string",
+        },
       });
     language: text/javascript
 settings: {}

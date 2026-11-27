@@ -16,5 +16,10 @@ auth:
   type: bearer
   credentials:
     token: "{{bearerToken}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"204": []});
+    language: text/javascript
 settings: {}
 order: 1000

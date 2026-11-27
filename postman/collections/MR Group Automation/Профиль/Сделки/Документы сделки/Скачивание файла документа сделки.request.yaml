@@ -15,6 +15,7 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/octet-stream"]});
       // Входные данные приходят из предыдущих запросов или задаются вручную
       const required = ["idDeal", "documentDeal", "documentFileId"];
       const absent = required.filter((n) => !pm.variables.get(n));
@@ -23,7 +24,6 @@ scripts:
         pm.execution.skipRequest();
       }
 
-      pm.variables.set("responseKind", "application/octet-stream");
     language: text/javascript
 settings: {}
 order: 5000

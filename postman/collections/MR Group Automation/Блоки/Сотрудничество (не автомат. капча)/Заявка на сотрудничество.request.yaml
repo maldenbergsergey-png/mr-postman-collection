@@ -37,15 +37,17 @@ body:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ CooperationResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
-          "id"
+          "id",
         ],
         types: {
-          "id": "string"
-        }
+          "id": "string",
+        },
       });
+      // КОНТРАКТ CooperationResponse
     language: text/javascript
 settings: {}
 order: 1000

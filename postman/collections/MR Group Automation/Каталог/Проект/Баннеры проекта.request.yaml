@@ -14,31 +14,33 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["projectCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ ProjectBannerListResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
           "items.*.id",
           "items.*.image",
+          "items.*.image.image_desktop",
+          "items.*.image.image_desktop_big",
+          "items.*.image.image_mobile",
+          "items.*.image.image_tablet",
           "items.*.name",
           "items.*.type",
           "items.*.video",
+          "items.*.video.image_preview_desktop",
+          "items.*.video.image_preview_mobile",
+          "items.*.video.video_desktop",
+          "items.*.video.video_mobile",
           "limit",
           "page",
-          "page_count"
+          "page_count",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.id": "integer",
           "items.*.image": "object?",
           "items.*.image.image_desktop": "string",
@@ -54,9 +56,18 @@ scripts:
           "items.*.video.video_mobile": "string",
           "limit": "integer",
           "page": "integer",
-          "page_count": "integer"
-        }
+          "page_count": "integer",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectBannerListResponse
     language: text/javascript
 settings: {}
 order: 15000

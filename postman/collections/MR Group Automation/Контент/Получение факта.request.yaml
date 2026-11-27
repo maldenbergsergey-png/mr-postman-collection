@@ -29,21 +29,24 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "facts",
-          "facts.*.title"
+          "facts.*.title",
         ],
         types: {
           "facts": "array",
+          "facts.*": "object",
           "facts.*.description": "string",
           "facts.*.description_en": "string?",
           "facts.*.title": "string",
-          "facts.*.title_en": "string?"
-        }
+          "facts.*.title_en": "string?",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение факта.resources/examples

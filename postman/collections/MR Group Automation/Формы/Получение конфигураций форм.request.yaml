@@ -60,9 +60,9 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "data",
           "data.*.consents",
@@ -73,11 +73,13 @@ scripts:
           "data.*.consents.*.consent_document.url_name",
           "data.*.consents.*.display_condition",
           "data.*.consents.*.required",
-          "data.*.id"
+          "data.*.id",
         ],
         types: {
           "data": "array",
+          "data.*": "object",
           "data.*.consents": "array",
+          "data.*.consents.*": "object",
           "data.*.consents.*.caption": "string",
           "data.*.consents.*.consent_document": "object",
           "data.*.consents.*.consent_document.id": "string",
@@ -85,9 +87,11 @@ scripts:
           "data.*.consents.*.consent_document.url_name": "string",
           "data.*.consents.*.display_condition": "string",
           "data.*.consents.*.required": "boolean",
-          "data.*.id": "string"
-        }
+          "data.*.id": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение конфигураций форм.resources/examples

@@ -189,9 +189,9 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.apartments_count",
@@ -222,8 +222,11 @@ scripts:
           "items.*.project.metro_stations.*.id",
           "items.*.project.metro_stations.*.line",
           "items.*.project.metro_stations.*.movement_way",
+          "items.*.project.metro_stations.*.movement_way.icon",
+          "items.*.project.metro_stations.*.movement_way.name",
           "items.*.project.metro_stations.*.name",
           "items.*.project.name",
+          "items.*.project.office_class.code",
           "items.*.project.title",
           "items.*.rooms_number",
           "items.*.technical_layout",
@@ -233,10 +236,11 @@ scripts:
           "page_count",
           "sort",
           "sort.code",
-          "sort.name"
+          "sort.name",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.apartments_count": "integer",
           "items.*.building": "object",
           "items.*.building.code": "string",
@@ -260,6 +264,7 @@ scripts:
           "items.*.project.is_private": "boolean",
           "items.*.project.is_promoted": "boolean",
           "items.*.project.metro_stations": "array",
+          "items.*.project.metro_stations.*": "object",
           "items.*.project.metro_stations.*.color": "string?",
           "items.*.project.metro_stations.*.distance": "integer?",
           "items.*.project.metro_stations.*.id": "integer",
@@ -268,7 +273,9 @@ scripts:
           "items.*.project.metro_stations.*.movement_way.icon": "string",
           "items.*.project.metro_stations.*.movement_way.name": "string",
           "items.*.project.metro_stations.*.name": "string",
+          "items.*.project.metro_stations.*.name_en": "string?",
           "items.*.project.name": "string",
+          "items.*.project.name_en": "string?",
           "items.*.project.office_class": "object?",
           "items.*.project.office_class.code": "string",
           "items.*.project.office_class.description": "string?",
@@ -281,9 +288,11 @@ scripts:
           "page_count": "integer",
           "sort": "object",
           "sort.code": "string",
-          "sort.name": "string"
-        }
+          "sort.name": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка планировок (новый.resources/examples

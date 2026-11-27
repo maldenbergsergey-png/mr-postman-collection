@@ -8,9 +8,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.active_btn_link",
@@ -26,12 +26,43 @@ scripts:
           "items.*.preview_picture",
           "items.*.preview_title",
           "items.*.project",
+          "items.*.project.brandbook",
+          "items.*.project.business_unit",
+          "items.*.project.code",
+          "items.*.project.id",
+          "items.*.project.image",
+          "items.*.project.is_countryside",
+          "items.*.project.is_premium",
+          "items.*.project.is_private",
+          "items.*.project.is_promoted",
+          "items.*.project.logo",
+          "items.*.project.metro",
+          "items.*.project.metro.color",
+          "items.*.project.metro.name",
+          "items.*.project.metro_distance",
+          "items.*.project.metro_stations",
+          "items.*.project.metro_stations.*.color",
+          "items.*.project.metro_stations.*.distance",
+          "items.*.project.metro_stations.*.id",
+          "items.*.project.metro_stations.*.line",
+          "items.*.project.metro_stations.*.movement_way",
+          "items.*.project.metro_stations.*.movement_way.icon",
+          "items.*.project.metro_stations.*.movement_way.name",
+          "items.*.project.metro_stations.*.name",
+          "items.*.project.min_meter_price",
+          "items.*.project.movement_way",
+          "items.*.project.movement_way.icon",
+          "items.*.project.movement_way.name",
+          "items.*.project.name",
+          "items.*.project.office_class.code",
+          "items.*.project.title",
           "items.*.tablet_picture",
           "items.*.title",
-          "items.*.type"
+          "items.*.type",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.active_btn_link": "string?",
           "items.*.active_btn_text": "string?",
           "items.*.active_color": "string",
@@ -44,7 +75,7 @@ scripts:
           "items.*.mobile_picture": "string?",
           "items.*.preview_picture": "string",
           "items.*.preview_title": "string",
-          "items.*.project": "object?",
+          "items.*.project": "object",
           "items.*.project.brandbook": "string",
           "items.*.project.business_unit": "string",
           "items.*.project.code": "string",
@@ -54,7 +85,14 @@ scripts:
           "items.*.project.is_premium": "boolean",
           "items.*.project.is_private": "boolean",
           "items.*.project.is_promoted": "boolean",
+          "items.*.project.logo": "string?",
+          "items.*.project.metro": "object?",
+          "items.*.project.metro.color": "string?",
+          "items.*.project.metro.name": "string",
+          "items.*.project.metro.name_en": "string?",
+          "items.*.project.metro_distance": "integer?",
           "items.*.project.metro_stations": "array",
+          "items.*.project.metro_stations.*": "object",
           "items.*.project.metro_stations.*.color": "string?",
           "items.*.project.metro_stations.*.distance": "integer?",
           "items.*.project.metro_stations.*.id": "integer",
@@ -63,25 +101,24 @@ scripts:
           "items.*.project.metro_stations.*.movement_way.icon": "string",
           "items.*.project.metro_stations.*.movement_way.name": "string",
           "items.*.project.metro_stations.*.name": "string",
-          "items.*.project.name": "string",
-          "items.*.project.office_class": "object?",
-          "items.*.project.office_class.code": "string",
-          "items.*.project.office_class.description": "string?",
-          "items.*.project.title": "string?",
-          "items.*.project.logo": "string?",
-          "items.*.project.metro": "object?",
-          "items.*.project.metro.color": "string?",
-          "items.*.project.metro.name": "string",
-          "items.*.project.metro_distance": "integer?",
+          "items.*.project.metro_stations.*.name_en": "string?",
           "items.*.project.min_meter_price": "number?",
           "items.*.project.movement_way": "object?",
           "items.*.project.movement_way.icon": "string",
           "items.*.project.movement_way.name": "string",
+          "items.*.project.name": "string",
+          "items.*.project.name_en": "string?",
+          "items.*.project.office_class": "object?",
+          "items.*.project.office_class.code": "string",
+          "items.*.project.office_class.description": "string?",
+          "items.*.project.title": "string?",
           "items.*.tablet_picture": "string?",
           "items.*.title": "string",
-          "items.*.type": "string"
-        }
+          "items.*.type": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Баннеры офисной недвижимости.resources/examples

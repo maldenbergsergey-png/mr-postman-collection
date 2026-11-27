@@ -9,19 +9,22 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ AiChatStartersResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "suggestions",
           "suggestions.*.text",
-          "welcome"
+          "welcome",
         ],
         types: {
           "suggestions": "array",
+          "suggestions.*": "object",
           "suggestions.*.text": "string",
-          "welcome": "string?"
-        }
+          "welcome": "string?",
+        },
       });
+      // КОНТРАКТ AiChatStartersResponse
     language: text/javascript
 settings: {}
 order: 1000

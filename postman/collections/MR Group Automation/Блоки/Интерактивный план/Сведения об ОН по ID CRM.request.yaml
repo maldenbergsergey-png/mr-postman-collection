@@ -1,5 +1,8 @@
 $kind: http-request
-description: Метод возвращает информацию об ОН по ID CRM
+description: |-
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
+  Метод возвращает информацию об ОН по ID CRM
 url: "{{baseUrl}}/sale/plan/objects/{{crmIdHasPlan}}"
 method: GET
 headers:

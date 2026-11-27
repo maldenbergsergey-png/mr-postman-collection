@@ -8,21 +8,25 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
+          "items.*.name",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.address": "string?",
           "items.*.email": "string?",
-          "items.*.latitude": "number?",
-          "items.*.longitude": "number?",
+          "items.*.latitude": "number",
+          "items.*.longitude": "number",
           "items.*.name": "string",
           "items.*.phone": "string?",
-          "items.*.schedule": "string?"
-        }
+          "items.*.schedule": "string?",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА
     language: text/javascript
 settings: {}
 examples: ./.resources/Офисы компаний.resources/examples

@@ -26,13 +26,15 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
-          "url"
+          "url",
         ],
         types: {
-          "url": "string"
-        }
+          "url": "string",
+        },
       });
     language: text/javascript
 settings: {}

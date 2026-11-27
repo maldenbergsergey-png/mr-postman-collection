@@ -1,0 +1,59 @@
+$kind: http-request
+name: "Получить подсказки адреса"
+description: |-
+  Подсказки адреса для полей анкеты участника (регистрация / корреспонденция), прокси
+  DaData Suggest Address.
+  Подсказки доступны только владельцу заявки: для чужой заявки — 403, для несуществующей — 404.
+
+  Нужны этап с доступным вводом адреса, обезличенный поисковый запрос и доступность DaData на STAGE.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/participant/address/suggest"
+method: POST
+headers:
+  Accept: "application/json"
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+body:
+  type: json
+  content: |-
+    {"query": "{{dealAddressQuery}}"}
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "suggestions",
+          "suggestions.*.address",
+          "suggestions.*.address.full_text",
+          "suggestions.*.value",
+        ],
+        types: {
+          "suggestions": "array",
+          "suggestions.*": "object",
+          "suggestions.*.address": "object",
+          "suggestions.*.address.apartment": "string?",
+          "suggestions.*.address.building": "string?",
+          "suggestions.*.address.city": "string?",
+          "suggestions.*.address.city_district_with_type": "string?",
+          "suggestions.*.address.fias_id": "string?",
+          "suggestions.*.address.full_text": "string",
+          "suggestions.*.address.house": "string?",
+          "suggestions.*.address.postal_code": "string?",
+          "suggestions.*.address.region": "string?",
+          "suggestions.*.address.settlement": "string?",
+          "suggestions.*.address.street": "string?",
+          "suggestions.*.value": "string",
+        },
+      });
+      const required = ["dealApplicationId", "dealAddressQuery", "bearerToken"];
+      const missing = required.filter((key) => !pm.variables.get(key));
+      if (missing.length) {
+        console.warn("Нужны входные данные: " + missing.join(", "));
+        pm.execution.skipRequest();
+      }
+    language: text/javascript
+settings: {}
+order: 12000

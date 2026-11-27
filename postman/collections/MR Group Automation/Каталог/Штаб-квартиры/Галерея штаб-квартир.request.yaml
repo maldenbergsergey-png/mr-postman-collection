@@ -9,34 +9,39 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "array",
         required: [
           "*.id",
           "*.items",
           "*.items.*.id",
           "*.items.*.image",
-          "*.items.*.image.src",
           "*.items.*.image.height",
+          "*.items.*.image.src",
           "*.items.*.image.width",
           "*.items.*.image_mobile",
+          "*.items.*.image_mobile.src",
           "*.items.*.title",
-          "*.name"
+          "*.name",
         ],
         types: {
+          "*": "object",
           "*.id": "integer",
           "*.items": "array",
+          "*.items.*": "object",
           "*.items.*.id": "integer",
           "*.items.*.image": "object",
           "*.items.*.image.description": "string",
-          "*.items.*.image.src": "string",
           "*.items.*.image.height": "integer",
+          "*.items.*.image.src": "string",
           "*.items.*.image.width": "integer",
           "*.items.*.image_mobile": "object?",
           "*.items.*.image_mobile.description": "string",
           "*.items.*.image_mobile.src": "string",
           "*.items.*.title": "string?",
-          "*.name": "string"
-        }
+          "*.name": "string",
+        },
       });
     language: text/javascript
 settings: {}

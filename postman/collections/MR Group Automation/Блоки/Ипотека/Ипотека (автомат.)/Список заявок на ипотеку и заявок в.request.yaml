@@ -13,8 +13,9 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.create_date",
@@ -55,22 +56,27 @@ scripts:
           "items.*.project.metro_stations.*.id",
           "items.*.project.metro_stations.*.line",
           "items.*.project.metro_stations.*.movement_way",
+          "items.*.project.metro_stations.*.movement_way.icon",
+          "items.*.project.metro_stations.*.movement_way.name",
           "items.*.project.metro_stations.*.name",
           "items.*.project.name",
+          "items.*.project.office_class.code",
           "items.*.project.title",
           "items.*.rate",
           "items.*.status",
           "items.*.status.code",
-          "items.*.status.name"
+          "items.*.status.name",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.create_date": "string",
           "items.*.id": "integer",
           "items.*.lead_id": "string?",
           "items.*.link": "string",
           "items.*.number": "string",
           "items.*.offers": "array",
+          "items.*.offers.*": "object",
           "items.*.offers.*.amount": "number?",
           "items.*.offers.*.available": "boolean",
           "items.*.offers.*.bank": "object",
@@ -98,6 +104,7 @@ scripts:
           "items.*.project.is_private": "boolean",
           "items.*.project.is_promoted": "boolean",
           "items.*.project.metro_stations": "array",
+          "items.*.project.metro_stations.*": "object",
           "items.*.project.metro_stations.*.color": "string?",
           "items.*.project.metro_stations.*.distance": "integer?",
           "items.*.project.metro_stations.*.id": "integer",
@@ -106,7 +113,9 @@ scripts:
           "items.*.project.metro_stations.*.movement_way.icon": "string",
           "items.*.project.metro_stations.*.movement_way.name": "string",
           "items.*.project.metro_stations.*.name": "string",
+          "items.*.project.metro_stations.*.name_en": "string?",
           "items.*.project.name": "string",
+          "items.*.project.name_en": "string?",
           "items.*.project.office_class": "object?",
           "items.*.project.office_class.code": "string",
           "items.*.project.office_class.description": "string?",
@@ -114,9 +123,10 @@ scripts:
           "items.*.rate": "number?",
           "items.*.status": "object",
           "items.*.status.code": "string",
-          "items.*.status.name": "string"
-        }
+          "items.*.status.name": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА
     language: text/javascript
 settings: {}
 examples: ./.resources/Список заявок на ипотеку и заявок в.resources/examples

@@ -8,17 +8,13 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
+          "files.*.src",
         ],
         types: {
-          "block_main": "object",
-          "block_main.button_link": "string",
-          "block_main.button_text": "string",
-          "block_main.text": "string",
-          "block_main.title": "string",
           "block1": "object",
           "block1.accent_text": "string",
           "block1.additional_text": "string",
@@ -28,11 +24,19 @@ scripts:
           "block3": "object",
           "block3.accent_text": "string",
           "block3.additional_text": "string",
+          "block_main": "object",
+          "block_main.button_link": "string",
+          "block_main.button_text": "string",
+          "block_main.text": "string",
+          "block_main.title": "string",
           "files": "array",
+          "files.*": "object",
           "files.*.description": "string",
-          "files.*.src": "string"
-        }
+          "files.*.src": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Информация о компании.resources/examples

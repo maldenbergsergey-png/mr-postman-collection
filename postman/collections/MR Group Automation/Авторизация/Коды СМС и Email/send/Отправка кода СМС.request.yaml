@@ -19,22 +19,25 @@ body:
   content: |-
     {
         "type": "sms",
-        "phoneNumber": "+79935905959"
+      "mail": null,
+        "phoneNumber": "{{authTestPhone}}"
     }
 auth:
   type: noauth
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ SendCodeResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
-          "refresh"
+          "refresh",
         ],
         types: {
-          "refresh": "string"
-        }
+          "refresh": "string",
+        },
       });
+      // КОНТРАКТ SendCodeResponse
     language: text/javascript
 settings: {}
 examples: ./.resources/Отправка кода СМС.resources/examples

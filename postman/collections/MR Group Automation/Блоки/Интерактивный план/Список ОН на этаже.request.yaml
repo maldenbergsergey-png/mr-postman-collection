@@ -1,5 +1,7 @@
 $kind: http-request
 description: |
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
   Метод возвращает список ОН на этаже.
 url: "{{baseUrl}}/sale/plan/floor/objects?category={{categoryHasPlan}}&building={{buildingHasPlan}}&floor={{floorNumberHasPlan}}"
 method: GET

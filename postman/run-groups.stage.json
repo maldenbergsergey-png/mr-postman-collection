@@ -1,0 +1,2187 @@
+{
+  "environment": "STAGE",
+  "contractVersion": "2026-11.2",
+  "contractCommit": "014f3d62ee7773a8d74413563b4a23707e57d16e",
+  "groups": {
+    "publicSmoke": [
+      {
+        "selector": "Каталог/Проект/Получить преимущества проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/advantages",
+        "file": "Каталог/Проект/Получить преимущества проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Код проекта выбирает скрипт папки из текущего ответа GET /realty/projects."
+        ]
+      },
+      {
+        "selector": "Каталог/Листинг ОН/Фильтры ОН (новый метод)",
+        "method": "GET",
+        "path": "/realty/filters",
+        "file": "Каталог/Листинг ОН/Фильтры ОН (новый метод).request.yaml"
+      },
+      {
+        "selector": "Каталог/Листинг ОН/Фильтры ОН (новый метод) Copy",
+        "method": "GET",
+        "path": "/realty/filters",
+        "file": "Каталог/Листинг ОН/Фильтры ОН (новый метод) Copy.request.yaml"
+      },
+      {
+        "selector": "Каталог/Листинг ОН/Листинг забронированных ОН (NEW)",
+        "method": "GET",
+        "path": "/realty/objects",
+        "file": "Каталог/Листинг ОН/Листинг забронированных ОН (NEW).request.yaml"
+      },
+      {
+        "selector": "Каталог/Планировки/Получение списка планировок (новый метод)",
+        "method": "GET",
+        "path": "/realty/typicalobjects",
+        "file": "Каталог/Планировки/Получение списка планировок (новый.request.yaml"
+      },
+      {
+        "selector": "Каталог/Штаб-квартиры/Штаб-квартиры",
+        "method": "GET",
+        "path": "/realty/headquarters",
+        "file": "Каталог/Штаб-квартиры/Штаб-квартиры.request.yaml"
+      },
+      {
+        "selector": "Каталог/Штаб-квартиры/Преимущества штаб-квартир",
+        "method": "GET",
+        "path": "/realty/headquarters/advantages",
+        "file": "Каталог/Штаб-квартиры/Преимущества штаб-квартир.request.yaml"
+      },
+      {
+        "selector": "Каталог/Штаб-квартиры/Промо-блоки штаб-квартир",
+        "method": "GET",
+        "path": "/realty/headquarters/announcements",
+        "file": "Каталог/Штаб-квартиры/Промо-блоки штаб-квартир.request.yaml"
+      },
+      {
+        "selector": "Каталог/Штаб-квартиры/Галерея штаб-квартир",
+        "method": "GET",
+        "path": "/realty/headquarters/gallery",
+        "file": "Каталог/Штаб-квартиры/Галерея штаб-квартир.request.yaml"
+      },
+      {
+        "selector": "Каталог/Модули/Список модулей",
+        "method": "GET",
+        "path": "/realty/modules",
+        "file": "Каталог/Модули/Список модулей.request.yaml"
+      },
+      {
+        "selector": "Каталог/Паркинг/Список проектов для паркинга",
+        "method": "GET",
+        "path": "/realty/parking/projects",
+        "file": "Каталог/Паркинг/Список проектов для паркинга.request.yaml"
+      },
+      {
+        "selector": "Формы/Получение конфигураций форм",
+        "method": "GET",
+        "path": "/forms/configs",
+        "file": "Формы/Получение конфигураций форм.request.yaml"
+      },
+      {
+        "selector": "Блоки/Баннеры/Баннеры главной страницы",
+        "method": "GET",
+        "path": "/banners",
+        "file": "Блоки/Баннеры/Баннеры главной страницы.request.yaml"
+      },
+      {
+        "selector": "Блоки/Баннеры/Баннеры офисной недвижимости",
+        "method": "GET",
+        "path": "/offices/banners",
+        "file": "Блоки/Баннеры/Баннеры офисной недвижимости.request.yaml"
+      },
+      {
+        "selector": "Блоки/Баннеры/Баннеры коммерческой недвижимости",
+        "method": "GET",
+        "path": "/commercials/banners",
+        "file": "Блоки/Баннеры/Баннеры коммерческой недвижимости.request.yaml"
+      },
+      {
+        "selector": "Блоки/Баннеры/Список баннеров для разводящей страницы MR Private",
+        "method": "GET",
+        "path": "/banners/private",
+        "file": "Блоки/Баннеры/Список баннеров для разводящей стр.request.yaml"
+      },
+      {
+        "selector": "Блоки/Баннеры/Возвращает список баннеров для разводящей страницы MR Private",
+        "method": "GET",
+        "path": "/private/banners",
+        "file": "Блоки/Баннеры/Возвращает список баннеров для раз.request.yaml"
+      },
+      {
+        "selector": "Блоки/Баннеры/Баннеры загородной недвижимости",
+        "method": "GET",
+        "path": "/countryside/banners",
+        "file": "Блоки/Баннеры/Баннеры загородной недвижимости.request.yaml"
+      },
+      {
+        "selector": "Блоки/Новости/Получение списка новостей",
+        "method": "GET",
+        "path": "/news",
+        "file": "Блоки/Новости/Получение списка новостей.request.yaml"
+      },
+      {
+        "selector": "Блоки/Сервисы/Список сервисов",
+        "method": "GET",
+        "path": "/services",
+        "file": "Блоки/Сервисы/Список сервисов.request.yaml"
+      },
+      {
+        "selector": "Блоки/FAQ/Получение категорий",
+        "method": "GET",
+        "path": "/faq/category",
+        "file": "Блоки/FAQ/Получение категорий.request.yaml"
+      },
+      {
+        "selector": "Блоки/Офисы/Офисы компаний",
+        "method": "GET",
+        "path": "/offices/company",
+        "file": "Блоки/Офисы/Офисы компаний.request.yaml"
+      },
+      {
+        "selector": "Блоки/Ход строительства/Получение списка проектов с ходом строительства",
+        "method": "GET",
+        "path": "/construction-progress/projects",
+        "file": "Блоки/Ход строительства/Получение списка проектов с ходом.request.yaml"
+      },
+      {
+        "selector": "Блоки/Trade-In/Список предложений/Список предложений",
+        "method": "GET",
+        "path": "/tradein/offers",
+        "file": "Блоки/Trade-In/Список предложений/Список предложений.request.yaml"
+      },
+      {
+        "selector": "Блоки/Контакты/Контакты",
+        "method": "GET",
+        "path": "/contacts/support",
+        "file": "Блоки/Контакты/Контакты.request.yaml"
+      },
+      {
+        "selector": "Блоки/Mr Club/Получение всех категорий предложений MR Club.",
+        "method": "GET",
+        "path": "/mrclub/offers/category",
+        "file": "Блоки/Mr Club/Получение всех категорий предложе.request.yaml"
+      },
+      {
+        "selector": "Блоки/Mr Club/Большие баннеры MR Club",
+        "method": "GET",
+        "path": "/mrclub/banners/big",
+        "file": "Блоки/Mr Club/Большие баннеры MR Club.request.yaml"
+      },
+      {
+        "selector": "Блоки/Mr Club/Малые баннеры MR Club",
+        "method": "GET",
+        "path": "/mrclub/banners/small",
+        "file": "Блоки/Mr Club/Малые баннеры MR Club.request.yaml"
+      },
+      {
+        "selector": "Блоки/Mr Club/Промо-баннер MR Club",
+        "method": "GET",
+        "path": "/mrclub/banners/promo",
+        "file": "Блоки/Mr Club/Промо-баннер MR Club.request.yaml"
+      },
+      {
+        "selector": "Блоки/Mr Club/Получить контентные страницы MR Club",
+        "method": "GET",
+        "path": "/mrclub/content-pages",
+        "file": "Блоки/Mr Club/Получить контентные страницы MR Club.request.yaml"
+      },
+      {
+        "selector": "Блоки/Меню сайта/Пункты меню для сайта",
+        "method": "GET",
+        "path": "/pages/menu",
+        "file": "Блоки/Меню сайта/Пункты меню для сайта.request.yaml"
+      },
+      {
+        "selector": "Блоки/Сайт/Параметры конфигурации",
+        "method": "GET",
+        "path": "/site/config",
+        "file": "Блоки/Сайт/Параметры конфигурации.request.yaml"
+      },
+      {
+        "selector": "Блоки/Сайт/Информация о компании",
+        "method": "GET",
+        "path": "/site/company",
+        "file": "Блоки/Сайт/Информация о компании.request.yaml"
+      },
+      {
+        "selector": "Блоки/Сайт/Данные для «шапки» и «подвала» сайта",
+        "method": "GET",
+        "path": "/site/template",
+        "file": "Блоки/Сайт/Данные для «шапки» и «подвала» сай.request.yaml"
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка ипотечных программ",
+        "method": "GET",
+        "path": "/mortgage/program",
+        "file": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка ипотечных програ.request.yaml"
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка банков для ипотечного калькулятора",
+        "method": "GET",
+        "path": "/mortgage/calc/bank",
+        "file": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка банков для ипотеч.request.yaml"
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка проектов для калькулятора",
+        "method": "GET",
+        "path": "/mortgage/calc/projects",
+        "file": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка проектов для каль.request.yaml"
+      },
+      {
+        "selector": "Блоки/ИИ-подборщик/Стартовый экран ИИ-подборщика",
+        "method": "GET",
+        "path": "/ai-chat/starters",
+        "file": "Блоки/ИИ-подборщик/Стартовый экран ИИ-подборщика.request.yaml"
+      },
+      {
+        "selector": "Блоки/Брокерам/Контакты для страницы MR.BRO",
+        "method": "GET",
+        "path": "/brokers/contacts",
+        "file": "Блоки/Брокерам/Контакты для страницы MR.BRO.request.yaml"
+      },
+      {
+        "selector": "Блоки/Брокерам/Документы для страницы MR.BRO",
+        "method": "GET",
+        "path": "/brokers/documents",
+        "file": "Блоки/Брокерам/Документы для страницы MR.BRO.request.yaml"
+      },
+      {
+        "selector": "Блоки/Брокерам/Проекты для страницы MR.BRO",
+        "method": "GET",
+        "path": "/brokers/projects",
+        "file": "Блоки/Брокерам/Проекты для страницы MR.BRO.request.yaml"
+      },
+      {
+        "selector": "Блоки/Подборки/Найти подборку по фильтрам",
+        "method": "GET",
+        "path": "/selections/match",
+        "file": "Блоки/Подборки/Найти подборку по фильтрам.request.yaml"
+      },
+      {
+        "selector": "Блоки/Навигация/Меню проектов",
+        "method": "GET",
+        "path": "/ui/navigation/projects",
+        "file": "Блоки/Навигация/Меню проектов.request.yaml"
+      },
+      {
+        "selector": "Контент/Политика обработки ПДн.",
+        "method": "GET",
+        "path": "/content/agreement",
+        "file": "Контент/Политика обработки ПДн-.request.yaml"
+      },
+      {
+        "selector": "Контент/Карта сайта",
+        "method": "GET",
+        "path": "/content/sitemap",
+        "file": "Контент/Карта сайта.request.yaml"
+      },
+      {
+        "selector": "Контент/Партнеры",
+        "method": "GET",
+        "path": "/content/partners",
+        "file": "Контент/Партнеры.request.yaml"
+      },
+      {
+        "selector": "Контент/Команда",
+        "method": "GET",
+        "path": "/content/team",
+        "file": "Контент/Команда.request.yaml"
+      },
+      {
+        "selector": "Контент/Награды",
+        "method": "GET",
+        "path": "/content/awards",
+        "file": "Контент/Награды.request.yaml"
+      },
+      {
+        "selector": "Контент/История",
+        "method": "GET",
+        "path": "/content/history",
+        "file": "Контент/История.request.yaml"
+      },
+      {
+        "selector": "Контент/Статья СМИ",
+        "method": "GET",
+        "path": "/content/media_articles",
+        "file": "Контент/Статья СМИ.request.yaml"
+      },
+      {
+        "selector": "Контент/Получить материалы о компании",
+        "method": "GET",
+        "path": "/content/booklets",
+        "file": "Контент/Получить материалы о компании.request.yaml"
+      },
+      {
+        "selector": "App/Минимальные поддерживаемые версии мобильных приложений",
+        "method": "GET",
+        "path": "/app/version",
+        "file": "App/Минимальные поддерживаемые версии.request.yaml"
+      }
+    ],
+    "authenticatedRead": [
+      {
+        "selector": "Профиль/Сделки/Сделка/Получение списка сделок",
+        "method": "GET",
+        "path": "/purchases",
+        "file": "Профиль/Сделки/Сделка/Получение списка сделок.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта STAGE."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Сделка/Получение данных по сделке",
+        "method": "GET",
+        "path": "/purchase/{purchase-id}",
+        "file": "Профиль/Сделки/Сделка/Получение данных по сделке.request.yaml",
+        "variables": [
+          "bearerToken",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта STAGE.",
+          "В том же прогоне сначала выполните GET /purchases."
+        ]
+      },
+      {
+        "selector": "Профиль/Бронирования/Бронирование (автомат)/Список бронирований",
+        "method": "GET",
+        "path": "/user/bookings",
+        "file": "Профиль/Бронирования/Бронирование (автомат)/Список бронирований.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта STAGE."
+        ]
+      },
+      {
+        "selector": "Профиль/Бронирования/Бронирование (автомат)/Активные бронирования",
+        "method": "GET",
+        "path": "/user/bookings/active",
+        "file": "Профиль/Бронирования/Бронирование (автомат)/Активные бронирования.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта STAGE."
+        ]
+      },
+      {
+        "selector": "Профиль/Избранное/Получение списка избранных ОН",
+        "method": "GET",
+        "path": "/user/favourites",
+        "file": "Профиль/Избранное/Получение списка избранных ОН.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта STAGE."
+        ]
+      },
+      {
+        "selector": "Профиль/Данные пользователя/Данные пользователя",
+        "method": "GET",
+        "path": "/user",
+        "file": "Профиль/Данные пользователя/Данные пользователя.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта STAGE."
+        ]
+      }
+    ],
+    "withSetup": [
+      {
+        "selector": "Каталог/Проект/Объекты инфраструктуры",
+        "method": "GET",
+        "path": "/project/{project-code}/infrastructure",
+        "file": "Каталог/Проект/Объекты инфраструктуры.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Буклеты",
+        "method": "GET",
+        "path": "/project/{project-code}/booklets",
+        "file": "Каталог/Проект/Буклеты.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Галерея",
+        "method": "GET",
+        "path": "/project/{project-code}/gallery",
+        "file": "Каталог/Проект/Галерея.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Особенности проекта",
+        "method": "GET",
+        "path": "/project/{project-code}/features",
+        "file": "Каталог/Проект/Особенности проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Получение особенности проекта",
+        "method": "GET",
+        "path": "/project/{project-code}/features/{id}",
+        "file": "Каталог/Проект/Получение особенности проекта.request.yaml",
+        "variables": [
+          "current_id",
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Карточка проекта (новый метод)",
+        "method": "GET",
+        "path": "/realty/projects/{code}",
+        "file": "Каталог/Проект/Карточка проекта (новый метод).request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Список завершенных проектов",
+        "method": "GET",
+        "path": "/realty/projects",
+        "file": "Каталог/Проект/Список завершенных проектов.request.yaml",
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Список проектов MR Private",
+        "method": "GET",
+        "path": "/realty/projects",
+        "file": "Каталог/Проект/Список проектов MR Private.request.yaml",
+        "variables": [
+          "categoryForMrAndPrivate"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Список проектов загородной недвижимости",
+        "method": "GET",
+        "path": "/realty/projects",
+        "file": "Каталог/Проект/Список проектов загородной недвиж.request.yaml",
+        "variables": [
+          "categoryForZagorod"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Список незавершенных проектов",
+        "method": "GET",
+        "path": "/realty/projects",
+        "file": "Каталог/Проект/Список незавершенных проектов.request.yaml",
+        "variables": [
+          "categoryForMrAndPrivate"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Основная галерея проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/gallery",
+        "file": "Каталог/Проект/Основная галерея проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Промо-блоки проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/announcements",
+        "file": "Каталог/Проект/Промо-блоки проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Баннеры проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/banners",
+        "file": "Каталог/Проект/Баннеры проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Настройки страницы проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/page-settings",
+        "file": "Каталог/Проект/Настройки страницы проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Видеопрезентация проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/video-presentation",
+        "file": "Каталог/Проект/Видеопрезентация проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Гид по району проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/neighborhood-guide",
+        "file": "Каталог/Проект/Гид по району проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Категория гида по району проекта",
+        "method": "GET",
+        "path": "/realty/projects/{code}/neighborhood-guide/{category-code}",
+        "file": "Каталог/Проект/Категория гида по району проекта.request.yaml",
+        "variables": [
+          "neighborhoodCategoryCode",
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Листинг ОН/Листинг ОН (новый метод)",
+        "method": "GET",
+        "path": "/realty/objects",
+        "file": "Каталог/Листинг ОН/Листинг ОН (новый метод).request.yaml",
+        "variables": [
+          "category"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Листинг ОН/Листинг ОН (новый метод) Copy",
+        "method": "GET",
+        "path": "/realty/objects",
+        "file": "Каталог/Листинг ОН/Листинг ОН (новый метод) Copy.request.yaml",
+        "variables": [
+          "category"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Карточка ОН/Файл презентации ОН",
+        "method": "GET",
+        "path": "/realty/objects/{code}/presentation",
+        "file": "Каталог/Карточка ОН/Файл презентации ОН.request.yaml",
+        "variables": [
+          "product_code"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Карточка ОН/Карточка ОН (новый метод)",
+        "method": "GET",
+        "path": "/realty/objects/{code}",
+        "file": "Каталог/Карточка ОН/Карточка ОН (новый метод).request.yaml",
+        "variables": [
+          "product_code"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Модули/Карточка модуля",
+        "method": "GET",
+        "path": "/realty/modules/{code}",
+        "file": "Каталог/Модули/Карточка модуля.request.yaml",
+        "variables": [
+          "moduleCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Модули/Галерея модуля",
+        "method": "GET",
+        "path": "/realty/modules/{code}/gallery",
+        "file": "Каталог/Модули/Галерея модуля.request.yaml",
+        "variables": [
+          "moduleCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Паркинг/Посадочная страница паркинга",
+        "method": "GET",
+        "path": "/realty/projects/{code}/parking-landing",
+        "file": "Каталог/Паркинг/Посадочная страница паркинга.request.yaml",
+        "variables": [
+          "parkingProjectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Паркинг/Объекты паркинга корпуса",
+        "method": "GET",
+        "path": "/realty/projects/{code}/buildings/{buildingCode}/parking/objects",
+        "file": "Каталог/Паркинг/Объекты паркинга корпуса.request.yaml",
+        "variables": [
+          "parkingBuildingCode",
+          "parkingProjectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Каталог/Паркинг/Схемы этажей паркинга корпуса",
+        "method": "GET",
+        "path": "/realty/projects/{code}/buildings/{buildingCode}/parking/plan/floors",
+        "file": "Каталог/Паркинг/Схемы этажей паркинга корпуса.request.yaml",
+        "variables": [
+          "parkingBuildingCode",
+          "parkingProjectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Формы/Получение конфигурации конкретной формы",
+        "method": "GET",
+        "path": "/forms/configs/{id}",
+        "file": "Формы/Получение конфигурации конкретной.request.yaml",
+        "variables": [
+          "formCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Сделка/Предложения MR Club для сделок",
+        "method": "GET",
+        "path": "/purchase/mrclub/offers",
+        "file": "Профиль/Сделки/Сделка/Предложения MR Club для сделок.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Документы сделки/Получение списка документов по сделке",
+        "method": "GET",
+        "path": "/purchase/{purchase-id}/documents",
+        "file": "Профиль/Сделки/Документы сделки/Получение списка документов по сде.request.yaml",
+        "variables": [
+          "bearerToken",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Документы сделки/Получение документа по сделке",
+        "method": "GET",
+        "path": "/purchase/{purchase-id}/documents/{document-id}",
+        "file": "Профиль/Сделки/Документы сделки/Получение документа по сделке.request.yaml",
+        "variables": [
+          "bearerToken",
+          "documentDeal",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Документы сделки/Получение приватного файла",
+        "method": "GET",
+        "path": "/private-file/{file-id}",
+        "file": "Профиль/Сделки/Документы сделки/Получение приватного файла.request.yaml",
+        "variables": [
+          "bearerToken",
+          "documentDeal"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Документы сделки/Скачивание файла документа сделки",
+        "method": "GET",
+        "path": "/purchase/{purchase-id}/documents/{document-id}/{file-id}",
+        "file": "Профиль/Сделки/Документы сделки/Скачивание файла документа сделки.request.yaml",
+        "variables": [
+          "bearerToken",
+          "documentDeal",
+          "documentFileId",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Счет/Получение счетов по сделке",
+        "method": "GET",
+        "path": "/purchase/{purchase-id}/bills",
+        "file": "Профиль/Сделки/Счет/Получение счетов по сделке.request.yaml",
+        "variables": [
+          "bearerToken",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Платежи/Получение графика платежей",
+        "method": "GET",
+        "path": "/purchase/{purchase-id}/payments",
+        "file": "Профиль/Сделки/Платежи/Получение графика платежей.request.yaml",
+        "variables": [
+          "bearerToken",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Запись на осмотр/Получение слотов для записи на осмотр",
+        "method": "GET",
+        "path": "/purchase/{purchase-id}/schedule/{product-id}",
+        "file": "Профиль/Сделки/Запись на осмотр/Получение слотов для записи на осм.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealProductId",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Профиль/Резиденты/Список управляющих компаний",
+        "method": "GET",
+        "path": "/residents/exploitation/management-companies",
+        "file": "Профиль/Резиденты/Список управляющих компаний.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Баннеры/Список баннеров для проекта MR Private",
+        "method": "GET",
+        "path": "/private/{project-code}/banners",
+        "file": "Блоки/Баннеры/Список баннеров для проекта MR Private.request.yaml",
+        "variables": [
+          "projectPrivateCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Новости/Получение отдельной новости",
+        "method": "GET",
+        "path": "/news/{news-code}",
+        "file": "Блоки/Новости/Получение отдельной новости.request.yaml",
+        "variables": [
+          "newsCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/FAQ/Получение списка вопросов для категории",
+        "method": "GET",
+        "path": "/faq/category/{category-code}/questions",
+        "file": "Блоки/FAQ/Получение списка вопросов для кате.request.yaml",
+        "variables": [
+          "faqCategoryCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/FAQ/Поиск по FAQ",
+        "method": "GET",
+        "path": "/faq/search",
+        "file": "Блоки/FAQ/Поиск по FAQ.request.yaml",
+        "variables": [
+          "faqQuery"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Офисы/Офис конкретного проекта",
+        "method": "GET",
+        "path": "/offices/projects",
+        "file": "Блоки/Офисы/Офис конкретного проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Ход строительства/Возвращает общую информацию для блока Ход строительства",
+        "method": "GET",
+        "path": "/project/{project-code}/construction-progress",
+        "file": "Блоки/Ход строительства/Возвращает общую информацию для бл.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Ход строительства/Возвращает фотографии за определенный месяц для блока Ход строительства",
+        "method": "GET",
+        "path": "/project/{project-code}/construction-progress/photo",
+        "file": "Блоки/Ход строительства/Возвращает фотографии за определе.request.yaml",
+        "variables": [
+          "projectCode",
+          "randProjectMonth",
+          "randProjectYear"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Отделки/Получение информации по отделкам",
+        "method": "GET",
+        "path": "/decoration",
+        "file": "Блоки/Отделки/Получение информации по отделкам.request.yaml",
+        "variables": [
+          "objectCodeDecaration",
+          "projectCodeDecaration"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Отделки/Получение информации о доступных вариантах кухонь по идентификатору типа планировки кухни",
+        "method": "GET",
+        "path": "/decoration/kitchen/options",
+        "file": "Блоки/Отделки/Получение информации о доступных в.request.yaml",
+        "variables": [
+          "kitchenLayout_type_id"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Акции/Получение акции",
+        "method": "GET",
+        "path": "/promo/{promo-code}",
+        "file": "Блоки/Акции/Получение акции.request.yaml",
+        "variables": [
+          "promoCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Акции/Список акций",
+        "method": "GET",
+        "path": "/promo",
+        "file": "Блоки/Акции/Список акций.request.yaml",
+        "variables": [
+          "projectCodePromo"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Акции/Получение акции по коду (новый метод)",
+        "method": "GET",
+        "path": "/promotions/{code}",
+        "file": "Блоки/Акции/Получение акции по коду (новый метод).request.yaml",
+        "variables": [
+          "promotionCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Mr Club/Получение списка предложений MR Club для категории.",
+        "method": "GET",
+        "path": "/mrclub/offers/category/{category-code}",
+        "file": "Блоки/Mr Club/Получение списка предложений MR Club.request.yaml",
+        "variables": [
+          "categoryCodeMrClub"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Mr Club/Карточка предложения",
+        "method": "GET",
+        "path": "/mrclub/offers/{offer-code}",
+        "file": "Блоки/Mr Club/Карточка предложения.request.yaml",
+        "variables": [
+          "offerCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Mr Club/Контентная страница MR Club",
+        "method": "GET",
+        "path": "/mrclub/content-pages/{content-page-code}",
+        "file": "Блоки/Mr Club/Контентная страница MR Club.request.yaml",
+        "variables": [
+          "mrClubContentPageCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Документы согласий/Получение документа согласия",
+        "method": "GET",
+        "path": "/legal/consent-documents/{identifier}",
+        "file": "Блоки/Документы согласий/Получение документа согласия.request.yaml",
+        "variables": [
+          "formsConsentsMap"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Получение сведений о корпусах и плане, который следует открыть (новый метод)",
+        "method": "GET",
+        "path": "/realty/plan/buildings",
+        "file": "Блоки/Интерактивный план/Получение сведений о корпусах и пл-1.request.yaml",
+        "variables": [
+          "categoryHasPlan",
+          "projectHasPlanCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Список ОН на этаже (новый метод)",
+        "method": "GET",
+        "path": "/realty/plan/floor/objects",
+        "file": "Блоки/Интерактивный план/Список ОН на этаже (новый метод).request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan",
+          "floorNumberHasPlan"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Получение сведений о секциях и плане, который следует открыть (НОВЫЙ МЕТОД)",
+        "method": "GET",
+        "path": "/realty/plan/sections",
+        "file": "Блоки/Интерактивный план/Получение сведений о секциях и пла-1.request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Список ID CRM ОН в разрезе подтипов (категорий) (новый метод)",
+        "method": "GET",
+        "path": "/realty/plan/subtype_objects",
+        "file": "Блоки/Интерактивный план/Список ID CRM ОН в разрезе подтипов (к-1.request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan",
+          "floorNumberHasPlan"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Сведения об ОН по ID CRM (новый метод)",
+        "method": "GET",
+        "path": "/realty/plan/objects/{externalId}",
+        "file": "Блоки/Интерактивный план/Сведения об ОН по ID CRM (новый метод).request.yaml",
+        "variables": [
+          "crmIdHasPlan"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Сведения об этажах и плане (новый метод)",
+        "method": "GET",
+        "path": "/realty/plan/floors",
+        "file": "Блоки/Интерактивный план/Сведения об этажах и плане (новый метод).request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/PDF-схема интерактивного плана",
+        "method": "GET",
+        "path": "/realty/plan/{id}/scheme.pdf",
+        "file": "Блоки/Интерактивный план/PDF-схема интерактивного плана.request.yaml",
+        "variables": [
+          "planId"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Поиск/Поиск объектов недвижимости (новый метод)",
+        "method": "GET",
+        "path": "/realty/search",
+        "file": "Блоки/Поиск/Поиск объектов недвижимости (новый.request.yaml",
+        "variables": [
+          "projectName"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка подтипов ОН для ипотечного калькулятора",
+        "method": "GET",
+        "path": "/mortgage/calc/category",
+        "file": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка подтипов ОН для и.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка банковских предложений по ипотеке",
+        "method": "GET",
+        "path": "/mortgage/calc/offer",
+        "file": "Блоки/Ипотека/Ипотека (автомат.)/Получение списка банковских предл.request.yaml",
+        "variables": [
+          "initialPaymentMortgage",
+          "periodMortgage",
+          "priceForSelectedSubtapeCode",
+          "projectCode",
+          "sybtypeCodeMortgage"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (автомат.)/Список заявок на ипотеку и заявок в банк клиента",
+        "method": "GET",
+        "path": "/mortgage/application",
+        "file": "Блоки/Ипотека/Ипотека (автомат.)/Список заявок на ипотеку и заявок в.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Блоки/ИИ-подборщик/История диалога с ИИ-подборщиком",
+        "method": "GET",
+        "path": "/ai-chat/history",
+        "file": "Блоки/ИИ-подборщик/История диалога с ИИ-подборщиком.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Контент/Получение шаблона контента",
+        "method": "GET",
+        "path": "/content/template/{code}",
+        "file": "Контент/Получение шаблона контента.request.yaml",
+        "variables": [
+          "templateCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Контент/Получение факта",
+        "method": "GET",
+        "path": "/content/facts/{code}",
+        "file": "Контент/Получение факта.request.yaml",
+        "variables": [
+          "factCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Контент/Контент баннера",
+        "method": "GET",
+        "path": "/content/banners/{code}",
+        "file": "Контент/Контент баннера.request.yaml",
+        "variables": [
+          "contentBannerCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Контент/Получение шагов",
+        "method": "GET",
+        "path": "/content/steps/{code}",
+        "file": "Контент/Получение шагов.request.yaml",
+        "variables": [
+          "stepsCode"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      },
+      {
+        "selector": "Контент/SEO-текст объекта недвижимости",
+        "method": "GET",
+        "path": "/content/description/{type}/{code}",
+        "file": "Контент/SEO-текст объекта недвижимости.request.yaml",
+        "variables": [
+          "product_code"
+        ],
+        "prerequisites": [
+          "Выберите запрос вместе с подготовкой данных или настройте переменные из описания запроса."
+        ]
+      }
+    ],
+    "assisted": [
+      {
+        "selector": "Авторизация/Коды СМС и Email/send/Отправка кода СМС",
+        "method": "POST",
+        "path": "/code/send",
+        "file": "Авторизация/Коды СМС и Email/send/Отправка кода СМС.request.yaml",
+        "variables": [
+          "authTestPhone"
+        ],
+        "prerequisites": [
+          "Поддерживаемый способ проверки CAPTCHA на тестовом окружении.",
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Авторизация/Коды СМС и Email/send/Отправка кода EMAIL",
+        "method": "POST",
+        "path": "/code/send",
+        "file": "Авторизация/Коды СМС и Email/send/Отправка кода EMAIL.request.yaml",
+        "prerequisites": [
+          "Поддерживаемый способ проверки CAPTCHA на тестовом окружении.",
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Авторизация/Коды СМС и Email/check/Проверка кода СМС",
+        "method": "POST",
+        "path": "/code/check",
+        "file": "Авторизация/Коды СМС и Email/check/Проверка кода СМС.request.yaml",
+        "variables": [
+          "authTestCode",
+          "authTestPhone"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Авторизация/Коды СМС и Email/check/Проверка кода EMAIL",
+        "method": "POST",
+        "path": "/code/check",
+        "file": "Авторизация/Коды СМС и Email/check/Проверка кода EMAIL.request.yaml",
+        "prerequisites": [
+          "Отдельный сценарий с подготовленными тестовыми данными."
+        ]
+      },
+      {
+        "selector": "Подписки/Подписка на маркетинговые рассылки",
+        "method": "POST",
+        "path": "/user/subscription/marketing",
+        "file": "Подписки/Подписка на маркетинговые рассылк.request.yaml",
+        "variables": [
+          "consentIds",
+          "formCode",
+          "timestamp"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Подписки/Подписка на забронированный ОН",
+        "method": "POST",
+        "path": "/user/subscription/product-status",
+        "file": "Подписки/Подписка на забронированный ОН.request.yaml",
+        "variables": [
+          "consentIds",
+          "formCode",
+          "product_code",
+          "timestamp"
+        ],
+        "prerequisites": [
+          "Отдельный сценарий с подготовленными тестовыми данными."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Документы сделки/Ознакомление с договором приобретения ОН",
+        "method": "POST",
+        "path": "/purchase/{purchase-id}/documents/{document-id}/acceptance",
+        "file": "Профиль/Сделки/Документы сделки/Ознакомление с договором приобрет.request.yaml",
+        "variables": [
+          "bearerToken",
+          "documentDeal",
+          "idDeal"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Запись на осмотр/Запись на осмотр ОН",
+        "method": "POST",
+        "path": "/purchase/{purchase-id}/inspections/registration",
+        "file": "Профиль/Сделки/Запись на осмотр/Запись на осмотр ОН.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Сделки/Запись на осмотр/Отмена записи на осмотр ОН",
+        "method": "POST",
+        "path": "/purchase/{purchase-id}/inspections/{inspection-id}/cancel",
+        "file": "Профиль/Сделки/Запись на осмотр/Отмена записи на осмотр ОН.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Бронирования/Бронирование (не автомат)/Предварительный расчёт онлайн-брони",
+        "method": "POST",
+        "path": "/user/booking/product/{code}/precalculation",
+        "file": "Профиль/Бронирования/Бронирование (не автомат)/Предварительный расчёт онлайн-брони.request.yaml",
+        "variables": [
+          "bearerToken",
+          "product_code"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Избранное/Добавление ОН в избранное",
+        "method": "POST",
+        "path": "/user/favourites/{code}",
+        "file": "Профиль/Избранное/Добавление ОН в избранное.request.yaml",
+        "variables": [
+          "bearerToken",
+          "product_code"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Избранное/Удаление избранного ОН",
+        "method": "DELETE",
+        "path": "/user/favourites/{code}",
+        "file": "Профиль/Избранное/Удаление избранного ОН.request.yaml",
+        "variables": [
+          "bearerToken",
+          "product_code"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Заявка на консультацию/Запрос консультации для пользователя (авторизованный)",
+        "method": "POST",
+        "path": "/user/consultation",
+        "file": "Профиль/Заявка на консультацию/Запрос консультации для пользоват.request.yaml",
+        "variables": [
+          "bearerToken",
+          "consentIds",
+          "formCode",
+          "projectCode",
+          "timestamp"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Смена пароля/Запрос смены пароля",
+        "method": "POST",
+        "path": "/user/password/change",
+        "file": "Профиль/Смена пароля/Запрос смены пароля.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Резиденты (не автомат. капча)/Запрос консультации резидента",
+        "method": "POST",
+        "path": "/residents/consultations",
+        "file": "Профиль/Резиденты (не автомат. капча)/Запрос консультации резидента.request.yaml",
+        "variables": [
+          "bearerToken",
+          "captchaToken",
+          "deviceToken"
+        ],
+        "prerequisites": [
+          "Поддерживаемый способ проверки CAPTCHA на тестовом окружении.",
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Создание оформления сделки",
+        "method": "POST",
+        "path": "/deal-application",
+        "file": "Профиль/Оформление сделки (не автомат)/Создание оформления сделки.request.yaml",
+        "variables": [
+          "bearerToken",
+          "verbalBookingId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Состояние оформления сделки",
+        "method": "GET",
+        "path": "/deal-application/{id}",
+        "file": "Профиль/Оформление сделки (не автомат)/Состояние оформления сделки.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Витрина банков оформления сделки",
+        "method": "GET",
+        "path": "/deal-application/{id}/banks",
+        "file": "Профиль/Оформление сделки (не автомат)/Витрина банков оформления сделки.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Шаг Банк",
+        "method": "POST",
+        "path": "/deal-application/{id}/bank",
+        "file": "Профиль/Оформление сделки (не автомат)/Шаг Банк.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId",
+          "dealBankId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Шаг Собственность",
+        "method": "POST",
+        "path": "/deal-application/{id}/ownership",
+        "file": "Профиль/Оформление сделки (не автомат)/Шаг Собственность.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Шаг Оплата",
+        "method": "POST",
+        "path": "/deal-application/{id}/payment",
+        "file": "Профиль/Оформление сделки (не автомат)/Шаг Оплата.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Диапазон дат сделки",
+        "method": "GET",
+        "path": "/deal-application/{id}/date-range",
+        "file": "Профиль/Оформление сделки (не автомат)/Диапазон дат сделки.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/События пути клиента",
+        "method": "POST",
+        "path": "/deal-application/{id}/events",
+        "file": "Профиль/Оформление сделки (не автомат)/События пути клиента.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Отправка оформления сделки в CRM",
+        "method": "POST",
+        "path": "/deal-application/{id}/submit",
+        "file": "Профиль/Оформление сделки (не автомат)/Отправка оформления сделки в CRM.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId",
+          "dealDate"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Подтвердить информационный шаг",
+        "method": "POST",
+        "path": "/deal-application/{id}/completed-steps",
+        "file": "Профиль/Оформление сделки (не автомат)/Подтвердить информационный шаг.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId",
+          "dealStage",
+          "dealStep"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Получить состояние этапа данных участника",
+        "method": "GET",
+        "path": "/deal-application/{id}/participant",
+        "file": "Профиль/Оформление сделки (не автомат)/Получить состояние этапа данных участника.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Получить подсказки адреса",
+        "method": "POST",
+        "path": "/deal-application/{id}/participant/address/suggest",
+        "file": "Профиль/Оформление сделки (не автомат)/Получить подсказки адреса.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealAddressQuery",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Загрузить документ участника",
+        "method": "POST",
+        "path": "/deal-application/{id}/participant/documents/upload",
+        "file": "Профиль/Оформление сделки (не автомат)/Загрузить документ участника.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId",
+          "dealDocumentFile",
+          "dealDocumentType"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Открыть превью документа участника",
+        "method": "GET",
+        "path": "/deal-application/{id}/participant/documents/{document-id}/preview",
+        "file": "Профиль/Оформление сделки (не автомат)/Открыть превью документа участника.request.yaml",
+        "variables": [
+          "dealApplicationId",
+          "dealDocumentId",
+          "dealPreviewExpires",
+          "dealPreviewSignature"
+        ],
+        "prerequisites": [
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Удалить документ участника",
+        "method": "DELETE",
+        "path": "/deal-application/{id}/participant/documents/{document-id}",
+        "file": "Профиль/Оформление сделки (не автомат)/Удалить документ участника.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId",
+          "dealDocumentId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Сохранить данные участника в CRM",
+        "method": "POST",
+        "path": "/deal-application/{id}/participant/submit",
+        "file": "Профиль/Оформление сделки (не автомат)/Сохранить данные участника в CRM.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId",
+          "dealParticipantPayload"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Профиль/Оформление сделки (не автомат)/Запросить изменение данных участника",
+        "method": "POST",
+        "path": "/deal-application/{id}/participant/change-request",
+        "file": "Профиль/Оформление сделки (не автомат)/Запросить изменение данных участника.request.yaml",
+        "variables": [
+          "bearerToken",
+          "dealApplicationId"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта.",
+          "Отдельная тестовая заявка, допустимый этап и данные для конкретного шага."
+        ]
+      },
+      {
+        "selector": "Блоки/FAQ/Вопросы FAQ с учётом контекста",
+        "method": "POST",
+        "path": "/faq/questions",
+        "file": "Блоки/FAQ/Вопросы FAQ с учётом контекста.request.yaml",
+        "prerequisites": [
+          "Отдельный сценарий с подготовленными тестовыми данными."
+        ]
+      },
+      {
+        "selector": "Блоки/Акции/Список акций (новый метод)",
+        "method": "POST",
+        "path": "/promotions",
+        "file": "Блоки/Акции/Список акций (новый метод).request.yaml",
+        "prerequisites": [
+          "Отдельный сценарий с подготовленными тестовыми данными."
+        ]
+      },
+      {
+        "selector": "Блоки/Реферальная программа (не автомат)/Запрос на участие в реферальной программе",
+        "method": "POST",
+        "path": "/referral/participation/requests",
+        "file": "Блоки/Реферальная программа (не автомат)/Запрос на участие в реферальной пр.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Документы согласий (не автомат)/Регистрация согласий пользователя",
+        "method": "POST",
+        "path": "/legal/consents",
+        "file": "Блоки/Документы согласий (не автомат)/Регистрация согласий пользователя.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (не автомат)/Заявка на ипотеку",
+        "method": "POST",
+        "path": "/mortgage/application",
+        "file": "Блоки/Ипотека/Ипотека (не автомат)/Заявка на ипотеку.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (не автомат)/Получение деталей заявки в банк",
+        "method": "GET",
+        "path": "/mortgage/offer/{offer-id}",
+        "file": "Блоки/Ипотека/Ипотека (не автомат)/Получение деталей заявки в банк.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Ипотека/Ипотека (не автомат)/Выбор заявки в банк в качестве основной",
+        "method": "POST",
+        "path": "/mortgage/offer/{offer-id}",
+        "file": "Блоки/Ипотека/Ипотека (не автомат)/Выбор заявки в банк в качестве осно.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Брокерам (не автомат. капча)/Запрос на партнёрство",
+        "method": "POST",
+        "path": "/brokers/partnership/requests",
+        "file": "Блоки/Брокерам (не автомат. капча)/Запрос на партнёрство.request.yaml",
+        "variables": [
+          "bearerToken",
+          "consentIdsBrokers"
+        ],
+        "prerequisites": [
+          "Поддерживаемый способ проверки CAPTCHA на тестовом окружении.",
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Брокерам (не автомат. капча)/Запрос на брокер-тур",
+        "method": "POST",
+        "path": "/brokers/tour",
+        "file": "Блоки/Брокерам (не автомат. капча)/Запрос на брокер-тур.request.yaml",
+        "variables": [
+          "captchaToken",
+          "deviceToken"
+        ],
+        "prerequisites": [
+          "Поддерживаемый способ проверки CAPTCHA на тестовом окружении.",
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/ИИ-подборщик (не автомат)/Отправка сообщения ИИ-подборщику",
+        "method": "POST",
+        "path": "/ai-chat/message",
+        "file": "Блоки/ИИ-подборщик (не автомат)/Отправка сообщения ИИ-подборщику.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/ИИ-подборщик (не автомат)/Архивирование диалога с ИИ-подборщиком",
+        "method": "POST",
+        "path": "/ai-chat/reset",
+        "file": "Блоки/ИИ-подборщик (не автомат)/Архивирование диалога с ИИ-подборщиком.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Сотрудничество (не автомат. капча)/Заявка на сотрудничество",
+        "method": "POST",
+        "path": "/cooperation/request",
+        "file": "Блоки/Сотрудничество (не автомат. капча)/Заявка на сотрудничество.request.yaml",
+        "variables": [
+          "captchaToken",
+          "deviceToken"
+        ],
+        "prerequisites": [
+          "Поддерживаемый способ проверки CAPTCHA на тестовом окружении.",
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Блоки/Способы покупки/Список способов покупки",
+        "method": "POST",
+        "path": "/purchase/methods",
+        "file": "Блоки/Способы покупки/Список способов покупки.request.yaml",
+        "prerequisites": [
+          "Отдельный сценарий с подготовленными тестовыми данными."
+        ]
+      },
+      {
+        "selector": "Блоки/Подборки/Список подборок",
+        "method": "POST",
+        "path": "/selections",
+        "file": "Блоки/Подборки/Список подборок.request.yaml",
+        "prerequisites": [
+          "Отдельный сценарий с подготовленными тестовыми данными."
+        ]
+      },
+      {
+        "selector": "Интеграции/Яндекс- фиды/Фид новостроек",
+        "method": "GET",
+        "path": "/yandex/realty/feeds/sale-new",
+        "file": "Интеграции/Яндекс- фиды/Фид новостроек.request.yaml",
+        "prerequisites": [
+          "Нужен доступ к XML-фиду. Текущий STAGE отвечает HTTP 403."
+        ]
+      },
+      {
+        "selector": "Интеграции/Обновление сделок пользователя/Обновление данных по сделкам",
+        "method": "POST",
+        "path": "/purchases:refresh",
+        "file": "Интеграции/Обновление сделок пользователя/Обновление данных по сделкам.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "App/Регистрация пользовательского устройства",
+        "method": "PUT",
+        "path": "/app/device",
+        "file": "App/Регистрация пользовательского уст.request.yaml",
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      },
+      {
+        "selector": "Получение предложения BestBenefits",
+        "method": "POST",
+        "path": "/bestbenefits/login",
+        "file": "Получение предложения BestBenefits.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Действующий bearerToken тестового аккаунта."
+        ]
+      }
+    ],
+    "retired": [
+      {
+        "selector": "Каталог/MR Private/Список проектов MR Private",
+        "method": "GET",
+        "path": "/sale/projects/private",
+        "file": "Каталог/MR Private/Список проектов MR Private.request.yaml",
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Карточка проекта",
+        "method": "GET",
+        "path": "/sale/projects/{{projectCode}}",
+        "file": "Каталог/Проект/Карточка проекта.request.yaml",
+        "variables": [
+          "projectCode"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Каталог/Проект/Поиск проектов",
+        "method": "GET",
+        "path": "/sale/projects",
+        "file": "Каталог/Проект/Поиск проектов.request.yaml",
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Каталог/Листинг ОН/Фильтры ОН",
+        "method": "GET",
+        "path": "/sale/products/filters",
+        "file": "Каталог/Листинг ОН/Фильтры ОН.request.yaml",
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Каталог/Листинг ОН/Листинг ОН",
+        "method": "GET",
+        "path": "/sale/products",
+        "file": "Каталог/Листинг ОН/Листинг ОН.request.yaml",
+        "variables": [
+          "category"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Каталог/Карточка ОН/Получение ОН",
+        "method": "GET",
+        "path": "/sale/product/{{product_code}}",
+        "file": "Каталог/Карточка ОН/Получение ОН.request.yaml",
+        "variables": [
+          "product_code"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Каталог/Планировки/Получение списка планировок",
+        "method": "GET",
+        "path": "/sale/typicalobjects",
+        "file": "Каталог/Планировки/Получение списка планировок.request.yaml",
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Каталог/Планировки/Получение объекта планировки",
+        "method": "GET",
+        "path": "/sale/typicalobjects/{{typicalObjectId}}/products",
+        "file": "Каталог/Планировки/Получение объекта планировки.request.yaml",
+        "variables": [
+          "typicalObjectId"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Профиль/Бронирования/Бронирование (не автомат)/Бронирование ОН",
+        "method": "POST",
+        "path": "/user/booking/product/:code",
+        "file": "Профиль/Бронирования/Бронирование (не автомат)/Бронирование ОН.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Получение сведений о корпусах и плане, который следует открыть",
+        "method": "GET",
+        "path": "/sale/plan/buildings",
+        "file": "Блоки/Интерактивный план/Получение сведений о корпусах и пл.request.yaml",
+        "variables": [
+          "categoryHasPlan",
+          "projectHasPlanCode"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Получение сведений об этажах и плане, который следует открыть",
+        "method": "GET",
+        "path": "/sale/plan/floors",
+        "file": "Блоки/Интерактивный план/Получение сведений об этажах и пла.request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Список ОН на этаже",
+        "method": "GET",
+        "path": "/sale/plan/floor/objects",
+        "file": "Блоки/Интерактивный план/Список ОН на этаже.request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan",
+          "floorNumberHasPlan"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Получение сведений о секциях и плане, который следует открыть",
+        "method": "GET",
+        "path": "/sale/plan/sections",
+        "file": "Блоки/Интерактивный план/Получение сведений о секциях и пла.request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Список ID CRM ОН в разрезе подтипов (категорий)",
+        "method": "GET",
+        "path": "/sale/plan/subtype_objects",
+        "file": "Блоки/Интерактивный план/Список ID CRM ОН в разрезе подтипов (к.request.yaml",
+        "variables": [
+          "buildingHasPlan",
+          "categoryHasPlan",
+          "floorNumberHasPlan"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Блоки/Интерактивный план/Сведения об ОН по ID CRM",
+        "method": "GET",
+        "path": "/sale/plan/objects/{{crmIdHasPlan}}",
+        "file": "Блоки/Интерактивный план/Сведения об ОН по ID CRM.request.yaml",
+        "variables": [
+          "crmIdHasPlan"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      },
+      {
+        "selector": "Блоки/Поиск/Поиск объектов недвижимости",
+        "method": "GET",
+        "path": "/sale/search",
+        "file": "Блоки/Поиск/Поиск объектов недвижимости.request.yaml",
+        "variables": [
+          "projectName"
+        ],
+        "prerequisites": [
+          "Маршрут удалён из внешнего контракта."
+        ]
+      }
+    ],
+    "otherServices": [
+      {
+        "selector": "Авторизация/Тестовая аутентификация/Получение токена DEV",
+        "method": "POST",
+        "path": "/api/v1/jwt",
+        "file": "Авторизация/Тестовая аутентификация/Получение токена DEV.request.yaml",
+        "prerequisites": [
+          "Отдельное окружение и доступ к соответствующему сервису."
+        ]
+      },
+      {
+        "selector": "Авторизация/Тестовая аутентификация/Получение токена STAGE",
+        "method": "POST",
+        "path": "/api/v1/jwt",
+        "file": "Авторизация/Тестовая аутентификация/Получение токена STAGE.request.yaml",
+        "prerequisites": [
+          "Отдельное окружение и доступ к соответствующему сервису."
+        ]
+      },
+      {
+        "selector": "Блоки/Trade-In/Не актуально/Заявка на Trade-in",
+        "method": "POST",
+        "path": "/tradein/form",
+        "file": "Блоки/Trade-In/Не актуально/Заявка на Trade-in.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Отдельный сервис, устаревший запрос или заготовка без URL."
+        ]
+      },
+      {
+        "selector": "Блоки/Линия доверия (не автомат)/Метод отправки обращения на линию доверия",
+        "method": "POST",
+        "path": "/hotline/form",
+        "file": "Блоки/Линия доверия (не автомат)/Метод отправки обращения на линию.request.yaml",
+        "prerequisites": [
+          "Отдельный сервис, устаревший запрос или заготовка без URL."
+        ]
+      },
+      {
+        "selector": "Интеграции/Обновление сделок пользователя/Обновление данных по сделкам (внешний метод)",
+        "method": "POST",
+        "path": "/api/v1/salescontracts/refresh",
+        "file": "Интеграции/Обновление сделок пользователя/Обновление данных по сделкам (внеш.request.yaml",
+        "prerequisites": [
+          "Отдельное окружение и доступ к соответствующему сервису."
+        ]
+      },
+      {
+        "selector": "App/Отправка пушей",
+        "method": "POST",
+        "path": "/internal/api/core/fcm/v1/domopult/messages:send",
+        "file": "App/Отправка пушей.request.yaml",
+        "prerequisites": [
+          "Отдельное окружение и доступ к соответствующему сервису."
+        ]
+      },
+      {
+        "selector": "App/New Request",
+        "method": "GET",
+        "path": "",
+        "file": "App/New Request.request.yaml",
+        "prerequisites": [
+          "Отдельный сервис, устаревший запрос или заготовка без URL."
+        ]
+      },
+      {
+        "selector": "Получение маркетинговых способов покупок ТЕСТ2",
+        "method": "GET",
+        "path": "/api/v1/Catalogue/project/fabdd00e-c970-4357-a1fa-4e1db3b5407f/purchasemethods",
+        "file": "Получение маркетинговых способов-1.request.yaml",
+        "prerequisites": [
+          "Отдельное окружение и доступ к соответствующему сервису."
+        ]
+      }
+    ],
+    "excluded": [
+      {
+        "selector": "Профиль/НЕ ЗАПУСКАТЬ/Удаление пользователя [не запускать]",
+        "method": "DELETE",
+        "path": "/user",
+        "file": "Профиль/НЕ ЗАПУСКАТЬ/Удаление пользователя [не запускат.request.yaml",
+        "variables": [
+          "bearerToken"
+        ],
+        "prerequisites": [
+          "Удаление пользователя. Нужна отдельная одноразовая учётная запись и отдельный прогон."
+        ]
+      }
+    ]
+  }
+}

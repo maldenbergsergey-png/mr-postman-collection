@@ -1,0 +1,53 @@
+$kind: http-request
+name: "Получить контентные страницы MR Club"
+description: |-
+  Возвращает список контентных страниц MR Club для блока «Медиа MR Club».
+
+  Контентные страницы упорядочены по полю «Сортировка», при равенстве — по дате от новых к старым.
+  Некорректные параметры пагинации заменяются значениями по умолчанию, как в
+  `GET /mrclub/offers/category/{category-code}`. Для страницы за пределами выдачи
+  возвращается пустой список и запрошенный номер страницы.
+url: "{{baseUrl}}/mrclub/content-pages"
+method: GET
+headers:
+  Accept: "application/json"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "count",
+          "items",
+          "items.*.code",
+          "items.*.date",
+          "items.*.image",
+          "items.*.tags",
+          "items.*.tags.*.text",
+          "items.*.teaser",
+          "items.*.title",
+          "limit",
+          "page",
+          "page_count",
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*": "object",
+          "items.*.code": "string",
+          "items.*.date": "string",
+          "items.*.image": "string?",
+          "items.*.tags": "array",
+          "items.*.tags.*": "object",
+          "items.*.tags.*.text": "string",
+          "items.*.teaser": "string",
+          "items.*.title": "string",
+          "limit": "integer",
+          "page": "integer",
+          "page_count": "integer",
+        },
+      });
+    language: text/javascript
+settings: {}
+order: 8000

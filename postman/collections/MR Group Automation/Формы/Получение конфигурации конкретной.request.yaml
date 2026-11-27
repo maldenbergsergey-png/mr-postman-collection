@@ -16,6 +16,35 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "data",
+          "data.consents",
+          "data.consents.*.caption",
+          "data.consents.*.consent_document",
+          "data.consents.*.consent_document.id",
+          "data.consents.*.consent_document.name",
+          "data.consents.*.consent_document.url_name",
+          "data.consents.*.display_condition",
+          "data.consents.*.required",
+          "data.id",
+        ],
+        types: {
+          "data": "object",
+          "data.consents": "array",
+          "data.consents.*": "object",
+          "data.consents.*.caption": "string",
+          "data.consents.*.consent_document": "object",
+          "data.consents.*.consent_document.id": "string",
+          "data.consents.*.consent_document.name": "string",
+          "data.consents.*.consent_document.url_name": "string",
+          "data.consents.*.display_condition": "string",
+          "data.consents.*.required": "boolean",
+          "data.id": "string",
+        },
+      });
       // 1) Получаем всё, что могли сохранить ранее
       let raw = pm.environment.get("formsConsentsMap") || "{}";
       let formsConsentsMap = {};
@@ -49,32 +78,6 @@ scripts:
 
       // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-          "data",
-          "data.consents",
-          "data.consents.*.caption",
-          "data.consents.*.consent_document",
-          "data.consents.*.consent_document.id",
-          "data.consents.*.consent_document.name",
-          "data.consents.*.consent_document.url_name",
-          "data.consents.*.display_condition",
-          "data.consents.*.required",
-          "data.id"
-        ],
-        types: {
-          "data": "object",
-          "data.consents": "array",
-          "data.consents.*.caption": "string",
-          "data.consents.*.consent_document": "object",
-          "data.consents.*.consent_document.id": "string",
-          "data.consents.*.consent_document.name": "string",
-          "data.consents.*.consent_document.url_name": "string",
-          "data.consents.*.display_condition": "string",
-          "data.consents.*.required": "boolean",
-          "data.id": "string"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение конфигурации конкретной.resources/examples

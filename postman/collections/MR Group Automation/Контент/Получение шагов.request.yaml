@@ -7,6 +7,20 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "steps",
+        ],
+        types: {
+          "steps": "array",
+          "steps.*": "object",
+          "steps.*.description": "string",
+          "steps.*.number": "string",
+          "steps.*.title": "string",
+        },
+      });
       // === Pick stepsCode from stepsCodesQueue (skip null/empty); fallback to env.stepsCode ===
       const isValid = v =>
         typeof v === "string" &&
@@ -43,16 +57,6 @@ scripts:
 
       // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: ["steps"],
-        types: {
-          "steps": "array",
-
-          "steps.*.description": "string",
-          "steps.*.number": "string",
-          "steps.*.title": "string"
-        }
-      });
     language: text/javascript
   - type: afterResponse
     code: |

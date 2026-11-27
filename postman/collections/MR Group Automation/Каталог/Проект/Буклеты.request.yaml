@@ -8,22 +8,25 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.file",
           "items.*.image",
-          "items.*.title"
+          "items.*.title",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.file": "string",
           "items.*.image": "string",
-          "items.*.title": "string"
-        }
+          "items.*.title": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Буклеты.resources/examples

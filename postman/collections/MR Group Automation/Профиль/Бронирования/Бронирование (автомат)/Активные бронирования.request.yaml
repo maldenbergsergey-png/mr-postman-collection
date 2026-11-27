@@ -12,8 +12,9 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
-      // ===== КОНТРАКТ UserActiveBookingList =====
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "product_ids",
@@ -24,6 +25,7 @@ scripts:
           "product_ids.*": "integer",
         },
       });
+      // ===== КОНТРАКТ UserActiveBookingList =====
     language: text/javascript
 settings: {}
 examples: ./.resources/Активные бронирования.resources/examples

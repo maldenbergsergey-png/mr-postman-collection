@@ -1,0 +1,120 @@
+$kind: http-request
+name: "Подтвердить информационный шаг"
+description: |-
+  Одна ручка на все этапы заявки для экранов без данных, где единственное действие
+  «Далее» (онбординги и подобные вводные экраны). Бэк переводит номер этапа в код и
+  отдаёт команду подтверждения агрегату этапа.
+
+  `step` в теле обязателен, не «перейти дальше»: так различается повтор (фаза уже дальше
+  подтверждаемого экрана — `200` с текущим состоянием, никакой ошибки) от клика по чужому
+  шагу со старой вкладки (шаг впереди текущей фазы или этап ещё недоступен — `409`).
+  Подтвердить можно только шаг,
+  который подтверждает этап: у Этапа 1 это `onboarding_1`, `onboarding_2` и `result_online`,
+  у Этапа 2 — `intro`. Для прочих шагов и для неизвестных `stage`/`step` ответ `422`.
+
+  У Этапа 1 («Параметры сделки», `stage = 1`) подтверждаются онбординги и экран результата
+  `result_online`. Подтверждение `result_online` — единственный переход на Этап 2: пока оно не
+  получено, заявка с вердиктом CRM online остаётся на Этапе 1. Подтверждение шага `intro`
+  Этапа 2 до этого момента даёт `409` с состоянием Этапа 1 (`stage = 1`, `step = result_online`)
+  и `reason` «Данные оформления изменились, показываем актуальный шаг.»; строка участника
+  при этом не создаётся. После подтверждения ответ — состояние Этапа 2 (`stage = 2`,
+  `step = intro`); повтор возвращает то же состояние. При вердикте offline `result_online`
+  подтвердить нельзя — `422`, офлайн-финал клиент не подтверждает. Если оформление
+  заблокировано запросом на изменение уже поданных данных (`step = change_requested`) — тоже `422`.
+
+  Нужен этап и шаг, допустимые для тестовой заявки в текущем статусе.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/completed-steps"
+method: POST
+headers:
+  Accept: "application/json"
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+body:
+  type: json
+  content: |-
+    {"stage": {{dealStage}}, "step": "{{dealStep}}"}
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "booking_date",
+          "contract_price",
+          "id",
+          "manager.full_name",
+          "manager.photo_url",
+          "progress.stage",
+          "progress.stage_total",
+          "progress.step",
+          "progress.step_total",
+          "realty_object",
+          "realty_object.article",
+          "realty_object.category.code",
+          "realty_object.id",
+          "realty_object.project_name",
+          "realty_object.type_title",
+          "stage",
+          "status",
+          "step",
+        ],
+        types: {
+          "bank_code": "string?",
+          "bank_id": "integer?",
+          "booking_date": "string",
+          "contract_price": "number",
+          "crm_deal_id": "string?",
+          "deal_date": "string?",
+          "deal_type": "string?",
+          "has_debit_account": "boolean?",
+          "has_non_rf_citizen": "boolean?",
+          "has_proxy": "boolean?",
+          "has_underage": "boolean?",
+          "id": "integer",
+          "manager": "object?",
+          "manager.email": "string?",
+          "manager.full_name": "string",
+          "manager.phone": "string?",
+          "manager.photo_url": "string?",
+          "offline_reason": "string?",
+          "ownership_form": "string?",
+          "participants_count": "integer?",
+          "payment_form": "string?",
+          "progress": "object?",
+          "progress.stage": "integer",
+          "progress.stage_total": "integer",
+          "progress.step": "number",
+          "progress.step_total": "integer",
+          "realty_object": "object",
+          "realty_object.area": "number?",
+          "realty_object.article": "string",
+          "realty_object.building": "string?",
+          "realty_object.category": "object?",
+          "realty_object.category.code": "string",
+          "realty_object.floor": "integer?",
+          "realty_object.id": "integer",
+          "realty_object.number": "string?",
+          "realty_object.product_code": "string?",
+          "realty_object.project_code": "string?",
+          "realty_object.project_name": "string",
+          "realty_object.rooms": "integer?",
+          "realty_object.type_title": "string",
+          "realty_object.url": "string?",
+          "reason": "string?",
+          "stage": "integer",
+          "status": "string",
+          "step": "string",
+        },
+      });
+      const required = ["dealApplicationId", "dealStage", "dealStep", "bearerToken"];
+      const missing = required.filter((key) => !pm.variables.get(key));
+      if (missing.length) {
+        console.warn("Нужны входные данные: " + missing.join(", "));
+        pm.execution.skipRequest();
+      }
+    language: text/javascript
+settings: {}
+order: 10000

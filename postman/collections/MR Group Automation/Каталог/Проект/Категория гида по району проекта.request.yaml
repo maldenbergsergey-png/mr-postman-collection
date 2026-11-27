@@ -9,16 +9,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["projectCode", "neighborhoodCategoryCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ ProjectNeighborhoodGuideCategory
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "blocks",
           "blocks.*.description",
@@ -26,10 +19,11 @@ scripts:
           "blocks.*.items",
           "blocks.*.items.*.id",
           "blocks.*.items.*.image",
-          "blocks.*.items.*.image.src",
           "blocks.*.items.*.image.height",
+          "blocks.*.items.*.image.src",
           "blocks.*.items.*.image.width",
           "blocks.*.items.*.image_mobile",
+          "blocks.*.items.*.image_mobile.src",
           "blocks.*.items.*.title",
           "blocks.*.name",
           "blocks.*.title",
@@ -54,27 +48,32 @@ scripts:
           "project.metro_stations.*.id",
           "project.metro_stations.*.line",
           "project.metro_stations.*.movement_way",
+          "project.metro_stations.*.movement_way.icon",
+          "project.metro_stations.*.movement_way.name",
           "project.metro_stations.*.name",
           "project.name",
+          "project.office_class.code",
           "project.title",
-          "title"
+          "title",
         ],
         types: {
           "blocks": "array",
+          "blocks.*": "object",
           "blocks.*.description": "string?",
           "blocks.*.id": "integer",
           "blocks.*.items": "array",
+          "blocks.*.items.*": "object",
           "blocks.*.items.*.id": "integer",
           "blocks.*.items.*.image": "object",
           "blocks.*.items.*.image.description": "string",
-          "blocks.*.items.*.image.src": "string",
           "blocks.*.items.*.image.height": "integer",
+          "blocks.*.items.*.image.src": "string",
           "blocks.*.items.*.image.width": "integer",
           "blocks.*.items.*.image_mobile": "object?",
           "blocks.*.items.*.image_mobile.description": "string",
           "blocks.*.items.*.image_mobile.src": "string",
           "blocks.*.items.*.title": "string?",
-          "blocks.*.name": "string?",
+          "blocks.*.name": "string",
           "blocks.*.title": "string?",
           "category": "object",
           "category.code": "string",
@@ -92,6 +91,7 @@ scripts:
           "project.is_private": "boolean",
           "project.is_promoted": "boolean",
           "project.metro_stations": "array",
+          "project.metro_stations.*": "object",
           "project.metro_stations.*.color": "string?",
           "project.metro_stations.*.distance": "integer?",
           "project.metro_stations.*.id": "integer",
@@ -100,14 +100,25 @@ scripts:
           "project.metro_stations.*.movement_way.icon": "string",
           "project.metro_stations.*.movement_way.name": "string",
           "project.metro_stations.*.name": "string",
+          "project.metro_stations.*.name_en": "string?",
           "project.name": "string",
+          "project.name_en": "string?",
           "project.office_class": "object?",
           "project.office_class.code": "string",
           "project.office_class.description": "string?",
           "project.title": "string?",
-          "title": "string"
-        }
+          "title": "string",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode", "neighborhoodCategoryCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectNeighborhoodGuideCategory
     language: text/javascript
 settings: {}
 order: 19000

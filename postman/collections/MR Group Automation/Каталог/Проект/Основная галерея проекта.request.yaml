@@ -9,24 +9,17 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["projectCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ ProjectMainGalleryResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "categories",
           "categories.*.id",
           "categories.*.items",
           "categories.*.items.*.id",
           "categories.*.items.*.image",
-          "categories.*.items.*.image.src",
           "categories.*.items.*.image.height",
+          "categories.*.items.*.image.src",
           "categories.*.items.*.image.width",
           "categories.*.items.*.image_mobile",
           "categories.*.items.*.image_mobile.src",
@@ -36,17 +29,19 @@ scripts:
           "sections",
           "sections.*.accent_name",
           "sections.*.id",
-          "sections.*.secondary_name"
+          "sections.*.secondary_name",
         ],
         types: {
           "categories": "array",
+          "categories.*": "object",
           "categories.*.id": "integer",
           "categories.*.items": "array",
+          "categories.*.items.*": "object",
           "categories.*.items.*.id": "integer",
           "categories.*.items.*.image": "object",
           "categories.*.items.*.image.description": "string",
-          "categories.*.items.*.image.src": "string",
           "categories.*.items.*.image.height": "integer",
+          "categories.*.items.*.image.src": "string",
           "categories.*.items.*.image.width": "integer",
           "categories.*.items.*.image_mobile": "object",
           "categories.*.items.*.image_mobile.description": "string",
@@ -55,11 +50,21 @@ scripts:
           "categories.*.items.*.title": "string",
           "categories.*.name": "string",
           "sections": "array",
+          "sections.*": "object",
           "sections.*.accent_name": "string",
           "sections.*.id": "integer",
-          "sections.*.secondary_name": "string"
-        }
+          "sections.*.secondary_name": "string",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ProjectMainGalleryResponse
     language: text/javascript
 settings: {}
 order: 13000

@@ -11,13 +11,14 @@ body:
   content: |-
     {
         "type": "sms",
-        "phoneNumber": "+79935905959",
-        "code": 1111
+      "mail": "",
+        "phoneNumber": "{{authTestPhone}}",
+        "code": {{authTestCode}}
     }
 scripts:
   - type: beforeRequest
     code: |-
-      pm.variables.set("responseKind", "none");
+      pm.variables.set("expectedResponse", {"200": []});
     language: text/javascript
 settings: {}
 examples: ./.resources/Проверка кода СМС.resources/examples

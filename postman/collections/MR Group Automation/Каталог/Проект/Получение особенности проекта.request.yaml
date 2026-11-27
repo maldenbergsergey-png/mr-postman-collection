@@ -34,20 +34,22 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "content",
           "title",
-          "video"
+          "video",
         ],
         types: {
           "content": "string?",
           "title": "string",
-          "video": "string?"
-        }
+          "video": "string?",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение особенности проекта.resources/examples

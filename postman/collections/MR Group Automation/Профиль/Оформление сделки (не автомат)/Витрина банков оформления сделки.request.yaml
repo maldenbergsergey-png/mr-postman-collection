@@ -17,6 +17,25 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "items",
+          "items.*.id",
+          "items.*.is_recommended",
+          "items.*.name",
+        ],
+        types: {
+          "items": "array",
+          "items.*": "object",
+          "items.*.code": "string?",
+          "items.*.id": "integer",
+          "items.*.is_recommended": "boolean",
+          "items.*.logo": "string?",
+          "items.*.name": "string",
+        },
+      });
       // Входные данные приходят из предыдущих запросов или задаются вручную
       const required = ["dealApplicationId"];
       const absent = required.filter((n) => !pm.variables.get(n));
@@ -26,22 +45,6 @@ scripts:
       }
 
       // КОНТРАКТ DealApplicationBankList
-      pm.variables.set("schema", {
-        required: [
-          "items",
-          "items.*.id",
-          "items.*.is_recommended",
-          "items.*.name"
-        ],
-        types: {
-          "items": "array",
-          "items.*.code": "string?",
-          "items.*.id": "integer",
-          "items.*.is_recommended": "boolean",
-          "items.*.logo": "string?",
-          "items.*.name": "string"
-        }
-      });
     language: text/javascript
   - type: afterResponse
     code: |-

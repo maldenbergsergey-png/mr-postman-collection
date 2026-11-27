@@ -17,9 +17,9 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
@@ -32,11 +32,12 @@ scripts:
           "items.*.id",
           "items.*.screen_mp",
           "items.*.url",
-          "items.*.white_text"
+          "items.*.white_text",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.background_color": "string?",
           "items.*.background_image": "string?",
           "items.*.description": "string?",
@@ -46,9 +47,11 @@ scripts:
           "items.*.id": "integer",
           "items.*.screen_mp": "string?",
           "items.*.url": "string?",
-          "items.*.white_text": "boolean"
-        }
+          "items.*.white_text": "boolean",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Список сервисов.resources/examples

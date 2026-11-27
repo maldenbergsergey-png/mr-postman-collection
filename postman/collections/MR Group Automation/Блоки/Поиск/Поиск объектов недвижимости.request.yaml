@@ -1,5 +1,7 @@
 $kind: http-request
 description: |
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
   Метод поиска объектов недвижимости.
 url: "{{baseUrl}}/sale/search?query={{projectName}}"
 method: GET

@@ -1,6 +1,8 @@
 $kind: http-request
 name: Получение сведений о корпусах и плане, который следует открыть
 description: |
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
   Метод возвращает информацию о корпусах и план, который следует открыть
 url: "{{baseUrl}}/sale/plan/buildings?category={{categoryHasPlan}}&project={{projectHasPlanCode}}"
 method: GET
@@ -34,7 +36,7 @@ scripts:
       //Список проектов у которых есть интерактивный план
       const projectsHasPlan = ["zhk-citybay", "cityzen","zhk-slava","symphony-34"];
 
-      // Выбираем случайный проект 
+      // Выбираем случайный проект
       const randomProject = projectsHasPlan[Math.floor(Math.random() * projectsHasPlan.length)];
 
       // Сохраняем её в окружение

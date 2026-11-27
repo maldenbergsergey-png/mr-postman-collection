@@ -1,5 +1,7 @@
 $kind: http-request
 description: |
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
   Получение списка ОН с учётом фильтров.
 url: "{{baseUrl}}/sale/products?category={{category}}&page=1&limit=1"
 method: GET
@@ -178,7 +180,7 @@ scripts:
 
       console.log(`Выбрана категория: ${randomCategory}`);
 
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
       pm.variables.set("schema", {
         required: [

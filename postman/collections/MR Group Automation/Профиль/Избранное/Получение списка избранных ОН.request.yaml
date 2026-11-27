@@ -17,27 +17,30 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "categories",
           "categories.*.category",
           "categories.*.category.code",
           "categories.*.category.name",
           "categories.*.product_ids",
-          "count"
+          "count",
         ],
         types: {
           "categories": "array",
+          "categories.*": "object",
           "categories.*.category": "object",
           "categories.*.category.code": "string",
           "categories.*.category.name": "string",
           "categories.*.product_ids": "array",
           "categories.*.product_ids.*": "integer",
-          "count": "integer"
-        }
+          "count": "integer",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка избранных ОН.resources/examples

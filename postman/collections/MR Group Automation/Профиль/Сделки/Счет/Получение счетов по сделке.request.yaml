@@ -12,6 +12,31 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "items",
+          "items.*.amount",
+          "items.*.description",
+          "items.*.expiration_dt",
+          "items.*.payment_link",
+          "items.*.status",
+          "items.*.status.code",
+          "items.*.status.name",
+        ],
+        types: {
+          "items": "array",
+          "items.*": "object",
+          "items.*.amount": "number",
+          "items.*.description": "string",
+          "items.*.expiration_dt": "string?",
+          "items.*.payment_link": "string?",
+          "items.*.status": "object",
+          "items.*.status.code": "string",
+          "items.*.status.name": "string",
+        },
+      });
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
       const missingInputs__ = ["idDeal"].filter((n) => !pm.variables.get(n));
       if (missingInputs__.length) {
@@ -21,28 +46,6 @@ scripts:
 
       // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-          "items",
-          "items.*.amount",
-          "items.*.description",
-          "items.*.expiration_dt",
-          "items.*.payment_link",
-          "items.*.status",
-          "items.*.status.code",
-          "items.*.status.name"
-        ],
-        types: {
-          "items": "array",
-          "items.*.amount": "number",
-          "items.*.description": "string",
-          "items.*.expiration_dt": "string?",
-          "items.*.payment_link": "string?",
-          "items.*.status": "object",
-          "items.*.status.code": "string",
-          "items.*.status.name": "string"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение счетов по сделке.resources/examples

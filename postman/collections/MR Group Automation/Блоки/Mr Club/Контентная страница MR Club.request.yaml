@@ -10,16 +10,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["mrClubContentPageCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ MrClubContentPage
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "ad_label",
           "code",
@@ -28,7 +21,7 @@ scripts:
           "image",
           "teaser",
           "text",
-          "title"
+          "title",
         ],
         types: {
           "ad_label": "string?",
@@ -38,9 +31,18 @@ scripts:
           "image": "string?",
           "teaser": "string",
           "text": "string",
-          "title": "string"
-        }
+          "title": "string",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["mrClubContentPageCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ MrClubContentPage
     language: text/javascript
 settings: {}
 order: 7000

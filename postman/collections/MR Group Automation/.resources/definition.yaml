@@ -35,6 +35,9 @@ scripts:
       // чтобы они не переходили из предыдущего запроса в следующий
       pm.variables.unset("schema");
       pm.variables.unset("responseKind");
+      pm.variables.unset("expectedResponse");
+      pm.variables.unset("responseSchemas");
+      pm.variables.unset("contractJsonSchema");
     language: text/javascript
   - type: http:afterResponse
     code: |-
@@ -47,7 +50,10 @@ scripts:
       // ----------------------------------
 
       const status = pm.response.code;
-      const allowed = [200, 201, 202, 204];
+      const expectedResponse = pm.variables.get("expectedResponse");
+      const allowed = expectedResponse
+        ? Object.keys(expectedResponse).map(Number)
+        : [200, 201, 202, 204];
 
       if (allowed.includes(status)) {
         pm.test("Запрос выполнен успешно", function () {
@@ -57,6 +63,24 @@ scripts:
         pm.test(`Запрос выполнен с ошибкой: ${status}`, function () {
           pm.expect.fail();
         });
+        return;
+      }
+
+      const expectedMedia = expectedResponse && expectedResponse[status];
+      if (expectedMedia) {
+        if (status === 204) {
+          pm.test("Ответ 204 без тела", () => pm.expect(pm.response.text()).to.equal(""));
+          return;
+        }
+        if (expectedMedia.length === 0) return;
+
+        const media = (pm.response.headers.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
+        pm.test(`Content-Type ответа: ${expectedMedia.join(", ")}`, function () {
+          pm.expect(expectedMedia.some((type) =>
+            type === media || type.endsWith("/*") && media.startsWith(type.slice(0, -1))
+          )).to.be.true;
+        });
+        if (media !== "application/json" && !media.endsWith("+json")) return;
       }
 
       // ----------------------------------
@@ -73,7 +97,7 @@ scripts:
       const nonJsonUrl = "/presentation";
       const requestUrl = pm.request.url.toString();
 
-      if (requestUrl.includes(nonJsonUrl)) {
+      if (!expectedMedia && requestUrl.includes(nonJsonUrl)) {
         pm.test("Response has Content-Type header", function () {
           pm.response.to.have.header("Content-Type");
         });
@@ -90,7 +114,7 @@ scripts:
       //     pm.variables.set("responseKind", "application/pdf" | "application/xml" | "application/octet-stream" | "none")
       //     "none" — документированный успешный ответ без тела/типа в контракте: проверяется только статус
       const responseKind = pm.variables.get("responseKind");
-      if (responseKind) {
+      if (!expectedMedia && responseKind) {
         if (responseKind !== "none") {
           pm.test(`Content-Type ответа: ${responseKind}`, function () {
             const contentType = pm.response.headers.get("Content-Type") || "";
@@ -112,7 +136,16 @@ scripts:
       // ----------------------------------
       // Берём схему из переменной запроса
       // ----------------------------------
-      const schema = pm.variables.get("schema");
+      const contractJsonSchema = pm.variables.get("contractJsonSchema");
+      if (contractJsonSchema) {
+        pm.test("Проверка составной схемы ответа", function () {
+          pm.response.to.have.jsonSchema(contractJsonSchema);
+        });
+        return;
+      }
+
+      const responseSchemas = pm.variables.get("responseSchemas");
+      const schema = responseSchemas ? responseSchemas[status] : pm.variables.get("schema");
 
       // Если схема не определена → просто выходим, никаких проверок дальше не делаем
       if (!schema) {
@@ -140,7 +173,7 @@ scripts:
         if (expected.includes("|")) {
           return expected
             .split("|")                     // "string|integer" → ["string", "integer"]
-            .some(type => typeOk(value, type)); // пробуем каждый вариант
+            .some(type => typeOk(value, type.trim())); // пробуем каждый вариант
         }
 
         // integer — целое число
@@ -190,13 +223,21 @@ scripts:
       // ----------------------------------
       // ДАННЫЕ
       // ----------------------------------
-      const body = pm.response.json();
+      let body;
+      try {
+        body = pm.response.json();
+      } catch {
+        return; // Проверка JSON уже зафиксировала результат.
+      }
+      if (schema.rootType) {
+        pm.test("Тип корневого значения", () => pm.expect(typeOk(body, schema.rootType)).to.be.true);
+        if (!typeOk(body, schema.rootType)) return;
+      }
 
       // ----------------------------------
-      // 1) Проверка обязательности полей 
+      // 1) Проверка обязательности полей
       // ----------------------------------
       pm.test("Проверка обязательности полей", function () {
-        const body = pm.response.json();
         const missing = [];
 
         function getValue(obj, path) {
@@ -309,7 +350,8 @@ scripts:
         }
 
         function walk(obj, path, expected, fullPath = path) {
-          const parts = path.split(".");
+          // После последнего "*" проверяем значение элемента целиком.
+          const parts = path === "" ? [] : path.split(".");
           let current = obj;
 
           for (let i = 0; i < parts.length; i++) {
@@ -386,53 +428,34 @@ scripts:
       // ----------------------------------
 
       pm.test("Проверка наличия лишних полей", function () {
-        const body = pm.response.json();
-        const schema = pm.variables.get("schema");
+        const allowedPaths = [...schema.required, ...Object.keys(schema.types)].map((path) => path.split("."));
+        const openPaths = (schema.openPaths || []).map((path) => path ? path.split(".") : []);
+        const extra = new Set();
 
-        const allowedPaths = [...schema.required, ...Object.keys(schema.types)];
-
-        // Преобразуем шаблоны со * в корректные RegExp
-        const allowedRegexps = allowedPaths.map(
-          (path) =>
-            new RegExp(
-              "^" +
-                path
-                  .replace(/\./g, "\\.")
-                  .replace(/\*/g, "[^.]+") +
-              "$"
-            )
-        );
-
-        const extra = new Set(); // ← предотвращает дублирование
-
-        function normalizePath(path) {
-          // Убираем индексы массивов: items.0.code → items.code
-          return path.replace(/\.\d+(?=\.|$)/g, "");
+        function matches(pattern, path) {
+          return pattern.length === path.length && pattern.every((segment, index) =>
+            segment === "*" || segment === path[index]
+          );
         }
 
-        function scan(obj, currentPath) {
-          if (Array.isArray(obj)) {
-            obj.forEach((item, index) => scan(item, `${currentPath}.${index}`));
+        function scan(value, path, displayPath) {
+          if (openPaths.some((pattern) => matches(pattern, path))) return;
+          if (Array.isArray(value)) {
+            value.forEach((item, i) => scan(item, [...path, String(i)], displayPath));
             return;
           }
-
-          if (obj && typeof obj === "object") {
-            Object.keys(obj).forEach((key) => {
-              const newPath = currentPath ? `${currentPath}.${key}` : key;
-              const normalized = newPath.replace(/^\./, "");
-
-              const isAllowed = allowedRegexps.some((r) => r.test(normalized));
-
-              if (!isAllowed) {
-                extra.add(normalizePath(normalized));
-              }
-
-              scan(obj[key], newPath);
-            });
+          if (!value || typeof value !== "object") return;
+          for (const [key, child] of Object.entries(value)) {
+            const childPath = [...path, key];
+            const childLabel = [...displayPath, key === "" ? '""' : key];
+            if (!allowedPaths.some((pattern) => matches(pattern, childPath))) {
+              extra.add(childLabel.join("."));
+            }
+            scan(child, childPath, childLabel);
           }
         }
 
-        scan(body, "");
+        scan(body, [], []);
 
         if (extra.size > 0) {
           const list = [...extra].map((p) => `• ${p}`).join("\n");

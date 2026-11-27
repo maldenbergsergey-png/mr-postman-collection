@@ -7,6 +7,11 @@ url: "{{baseUrl}}/realty/objects/{{product_code}}/presentation"
 method: GET
 headers:
   Accept: application/pdf
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/pdf"]});
+    language: text/javascript
 settings: {}
 examples: ./.resources/Файл презентации ОН.resources/examples
 order: 2000

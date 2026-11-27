@@ -12,16 +12,9 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
-      // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
-      const missingInputs__ = ["idDeal", "documentDeal"].filter((n) => !pm.variables.get(n));
-      if (missingInputs__.length) {
-        console.warn("Запрос пропущен: нет значений для " + missingInputs__.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "attributes",
           "attributes.*.code",
@@ -35,10 +28,13 @@ scripts:
           "document.name",
           "document.number",
           "document.status",
-          "document.type"
+          "document.status.code",
+          "document.status.name",
+          "document.type",
         ],
         types: {
           "attributes": "array",
+          "attributes.*": "object",
           "attributes.*.code": "string",
           "attributes.*.extra_value": "string?",
           "attributes.*.formatted_value": "string",
@@ -52,9 +48,18 @@ scripts:
           "document.status": "object?",
           "document.status.code": "string",
           "document.status.name": "string",
-          "document.type": "string"
-        }
+          "document.type": "string",
+        },
       });
+      // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
+      const missingInputs__ = ["idDeal", "documentDeal"].filter((n) => !pm.variables.get(n));
+      if (missingInputs__.length) {
+        console.warn("Запрос пропущен: нет значений для " + missingInputs__.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение документа по сделке.resources/examples

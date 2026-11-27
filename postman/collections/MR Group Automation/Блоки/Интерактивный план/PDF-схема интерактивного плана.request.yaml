@@ -10,6 +10,7 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/pdf"]});
       // Входные данные приходят из предыдущих запросов или задаются вручную
       const required = ["planId"];
       const absent = required.filter((n) => !pm.variables.get(n));
@@ -18,7 +19,6 @@ scripts:
         pm.execution.skipRequest();
       }
 
-      pm.variables.set("responseKind", "application/pdf");
     language: text/javascript
 settings: {}
 order: 13000

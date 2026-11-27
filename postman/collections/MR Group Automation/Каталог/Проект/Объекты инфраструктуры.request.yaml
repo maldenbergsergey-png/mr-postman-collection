@@ -7,9 +7,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "categories",
           "categories.*.icon_app",
@@ -35,25 +35,30 @@ scripts:
           "project.is_premium",
           "project.is_private",
           "project.is_promoted",
+          "project.latitude",
+          "project.longitude",
           "project.metro_stations",
           "project.metro_stations.*.color",
           "project.metro_stations.*.distance",
           "project.metro_stations.*.id",
           "project.metro_stations.*.line",
           "project.metro_stations.*.movement_way",
+          "project.metro_stations.*.movement_way.icon",
+          "project.metro_stations.*.movement_way.name",
           "project.metro_stations.*.name",
           "project.name",
+          "project.office_class.code",
           "project.title",
-          "project.latitude",
-          "project.longitude"
         ],
         types: {
           "categories": "array",
+          "categories.*": "object",
           "categories.*.icon_app": "string",
           "categories.*.icon_web": "string",
           "categories.*.id": "integer",
           "categories.*.name": "string",
           "items": "array",
+          "items.*": "object",
           "items.*.address": "string",
           "items.*.availabilities": "string?",
           "items.*.category_id": "integer",
@@ -72,7 +77,10 @@ scripts:
           "project.is_premium": "boolean",
           "project.is_private": "boolean",
           "project.is_promoted": "boolean",
+          "project.latitude": "number",
+          "project.longitude": "number",
           "project.metro_stations": "array",
+          "project.metro_stations.*": "object",
           "project.metro_stations.*.color": "string?",
           "project.metro_stations.*.distance": "integer?",
           "project.metro_stations.*.id": "integer",
@@ -81,15 +89,17 @@ scripts:
           "project.metro_stations.*.movement_way.icon": "string",
           "project.metro_stations.*.movement_way.name": "string",
           "project.metro_stations.*.name": "string",
+          "project.metro_stations.*.name_en": "string?",
           "project.name": "string",
+          "project.name_en": "string?",
           "project.office_class": "object?",
           "project.office_class.code": "string",
           "project.office_class.description": "string?",
           "project.title": "string?",
-          "project.latitude": "number",
-          "project.longitude": "number"
-        }
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Объекты инфраструктуры.resources/examples

@@ -8,48 +8,49 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
+          "ad_label",
           "best_benefits",
           "best_benefits.id",
           "best_benefits.is_offer",
           "best_benefits.show_action_button",
+          "categories",
+          "categories.*.code",
+          "categories.*.name",
           "code",
+          "conditions",
+          "description",
           "image",
           "labels",
           "labels.*.text",
           "name",
-          "teaser",
-          "ad_label",
-          "categories",
-          "categories.*.code",
-          "categories.*.name",
-          "conditions",
-          "description",
           "partner",
           "steps",
           "steps.*.description",
-          "steps.*.name"
+          "steps.*.name",
+          "teaser",
         ],
         types: {
+          "ad_label": "string?",
           "best_benefits": "object",
           "best_benefits.id": "string?",
           "best_benefits.is_offer": "boolean",
           "best_benefits.show_action_button": "boolean",
-          "code": "string",
-          "image": "string",
-          "labels": "array",
-          "labels.*.text": "string",
-          "name": "string",
-          "teaser": "string",
-          "ad_label": "string?",
           "categories": "array",
+          "categories.*": "object",
           "categories.*.code": "string",
           "categories.*.name": "string",
+          "code": "string",
           "conditions": "string",
           "description": "string",
+          "image": "string",
+          "labels": "array",
+          "labels.*": "object",
+          "labels.*.text": "string",
+          "name": "string",
           "partner": "object",
           "partner.code": "string",
           "partner.description": "string",
@@ -57,10 +58,14 @@ scripts:
           "partner.name": "string",
           "partner.text": "string",
           "steps": "array",
+          "steps.*": "object",
           "steps.*.description": "string?",
-          "steps.*.name": "string"
-        }
+          "steps.*.name": "string",
+          "teaser": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Карточка предложения.resources/examples

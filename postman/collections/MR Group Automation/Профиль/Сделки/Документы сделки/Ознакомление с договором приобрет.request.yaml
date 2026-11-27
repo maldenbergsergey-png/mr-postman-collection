@@ -13,6 +13,7 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": []});
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
       const missingInputs__ = ["idDeal", "documentDeal"].filter((n) => !pm.variables.get(n));
       if (missingInputs__.length) {
@@ -20,7 +21,6 @@ scripts:
         pm.execution.skipRequest();
       }
 
-      pm.variables.set("responseKind", "none");
     language: text/javascript
 settings: {}
 examples: ./.resources/Ознакомление с договором приобрет.resources/examples

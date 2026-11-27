@@ -9,16 +9,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["promotionCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ PromotionsContent
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "ad_label",
           "button_app_link",
@@ -41,14 +34,17 @@ scripts:
           "project.metro_stations.*.id",
           "project.metro_stations.*.line",
           "project.metro_stations.*.movement_way",
+          "project.metro_stations.*.movement_way.icon",
+          "project.metro_stations.*.movement_way.name",
           "project.metro_stations.*.name",
           "project.name",
+          "project.office_class.code",
           "project.title",
           "promo_expires",
           "promo_image_detail",
           "show_consultation",
           "subtitle",
-          "title"
+          "title",
         ],
         types: {
           "ad_label": "string?",
@@ -67,6 +63,7 @@ scripts:
           "project.is_private": "boolean",
           "project.is_promoted": "boolean",
           "project.metro_stations": "array",
+          "project.metro_stations.*": "object",
           "project.metro_stations.*.color": "string?",
           "project.metro_stations.*.distance": "integer?",
           "project.metro_stations.*.id": "integer",
@@ -75,7 +72,9 @@ scripts:
           "project.metro_stations.*.movement_way.icon": "string",
           "project.metro_stations.*.movement_way.name": "string",
           "project.metro_stations.*.name": "string",
+          "project.metro_stations.*.name_en": "string?",
           "project.name": "string",
+          "project.name_en": "string?",
           "project.office_class": "object?",
           "project.office_class.code": "string",
           "project.office_class.description": "string?",
@@ -84,9 +83,18 @@ scripts:
           "promo_image_detail": "string?",
           "show_consultation": "boolean",
           "subtitle": "string",
-          "title": "string"
-        }
+          "title": "string",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["promotionCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ PromotionsContent
     language: text/javascript
 settings: {}
 order: 4000

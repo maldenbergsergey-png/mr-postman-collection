@@ -16,6 +16,255 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("contractJsonSchema", {
+        "$ref": "#/definitions/FloorPlansList",
+        "definitions": {
+          "FloorPlansList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/FloorPlan"
+            }
+          },
+          "FloorPlan": {
+            "type": "object",
+            "required": [
+              "apartments_count",
+              "floor_number",
+              "max_discount",
+              "min_area",
+              "min_payment",
+              "min_price",
+              "plan",
+              "price_table"
+            ],
+            "properties": {
+              "apartments_count": {
+                "type": "integer"
+              },
+              "floor_number": {
+                "type": "integer"
+              },
+              "max_discount": {
+                "$ref": "#/definitions/MaxDiscount"
+              },
+              "min_area": {
+                "type": "number"
+              },
+              "min_payment": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_price": {
+                "$ref": "#/definitions/MinPriceNullable"
+              },
+              "plan": {
+                "$ref": "#/definitions/InteractivePlan"
+              },
+              "price_table": {
+                "$ref": "#/definitions/InteractivePlanPriceTable"
+              }
+            }
+          },
+          "MaxDiscount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0.0,
+            "maximum": 100.0
+          },
+          "MinPriceNullable": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "InteractivePlan": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "background_image",
+              "compass_angle",
+              "floor",
+              "items_level",
+              "level_plan",
+              "object_type",
+              "object_types",
+              "price_table_variant",
+              "svg_markup"
+            ],
+            "properties": {
+              "background_image": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "compass_angle": {
+                "$ref": "#/definitions/CompassAngle"
+              },
+              "floor": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "items_level": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "buildings",
+                  "floors",
+                  "objects",
+                  "sections"
+                ]
+              },
+              "level": {
+                "$ref": "#/definitions/InteractivePlanLevel"
+              },
+              "level_plan": {},
+              "object_type": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/RealtyObjectType"
+                  },
+                  {}
+                ]
+              },
+              "object_types": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/RealtyObjectType"
+                }
+              },
+              "price_table_variant": {
+                "$ref": "#/definitions/InteractivePlanPriceTableVariant"
+              },
+              "svg_markup": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              }
+            }
+          },
+          "CompassAngle": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": -359,
+            "maximum": 359
+          },
+          "InteractivePlanLevel": {
+            "type": "string",
+            "enum": [
+              "building",
+              "floor",
+              "project",
+              "section"
+            ]
+          },
+          "RealtyObjectType": {
+            "type": "string",
+            "enum": [
+              "boxrooms",
+              "commercials",
+              "flats",
+              "ihc",
+              "offices",
+              "parkings",
+              "townhouses"
+            ]
+          },
+          "InteractivePlanPriceTableVariant": {
+            "type": "string",
+            "enum": [
+              "by_area",
+              "by_room_quantity",
+              "none"
+            ]
+          },
+          "InteractivePlanPriceTable": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/PriceTableByArea"
+              },
+              {
+                "$ref": "#/definitions/PriceTableByRoomQuantity"
+              }
+            ]
+          },
+          "PriceTableByArea": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "min_area",
+                "min_price",
+                "object_count"
+              ],
+              "properties": {
+                "min_area": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "min_price": {
+                  "$ref": "#/definitions/MinPriceNullable"
+                },
+                "object_count": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "PriceTableByRoomQuantity": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "filter",
+                "min_area",
+                "min_price",
+                "name"
+              ],
+              "properties": {
+                "filter": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "min_area": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "exclusiveMinimum": 0
+                },
+                "min_price": {
+                  "$ref": "#/definitions/MinPriceNullable"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "name_en": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      });
       // Входные данные приходят из предыдущих запросов или задаются вручную
       const required = ["categoryHasPlan", "buildingHasPlan"];
       const absent = required.filter((n) => !pm.variables.get(n));
@@ -25,39 +274,6 @@ scripts:
       }
 
       // КОНТРАКТ FloorPlansList
-      pm.variables.set("schema", {
-        required: [
-          "*.apartments_count",
-          "*.floor_number",
-          "*.max_discount",
-          "*.min_area",
-          "*.min_payment",
-          "*.min_price",
-          "*.plan",
-          "*.price_table"
-        ],
-        types: {
-          "*.apartments_count": "integer",
-          "*.floor_number": "integer",
-          "*.max_discount": "number?",
-          "*.min_area": "number",
-          "*.min_payment": "number?",
-          "*.min_price": "number?",
-          "*.plan": "object?",
-          "*.plan.background_image": "string?",
-          "*.plan.compass_angle": "number?",
-          "*.plan.floor": "number?",
-          "*.plan.items_level": "string?",
-          "*.plan.level": "string",
-          "*.plan.level_plan": "any",
-          "*.plan.object_type": "string",
-          "*.plan.object_types": "array",
-          "*.plan.object_types.*": "string",
-          "*.plan.price_table_variant": "string",
-          "*.plan.svg_markup": "string?",
-          "*.price_table": "array?"
-        }
-      });
     language: text/javascript
 settings: {}
 order: 12000

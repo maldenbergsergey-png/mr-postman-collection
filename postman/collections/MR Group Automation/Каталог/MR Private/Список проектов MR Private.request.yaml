@@ -1,5 +1,8 @@
 $kind: http-request
-description: Получение проектов MR Private
+description: |-
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
+  Получение проектов MR Private
 url: "{{baseUrl}}/sale/projects/private"
 method: GET
 headers:
@@ -7,7 +10,7 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
       pm.variables.set("schema", {
         required: [

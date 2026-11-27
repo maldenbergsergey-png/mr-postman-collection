@@ -13,7 +13,7 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      pm.variables.set("responseKind", "application/xml");
+      pm.variables.set("expectedResponse", {"200": ["application/xml"]});
     language: text/javascript
 settings: {}
 examples: ./.resources/Фид новостроек.resources/examples

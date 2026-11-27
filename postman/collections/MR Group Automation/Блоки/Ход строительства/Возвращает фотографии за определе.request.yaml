@@ -15,6 +15,21 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object?",
+        required: [
+          "month",
+          "photo",
+          "year",
+        ],
+        types: {
+          "month": "integer",
+          "photo": "array",
+          "photo.*": "string",
+          "year": "integer",
+        },
+      });
       const projectsCodes = pm.collectionVariables.get("construction-progress/projectCodes");
 
       const rpc = projectsCodes[Math.floor(Math.random() * projectsCodes.length)]
@@ -47,18 +62,8 @@ scripts:
           })
       }
 
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-        ],
-        types: {
-          "month": "integer",
-          "photo": "array",
-          "photo.*": "string",
-          "year": "integer"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Возвращает фотографии за определе.resources/examples

@@ -9,16 +9,18 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ MrClubBigBannersCollection
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.color",
           "items.*.id",
-          "items.*.title"
+          "items.*.title",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.ad_label": "string?",
           "items.*.btn_link": "string?",
           "items.*.btn_text": "string?",
@@ -28,9 +30,10 @@ scripts:
           "items.*.link": "string?",
           "items.*.mobile_picture": "string?",
           "items.*.tablet_picture": "string?",
-          "items.*.title": "string"
-        }
+          "items.*.title": "string",
+        },
       });
+      // КОНТРАКТ MrClubBigBannersCollection
     language: text/javascript
 settings: {}
 order: 4000

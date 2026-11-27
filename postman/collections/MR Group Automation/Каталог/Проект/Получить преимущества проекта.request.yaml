@@ -1,0 +1,51 @@
+$kind: http-request
+name: "Получить преимущества проекта"
+description: |-
+  Возвращает карточки преимуществ проекта
+
+  Нужен код проекта из актуального списка проектов. Запуск отдельно требует переменной projectCode.
+url: "{{baseUrl}}/realty/projects/{{projectCode}}/advantages"
+method: GET
+headers:
+  Accept: "application/json"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "items",
+          "items.*.image_desktop",
+          "items.*.image_desktop.src",
+          "items.*.image_mobile",
+          "items.*.image_mobile.src",
+          "items.*.items",
+          "items.*.items.*.image",
+          "items.*.items.*.image.src",
+          "items.*.items.*.text",
+          "items.*.position",
+          "items.*.title",
+        ],
+        types: {
+          "items": "array",
+          "items.*": "object",
+          "items.*.image_desktop": "object?",
+          "items.*.image_desktop.description": "string",
+          "items.*.image_desktop.src": "string",
+          "items.*.image_mobile": "object?",
+          "items.*.image_mobile.description": "string",
+          "items.*.image_mobile.src": "string",
+          "items.*.items": "array",
+          "items.*.items.*": "object",
+          "items.*.items.*.image": "object",
+          "items.*.items.*.image.description": "string",
+          "items.*.items.*.image.src": "string",
+          "items.*.items.*.text": "string",
+          "items.*.position": "integer",
+          "items.*.title": "string",
+        },
+      });
+    language: text/javascript
+settings: {}
+order: 20000

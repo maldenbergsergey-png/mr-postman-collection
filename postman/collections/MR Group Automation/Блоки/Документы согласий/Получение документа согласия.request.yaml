@@ -12,6 +12,26 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "data",
+          "data.brief",
+          "data.id",
+          "data.text",
+          "data.title",
+          "data.url_name",
+        ],
+        types: {
+          "data": "object",
+          "data.brief": "string",
+          "data.id": "string",
+          "data.text": "string",
+          "data.title": "string",
+          "data.url_name": "string",
+        },
+      });
       // Требуются существующие переменные ENV:
       //   - formsConsentsMap  (заполнена первым запросом; карта или массив форм)
       //   - consentIndex      (числовой индекс перебора; будет инкрементирован здесь)
@@ -134,24 +154,6 @@ scripts:
 
       // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-          "data",
-          "data.brief",
-          "data.id",
-          "data.text",
-          "data.title",
-          "data.url_name"
-        ],
-        types: {
-          "data": "object",
-          "data.brief": "string",
-          "data.id": "string",
-          "data.text": "string",
-          "data.title": "string",
-          "data.url_name": "string"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение документа согласия.resources/examples

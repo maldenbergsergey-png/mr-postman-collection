@@ -7,23 +7,26 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
-          "items.*.year"
+          "items.*.year",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.description": "string",
           "items.*.description_en": "string?",
           "items.*.image": "string",
           "items.*.title": "string",
           "items.*.title_en": "string?",
-          "items.*.year": "integer"
-        }
+          "items.*.year": "integer",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/История.resources/examples

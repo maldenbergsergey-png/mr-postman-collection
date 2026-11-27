@@ -8,15 +8,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      const code = pm.environment.get("newsCode");
-      pm.test("Проверка наличия переменной newsCode", function () {
-          pm.expect(code, "Переменная 'newsCode' отсутствует. Сначала нужно выполнить запрос получения списка новостей.")
-              .to.be.a("string").and.not.empty;
-      });
-
-      // КОНТРАКТЫ МЕТОДА: NewsContent (все поля обязательны)
-
-      pm.variables.set("schema",{
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "ad_label",
           "code",
@@ -38,12 +32,15 @@ scripts:
           "project.*.metro_stations.*.id",
           "project.*.metro_stations.*.line",
           "project.*.metro_stations.*.movement_way",
+          "project.*.metro_stations.*.movement_way.icon",
+          "project.*.metro_stations.*.movement_way.name",
           "project.*.metro_stations.*.name",
           "project.*.name",
+          "project.*.office_class.code",
           "project.*.title",
           "teaser",
           "text",
-          "title"
+          "title",
         ],
         types: {
           "ad_label": "string?",
@@ -51,6 +48,7 @@ scripts:
           "date": "string",
           "image": "string?",
           "project": "array",
+          "project.*": "object",
           "project.*.brandbook": "string",
           "project.*.business_unit": "string",
           "project.*.code": "string",
@@ -61,6 +59,7 @@ scripts:
           "project.*.is_private": "boolean",
           "project.*.is_promoted": "boolean",
           "project.*.metro_stations": "array",
+          "project.*.metro_stations.*": "object",
           "project.*.metro_stations.*.color": "string?",
           "project.*.metro_stations.*.distance": "integer?",
           "project.*.metro_stations.*.id": "integer",
@@ -69,16 +68,26 @@ scripts:
           "project.*.metro_stations.*.movement_way.icon": "string",
           "project.*.metro_stations.*.movement_way.name": "string",
           "project.*.metro_stations.*.name": "string",
+          "project.*.metro_stations.*.name_en": "string?",
           "project.*.name": "string",
+          "project.*.name_en": "string?",
           "project.*.office_class": "object?",
           "project.*.office_class.code": "string",
           "project.*.office_class.description": "string?",
           "project.*.title": "string?",
           "teaser": "string",
           "text": "string",
-          "title": "string"
-        }
+          "title": "string",
+        },
       });
+      const code = pm.environment.get("newsCode");
+      pm.test("Проверка наличия переменной newsCode", function () {
+          pm.expect(code, "Переменная 'newsCode' отсутствует. Сначала нужно выполнить запрос получения списка новостей.")
+              .to.be.a("string").and.not.empty;
+      });
+
+      // КОНТРАКТЫ МЕТОДА: NewsContent (все поля обязательны)
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение отдельной новости.resources/examples

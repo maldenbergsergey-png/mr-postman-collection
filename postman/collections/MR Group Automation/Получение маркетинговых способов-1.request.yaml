@@ -5,5 +5,11 @@ method: GET
 headers:
   Content-Type: application/json
   x-correlation-id: 1bfe45b1-4753-4cf2-9433-bcc1b658d3d7
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {"required": ["*.purchaseMethods", "*.realEstateId"], "types": {"*": "object", "*.purchaseMethods": "object", "*.purchaseMethods.payment100": "boolean", "*.purchaseMethods.paymentInstallment": "boolean", "*.purchaseMethods.paymentMortgageFamily": "boolean", "*.purchaseMethods.paymentMortgageIT": "boolean", "*.purchaseMethods.paymentMortgageMilitary": "boolean", "*.purchaseMethods.paymentMortgageStandard": "boolean", "*.purchaseMethods.paymentTradeIn": "boolean", "*.realEstateId": "string"}, "rootType": "array"});
+    language: text/javascript
 settings: {}
 order: 10000

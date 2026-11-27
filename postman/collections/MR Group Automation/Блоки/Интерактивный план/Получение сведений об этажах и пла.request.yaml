@@ -1,6 +1,8 @@
 $kind: http-request
 name: Получение сведений об этажах и плане, который следует открыть
 description: |
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
   Метод возвращает информацию об этажах и план, который следует открыть
 url: "{{baseUrl}}/sale/plan/floors?category={{categoryHasPlan}}&building={{buildingHasPlan}}"
 method: GET

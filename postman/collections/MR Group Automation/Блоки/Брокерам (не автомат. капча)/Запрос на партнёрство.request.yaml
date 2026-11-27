@@ -54,6 +54,7 @@ auth:
 scripts:
   - type: beforeRequest
     code: |+
+      pm.variables.set("expectedResponse", {"204": []});
       // === Получаем текущее окружение ===
       const baseUrl = pm.environment.get("baseUrl");
       console.log("🌍 Текущее окружение:", baseUrl);

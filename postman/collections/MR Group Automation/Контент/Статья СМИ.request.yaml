@@ -16,22 +16,27 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |+
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
-        required: ["items"],
+        rootType: "object",
+        required: [
+          "items",
+        ],
         types: {
           "count": "integer",
-          "page": "integer",
-          "page_count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.date": "string",
           "items.*.descriptions": "string?",
           "items.*.logo": "string?",
           "items.*.title": "string?",
-          "items.*.web_link": "string?"
-        }
+          "items.*.web_link": "string?",
+          "page": "integer",
+          "page_count": "integer",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
 
     language: text/javascript
 settings: {}

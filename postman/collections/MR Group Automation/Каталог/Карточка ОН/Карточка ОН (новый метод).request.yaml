@@ -19,276 +19,1501 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА: RealtyObjectDetailsResponse
-      pm.variables.set("schema", {
-        required: [
-          "product",
-          "product.assignment",
-          "product.category",
-          "product.category.code",
-          "product.category.name",
-          "product.code",
-          "product.crm_id",
-          "product.floor",
-          "product.id",
-          "product.name",
-          "product.number",
-          "product.plot",
-          "product.resale",
-          "product.rooms_number",
-          "product.status",
-          "product.status.code",
-          "product.status.name",
-          "product.tier_quantity",
-          "product.alternative_layout",
-          "product.apartment_on_floor",
-          "product.area",
-          "product.article",
-          "product.booking_type",
-          "product.building",
-          "product.ceiling_height",
-          "product.decoration",
-          "product.details",
-          "product.details.*.code",
-          "product.details.*.formatted_value",
-          "product.details.*.icon",
-          "product.details.*.name",
-          "product.details.*.show_in",
-          "product.details.*.type",
-          "product.details.*.value",
-          "product.environment",
-          "product.explication",
-          "product.favorites_count",
-          "product.functional_layout",
-          "product.functional_layout_floor1",
-          "product.functional_layout_floor2",
-          "product.functional_layout_floor3",
-          "product.functional_layout_wo_furniture",
-          "product.kitchen",
-          "product.layout_3d_image",
-          "product.layout_3d_tour",
-          "product.meter_price",
-          "product.metro",
-          "product.metro_distance",
-          "product.monthly_payment",
-          "product.movement_way",
-          "product.object_types",
-          "product.object_types.*.background_color",
-          "product.object_types.*.code",
-          "product.object_types.*.description",
-          "product.object_types.*.discounted_price",
-          "product.object_types.*.image",
-          "product.object_types.*.name",
-          "product.object_types.*.price",
-          "product.price",
-          "product.price_disclaimer",
-          "product.project",
-          "product.project.brandbook",
-          "product.project.business_unit",
-          "product.project.code",
-          "product.project.id",
-          "product.project.image",
-          "product.project.is_countryside",
-          "product.project.is_premium",
-          "product.project.is_private",
-          "product.project.is_promoted",
-          "product.project.metro_stations",
-          "product.project.metro_stations.*.color",
-          "product.project.metro_stations.*.distance",
-          "product.project.metro_stations.*.id",
-          "product.project.metro_stations.*.line",
-          "product.project.metro_stations.*.movement_way",
-          "product.project.metro_stations.*.name",
-          "product.project.name",
-          "product.project.title",
-          "product.project.consultation_form",
-          "product.project.consultation_form.background_image",
-          "product.project.consultation_form.image",
-          "product.project.description",
-          "product.project.marketing_image",
-          "product.project.publish_presentation",
-          "product.purchase_type",
-          "product.purchase_types",
-          "product.purchase_types.*.app_link",
-          "product.purchase_types.*.code",
-          "product.purchase_types.*.description",
-          "product.purchase_types.*.discount",
-          "product.purchase_types.*.image",
-          "product.purchase_types.*.name",
-          "product.purchase_types.*.title",
-          "product.purchase_types.*.web_link",
-          "product.resale_disclaimer",
-          "product.section",
-          "product.stop_sales",
-          "product.technical_layout",
-          "product.ventilation",
-          "product.view_from_window"
-        ],
-        types: {
-          "product": "object",
-          "product.assignment": "boolean",
-          "product.category": "object",
-          "product.category.code": "string",
-          "product.category.name": "string",
-          "product.code": "string",
-          "product.crm_id": "string",
-          "product.floor": "integer?",
-          "product.id": "integer",
-          "product.name": "string",
-          "product.number": "string?",
-          "product.plot": "object?",
-          "product.plot.exists": "boolean",
-          "product.plot.size": "number?",
-          "product.resale": "boolean",
-          "product.rooms_number": "integer?",
-          "product.status": "object",
-          "product.status.code": "string",
-          "product.status.name": "string",
-          "product.subcategory": "object?",
-          "product.subcategory.code": "string",
-          "product.subcategory.name": "string",
-          "product.tier_quantity": "number?",
-          "product.alternative_layout": "string?",
-          "product.apartment_on_floor": "string?",
-          "product.area": "number?",
-          "product.article": "string?",
-          "product.booking_type": "string?",
-          "product.building": "object?",
-          "product.building.code": "string",
-          "product.building.compass_angle": "number?",
-          "product.building.deadline": "string?",
-          "product.building.floors_number": "integer?",
-          "product.building.id": "integer?",
-          "product.building.name": "string?",
-          "product.building.readiness": "integer?",
-          "product.building.scheme": "string?",
-          "product.building.shadow_map": "object?",
-          "product.building.shadow_map.direction": "string?",
-          "product.building.shadow_map.sunrise_angle": "integer?",
-          "product.building.shadow_map.sunset_angle": "integer?",
-          "product.ceiling_height": "number?",
-          "product.decoration": "object?",
-          "product.decoration.code": "string",
-          "product.decoration.name": "string",
-          "product.details": "array",
-          "product.details.*.code": "string",
-          "product.details.*.formatted_value": "string",
-          "product.details.*.icon": "string?",
-          "product.details.*.name": "string",
-          "product.details.*.show_in": "array",
-          "product.details.*.show_in.*": "string",
-          "product.details.*.type": "string",
-          "product.details.*.value": "string",
-          "product.environment": "object?",
-          "product.environment.left_side": "string?",
-          "product.environment.lower_side": "string?",
-          "product.environment.right_side": "string?",
-          "product.environment.upper_side": "string?",
-          "product.explication": "string?",
-          "product.favorites_count": "integer",
-          "product.functional_layout": "string?",
-          "product.functional_layout_floor1": "string?",
-          "product.functional_layout_floor2": "string?",
-          "product.functional_layout_floor3": "string?",
-          "product.functional_layout_wo_furniture": "string?",
-          "product.kitchen": "object?",
-          "product.kitchen.layout_type_id": "string",
-          "product.layout_3d_image": "string?",
-          "product.layout_3d_tour": "string?",
-          "product.meter_price": "number",
-          "product.metro": "object?",
-          "product.metro.color": "string?",
-          "product.metro.name": "string",
-          "product.metro_distance": "integer?",
-          "product.monthly_payment": "number?",
-          "product.movement_way": "object?",
-          "product.movement_way.icon": "string",
-          "product.movement_way.name": "string",
-          "product.object_types": "array?",
-          "product.object_types.*.background_color": "string?",
-          "product.object_types.*.code": "string",
-          "product.object_types.*.description": "string?",
-          "product.object_types.*.discounted_price": "object?",
-          "product.object_types.*.discounted_price.percentage_discount": "number",
-          "product.object_types.*.discounted_price.price": "number",
-          "product.object_types.*.discounted_price.type": "string",
-          "product.object_types.*.image": "string?",
-          "product.object_types.*.name": "string",
-          "product.object_types.*.price": "number?",
-          "product.price": "number?",
-          "product.price_disclaimer": "string?",
-          "product.project": "object",
-          "product.project.brandbook": "string",
-          "product.project.business_unit": "string",
-          "product.project.code": "string",
-          "product.project.id": "integer",
-          "product.project.image": "string?",
-          "product.project.is_countryside": "boolean",
-          "product.project.is_premium": "boolean",
-          "product.project.is_private": "boolean",
-          "product.project.is_promoted": "boolean",
-          "product.project.metro_stations": "array",
-          "product.project.metro_stations.*.color": "string?",
-          "product.project.metro_stations.*.distance": "integer?",
-          "product.project.metro_stations.*.id": "integer",
-          "product.project.metro_stations.*.line": "string?",
-          "product.project.metro_stations.*.movement_way": "object?",
-          "product.project.metro_stations.*.movement_way.icon": "string",
-          "product.project.metro_stations.*.movement_way.name": "string",
-          "product.project.metro_stations.*.name": "string",
-          "product.project.name": "string",
-          "product.project.office_class": "object?",
-          "product.project.office_class.code": "string",
-          "product.project.office_class.description": "string?",
-          "product.project.title": "string?",
-          "product.project.consultation_form": "object",
-          "product.project.consultation_form.background_image": "string?",
-          "product.project.consultation_form.image": "string?",
-          "product.project.description": "string?",
-          "product.project.marketing_image": "string?",
-          "product.project.publish_presentation": "boolean",
-          "product.purchase_type": "string",
-          "product.purchase_types": "array",
-          "product.purchase_types.*.app_link": "string?",
-          "product.purchase_types.*.code": "string",
-          "product.purchase_types.*.description": "string?",
-          "product.purchase_types.*.discount": "object?",
-          "product.purchase_types.*.discount.absolute_discount": "number",
-          "product.purchase_types.*.discount.description": "string?",
-          "product.purchase_types.*.discount.is_stock": "boolean",
-          "product.purchase_types.*.discount.meter_price": "number",
-          "product.purchase_types.*.discount.percentage_discount": "number",
-          "product.purchase_types.*.discount.price": "number",
-          "product.purchase_types.*.discount.type": "string",
-          "product.purchase_types.*.image": "string?",
-          "product.purchase_types.*.name": "string",
-          "product.purchase_types.*.title": "string?",
-          "product.purchase_types.*.web_link": "string?",
-          "product.resale_disclaimer": "string?",
-          "product.section": "object?",
-          "product.section.building_id": "integer",
-          "product.section.description": "string?",
-          "product.section.external_id": "string",
-          "product.section.floor_quantity": "integer?",
-          "product.section.full_description": "string?",
-          "product.section.id": "integer",
-          "product.section.marketing_name": "string?",
-          "product.section.name": "string?",
-          "product.stop_sales": "boolean",
-          "product.technical_layout": "string?",
-          "product.ventilation": "boolean",
-          "product.view_from_window": "object?",
-          "product.view_from_window.angle": "number?",
-          "product.view_from_window.back_segment": "boolean",
-          "product.view_from_window.front_segment": "boolean",
-          "product.view_from_window.image": "string",
-          "product.view_from_window.left_segment": "boolean",
-          "product.view_from_window.right_segment": "boolean",
-          "product.view_from_window.size": "string",
-          "product.view_from_window.x": "number",
-          "product.view_from_window.y": "number"
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("contractJsonSchema", {
+        "$ref": "#/definitions/RealtyObjectDetailsResponse",
+        "definitions": {
+          "RealtyObjectDetailsResponse": {
+            "type": "object",
+            "required": [
+              "product"
+            ],
+            "properties": {
+              "product": {
+                "$ref": "#/definitions/RealtyObjectDetails"
+              }
+            }
+          },
+          "RealtyObjectDetails": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyObjectBrief"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "alternative_layout",
+                  "apartment_on_floor",
+                  "area",
+                  "article",
+                  "booking_type",
+                  "building",
+                  "ceiling_height",
+                  "decoration",
+                  "details",
+                  "environment",
+                  "explication",
+                  "favorites_count",
+                  "functional_layout",
+                  "functional_layout_floor1",
+                  "functional_layout_floor2",
+                  "functional_layout_floor3",
+                  "functional_layout_wo_furniture",
+                  "kitchen",
+                  "layout_3d_image",
+                  "layout_3d_tour",
+                  "meter_price",
+                  "metro",
+                  "metro_distance",
+                  "monthly_payment",
+                  "movement_way",
+                  "object_types",
+                  "price",
+                  "price_disclaimer",
+                  "project",
+                  "purchase_type",
+                  "purchase_types",
+                  "resale_disclaimer",
+                  "section",
+                  "stop_sales",
+                  "technical_layout",
+                  "ventilation",
+                  "view_from_window"
+                ],
+                "properties": {
+                  "alternative_layout": {
+                    "$ref": "#/definitions/ProductFunctionalLayout"
+                  },
+                  "apartment_on_floor": {
+                    "$ref": "#/definitions/ProductApartmentOnFloor"
+                  },
+                  "area": {
+                    "$ref": "#/definitions/ProductArea"
+                  },
+                  "article": {
+                    "$ref": "#/definitions/ProductArticle"
+                  },
+                  "booking_type": {
+                    "$ref": "#/definitions/ProductBookingType"
+                  },
+                  "building": {
+                    "$ref": "#/definitions/BuildingDetail"
+                  },
+                  "ceiling_height": {
+                    "$ref": "#/definitions/ProductCellingHeight"
+                  },
+                  "decoration": {
+                    "$ref": "#/definitions/ProductDecoration"
+                  },
+                  "details": {
+                    "$ref": "#/definitions/RealtyFeatures"
+                  },
+                  "environment": {
+                    "$ref": "#/definitions/ProductEnvironment"
+                  },
+                  "explication": {
+                    "$ref": "#/definitions/ProductFunctionalLayout"
+                  },
+                  "favorites_count": {
+                    "$ref": "#/definitions/ProductFavoritesCount"
+                  },
+                  "functional_layout": {
+                    "$ref": "#/definitions/ProductFunctionalLayout"
+                  },
+                  "functional_layout_floor1": {
+                    "$ref": "#/definitions/ProductFunctionalLayout"
+                  },
+                  "functional_layout_floor2": {
+                    "$ref": "#/definitions/ProductFunctionalLayout"
+                  },
+                  "functional_layout_floor3": {
+                    "$ref": "#/definitions/ProductFunctionalLayout"
+                  },
+                  "functional_layout_wo_furniture": {
+                    "$ref": "#/definitions/ProductFunctionalLayout"
+                  },
+                  "kitchen": {
+                    "$ref": "#/definitions/ProductKitchen"
+                  },
+                  "layout_3d_image": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "layout_3d_tour": {
+                    "$ref": "#/definitions/ProductLayout3d"
+                  },
+                  "meter_price": {
+                    "$ref": "#/definitions/ProductMeterPrice"
+                  },
+                  "metro": {
+                    "$ref": "#/definitions/Metro"
+                  },
+                  "metro_distance": {
+                    "$ref": "#/definitions/MetroDistance"
+                  },
+                  "monthly_payment": {
+                    "$ref": "#/definitions/ProductMonthlyPayment"
+                  },
+                  "movement_way": {
+                    "$ref": "#/definitions/MetroMovementWay"
+                  },
+                  "object_types": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/ObjectTypeOld"
+                    }
+                  },
+                  "price": {
+                    "$ref": "#/definitions/ProductTotalPrice"
+                  },
+                  "price_disclaimer": {
+                    "$ref": "#/definitions/ProductPriceDisclaimer"
+                  },
+                  "project": {
+                    "$ref": "#/definitions/RealtyObjectProjectDetails"
+                  },
+                  "purchase_type": {
+                    "type": "string"
+                  },
+                  "purchase_types": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/RealtyObjectPurchaseType"
+                    }
+                  },
+                  "resale_disclaimer": {
+                    "$ref": "#/definitions/ProductResaleDisclaimer"
+                  },
+                  "section": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/Section"
+                      },
+                      {}
+                    ]
+                  },
+                  "stop_sales": {
+                    "$ref": "#/definitions/ProductStopSales"
+                  },
+                  "technical_layout": {
+                    "$ref": "#/definitions/ProductTechnicalLayout"
+                  },
+                  "ventilation": {
+                    "$ref": "#/definitions/ProductVentilation"
+                  },
+                  "view_from_window": {
+                    "$ref": "#/definitions/ProductWindowView"
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyObjectBrief": {
+            "type": "object",
+            "required": [
+              "assignment",
+              "category",
+              "code",
+              "crm_id",
+              "floor",
+              "id",
+              "name",
+              "number",
+              "plot",
+              "resale",
+              "rooms_number",
+              "status",
+              "tier_quantity"
+            ],
+            "properties": {
+              "assignment": {
+                "type": "boolean"
+              },
+              "category": {
+                "$ref": "#/definitions/ObjectTypeBrief"
+              },
+              "code": {
+                "$ref": "#/definitions/ProductCode"
+              },
+              "crm_id": {
+                "$ref": "#/definitions/ExternalId"
+              },
+              "floor": {
+                "$ref": "#/definitions/ProductFloor"
+              },
+              "id": {
+                "$ref": "#/definitions/ObjectId"
+              },
+              "name": {
+                "$ref": "#/definitions/ProductName"
+              },
+              "number": {
+                "$ref": "#/definitions/ProductNumber"
+              },
+              "plot": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/CountrysideLandPlot"
+                  },
+                  {}
+                ]
+              },
+              "resale": {
+                "$ref": "#/definitions/ProductResale"
+              },
+              "rooms_number": {
+                "$ref": "#/definitions/ProductRoomsNumber"
+              },
+              "status": {
+                "$ref": "#/definitions/ProductStatus"
+              },
+              "subcategory": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/ObjectSubTypeBrief"
+                  },
+                  {}
+                ]
+              },
+              "tier_quantity": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/TierQuantity"
+                  },
+                  {}
+                ]
+              }
+            }
+          },
+          "ObjectTypeBrief": {
+            "type": "object",
+            "required": [
+              "code",
+              "name"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/definitions/RealtyObjectType"
+              },
+              "name": {
+                "$ref": "#/definitions/RealtyObjectTypeName"
+              }
+            }
+          },
+          "RealtyObjectType": {
+            "type": "string",
+            "enum": [
+              "boxrooms",
+              "commercials",
+              "flats",
+              "ihc",
+              "offices",
+              "parkings",
+              "townhouses"
+            ]
+          },
+          "RealtyObjectTypeName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ProductCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ExternalId": {
+            "type": "string"
+          },
+          "ProductFloor": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "ObjectId": {
+            "type": "integer"
+          },
+          "ProductName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ProductNumber": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "CountrysideLandPlot": {
+            "type": "object",
+            "required": [
+              "exists",
+              "size"
+            ],
+            "properties": {
+              "exists": {
+                "type": "boolean"
+              },
+              "size": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "ProductResale": {
+            "type": "boolean"
+          },
+          "ProductRoomsNumber": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "ProductStatus": {
+            "type": "object",
+            "required": [
+              "code",
+              "name"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "booked",
+                  "free",
+                  "purchased"
+                ]
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "ObjectSubTypeBrief": {
+            "type": "object",
+            "required": [
+              "code",
+              "name"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/definitions/RealtyObjectSubType"
+              },
+              "name": {
+                "$ref": "#/definitions/RealtyObjectSubTypeName"
+              }
+            }
+          },
+          "RealtyObjectSubType": {
+            "type": "string"
+          },
+          "RealtyObjectSubTypeName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "TierQuantity": {
+            "type": "number"
+          },
+          "ProductFunctionalLayout": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ProductApartmentOnFloor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ProductArea": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "ProductArticle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ProductBookingType": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "Free",
+              "NotAvailable",
+              "Paid"
+            ]
+          },
+          "BuildingDetail": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/Building"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "shadow_map"
+                ],
+                "properties": {
+                  "shadow_map": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "direction": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "clockwise",
+                          "counterclockwise"
+                        ]
+                      },
+                      "sunrise_angle": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "minimum": 0,
+                        "maximum": 359
+                      },
+                      "sunset_angle": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "minimum": 0,
+                        "maximum": 359
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "Building": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "code",
+              "compass_angle",
+              "deadline",
+              "floors_number",
+              "id",
+              "name",
+              "readiness",
+              "scheme"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/definitions/BuildingCode"
+              },
+              "compass_angle": {
+                "$ref": "#/definitions/CompassAngle"
+              },
+              "deadline": {
+                "$ref": "#/definitions/BuildingDeadline"
+              },
+              "floors_number": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "id": {
+                "$ref": "#/definitions/BuildingId"
+              },
+              "name": {
+                "$ref": "#/definitions/BuildingName"
+              },
+              "readiness": {
+                "$ref": "#/definitions/BuildingReadiness"
+              },
+              "scheme": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "BuildingCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "CompassAngle": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": -359,
+            "maximum": 359
+          },
+          "BuildingDeadline": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "BuildingId": {
+            "type": "integer"
+          },
+          "BuildingName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "BuildingReadiness": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "ProductCellingHeight": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "ProductDecoration": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "code",
+              "name"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "RealtyFeatures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/RealtyFeature"
+            }
+          },
+          "RealtyFeature": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/RealtyFeatureBoolean"
+              },
+              {
+                "$ref": "#/definitions/RealtyFeatureNumber"
+              },
+              {
+                "$ref": "#/definitions/RealtyFeatureSet"
+              },
+              {
+                "$ref": "#/definitions/RealtyFeatureString"
+              }
+            ]
+          },
+          "RealtyFeatureBoolean": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  "value": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyFeatureBase": {
+            "type": "object",
+            "required": [
+              "code",
+              "formatted_value",
+              "icon",
+              "name",
+              "show_in"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "formatted_value": {
+                "type": "string"
+              },
+              "icon": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/ImageLink"
+                  },
+                  {}
+                ]
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "show_in": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "details",
+                    "tags"
+                  ]
+                }
+              }
+            }
+          },
+          "ImageLink": {
+            "type": "string",
+            "minLength": 1
+          },
+          "RealtyFeatureNumber": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "number"
+                    ]
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyFeatureSet": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "set"
+                    ]
+                  },
+                  "value": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyFeatureString": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "ProductEnvironment": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "left_side",
+              "lower_side",
+              "right_side",
+              "upper_side"
+            ],
+            "properties": {
+              "left_side": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "lower_side": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "right_side": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "upper_side": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              }
+            }
+          },
+          "ProductFavoritesCount": {
+            "type": "integer"
+          },
+          "ProductKitchen": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "layout_type_id"
+            ],
+            "properties": {
+              "layout_type_id": {
+                "type": "string"
+              }
+            }
+          },
+          "ProductLayout3d": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ProductMeterPrice": {
+            "type": "number"
+          },
+          "Metro": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "color",
+              "name"
+            ],
+            "properties": {
+              "color": {
+                "$ref": "#/definitions/MetroColor"
+              },
+              "name": {
+                "$ref": "#/definitions/MetroName"
+              },
+              "name_en": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "MetroColor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "MetroName": {
+            "type": "string"
+          },
+          "MetroDistance": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "ProductMonthlyPayment": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "MetroMovementWay": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "icon",
+              "name"
+            ],
+            "properties": {
+              "icon": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "ObjectTypeOld": {
+            "type": "object",
+            "required": [
+              "background_color",
+              "code",
+              "description",
+              "discounted_price",
+              "image",
+              "name",
+              "price"
+            ],
+            "properties": {
+              "background_color": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "code": {
+                "$ref": "#/definitions/RealtyObjectType"
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "discounted_price": {
+                "$ref": "#/definitions/DiscountedPrice"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "name": {
+                "$ref": "#/definitions/RealtyObjectTypeName"
+              },
+              "price": {
+                "$ref": "#/definitions/ProductTotalPrice"
+              }
+            }
+          },
+          "DiscountedPrice": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "percentage_discount",
+              "price",
+              "type"
+            ],
+            "properties": {
+              "percentage_discount": {
+                "$ref": "#/definitions/ProductDiscountPercent"
+              },
+              "price": {
+                "$ref": "#/definitions/ProductDiscountPrice"
+              },
+              "type": {
+                "$ref": "#/definitions/ProductDiscountType"
+              }
+            }
+          },
+          "ProductDiscountPercent": {
+            "type": "number"
+          },
+          "ProductDiscountPrice": {
+            "type": "number"
+          },
+          "ProductDiscountType": {
+            "type": "string",
+            "enum": [
+              "absolute",
+              "percent"
+            ],
+            "minLength": 1
+          },
+          "ProductTotalPrice": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "ProductPriceDisclaimer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "RealtyObjectProjectDetails": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/ProjectBrief"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "consultation_form",
+                  "description",
+                  "marketing_image",
+                  "publish_presentation"
+                ],
+                "properties": {
+                  "consultation_form": {
+                    "$ref": "#/definitions/ProjectConsultationFormConfig"
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "marketing_image": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "publish_presentation": {
+                    "$ref": "#/definitions/ProjectPresentation"
+                  }
+                }
+              }
+            ]
+          },
+          "ProjectBrief": {
+            "type": "object",
+            "required": [
+              "brandbook",
+              "business_unit",
+              "code",
+              "id",
+              "image",
+              "is_countryside",
+              "is_premium",
+              "is_private",
+              "is_promoted",
+              "metro_stations",
+              "name",
+              "title"
+            ],
+            "properties": {
+              "brandbook": {
+                "$ref": "#/definitions/ProjectBrandbook"
+              },
+              "business_unit": {
+                "$ref": "#/definitions/ProjectBusinessUnit"
+              },
+              "code": {
+                "$ref": "#/definitions/ProjectCode"
+              },
+              "id": {
+                "$ref": "#/definitions/ProjectId"
+              },
+              "image": {
+                "$ref": "#/definitions/ProjectImage"
+              },
+              "is_countryside": {
+                "$ref": "#/definitions/IsCountrysideProject"
+              },
+              "is_premium": {
+                "$ref": "#/definitions/IsPremiumProject"
+              },
+              "is_private": {
+                "$ref": "#/definitions/ProjectPrivate"
+              },
+              "is_promoted": {
+                "$ref": "#/definitions/ProjectIsPromoted"
+              },
+              "metro_stations": {
+                "$ref": "#/definitions/MetroStations"
+              },
+              "name": {
+                "$ref": "#/definitions/ProjectName"
+              },
+              "name_en": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "office_class": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/OfficeClass"
+                  },
+                  {}
+                ]
+              },
+              "title": {
+                "$ref": "#/definitions/ProjectTitle"
+              }
+            }
+          },
+          "ProjectBrandbook": {
+            "type": "string",
+            "enum": [
+              "mr_countryside",
+              "mr_group",
+              "mr_offices",
+              "mr_premium",
+              "mr_private",
+              "mr_retail"
+            ]
+          },
+          "ProjectBusinessUnit": {
+            "type": "string",
+            "enum": [
+              "commercials",
+              "flats",
+              "offices"
+            ]
+          },
+          "ProjectCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ProjectId": {
+            "type": "integer"
+          },
+          "ProjectImage": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "IsCountrysideProject": {
+            "type": "boolean"
+          },
+          "IsPremiumProject": {
+            "type": "boolean"
+          },
+          "ProjectPrivate": {
+            "type": "boolean"
+          },
+          "ProjectIsPromoted": {
+            "type": "boolean"
+          },
+          "MetroStations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/MetroStation"
+            }
+          },
+          "MetroStation": {
+            "type": "object",
+            "required": [
+              "color",
+              "distance",
+              "id",
+              "line",
+              "movement_way",
+              "name"
+            ],
+            "properties": {
+              "color": {
+                "$ref": "#/definitions/MetroColor"
+              },
+              "distance": {
+                "$ref": "#/definitions/MetroDistance"
+              },
+              "id": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "line": {
+                "$ref": "#/definitions/MetroLine"
+              },
+              "movement_way": {
+                "$ref": "#/definitions/MetroMovementWay"
+              },
+              "name": {
+                "$ref": "#/definitions/MetroName"
+              },
+              "name_en": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "MetroLine": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ProjectName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "OfficeClass": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "ProjectTitle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ProjectConsultationFormConfig": {
+            "type": "object",
+            "required": [
+              "background_image",
+              "image"
+            ],
+            "properties": {
+              "background_image": {
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/ImageLink"
+                  }
+                ]
+              },
+              "image": {
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/ImageLink"
+                  }
+                ]
+              }
+            }
+          },
+          "ProjectPresentation": {
+            "type": "boolean"
+          },
+          "RealtyObjectPurchaseType": {
+            "type": "object",
+            "required": [
+              "app_link",
+              "code",
+              "description",
+              "discount",
+              "image",
+              "name",
+              "title",
+              "web_link"
+            ],
+            "properties": {
+              "app_link": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "discount": {
+                "$ref": "#/definitions/Discount"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "web_link": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "Discount": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "absolute_discount",
+              "description",
+              "is_stock",
+              "meter_price",
+              "percentage_discount",
+              "price",
+              "type"
+            ],
+            "properties": {
+              "absolute_discount": {
+                "$ref": "#/definitions/ProductDiscountAbsolute"
+              },
+              "description": {
+                "$ref": "#/definitions/ProductDiscountDescription"
+              },
+              "is_stock": {
+                "type": "boolean"
+              },
+              "meter_price": {
+                "$ref": "#/definitions/ProductMeterPrice"
+              },
+              "percentage_discount": {
+                "$ref": "#/definitions/ProductDiscountPercent"
+              },
+              "price": {
+                "$ref": "#/definitions/ProductDiscountPrice"
+              },
+              "type": {
+                "$ref": "#/definitions/ProductDiscountType"
+              }
+            }
+          },
+          "ProductDiscountAbsolute": {
+            "type": "number"
+          },
+          "ProductDiscountDescription": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "ProductResaleDisclaimer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "Section": {
+            "type": "object",
+            "required": [
+              "building_id",
+              "description",
+              "external_id",
+              "floor_quantity",
+              "full_description",
+              "id",
+              "marketing_name",
+              "name"
+            ],
+            "properties": {
+              "building_id": {
+                "$ref": "#/definitions/BuildingId"
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "maxLength": 65535
+              },
+              "external_id": {
+                "$ref": "#/definitions/ExternalId"
+              },
+              "floor_quantity": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": -2147483648,
+                "maximum": 2147483647
+              },
+              "full_description": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "maxLength": 65535
+              },
+              "id": {
+                "$ref": "#/definitions/SectionId"
+              },
+              "marketing_name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "maxLength": 65535
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "maxLength": 65535
+              }
+            }
+          },
+          "SectionId": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
+          "ProductStopSales": {
+            "type": "boolean"
+          },
+          "ProductTechnicalLayout": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ProductVentilation": {
+            "type": "boolean"
+          },
+          "ProductWindowView": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "angle",
+              "back_segment",
+              "front_segment",
+              "image",
+              "left_segment",
+              "right_segment",
+              "size",
+              "x",
+              "y"
+            ],
+            "properties": {
+              "angle": {
+                "$ref": "#/definitions/CompassAngle"
+              },
+              "back_segment": {
+                "type": "boolean"
+              },
+              "front_segment": {
+                "type": "boolean"
+              },
+              "image": {
+                "type": "string"
+              },
+              "left_segment": {
+                "type": "boolean"
+              },
+              "right_segment": {
+                "type": "boolean"
+              },
+              "size": {
+                "type": "string",
+                "enum": [
+                  "large",
+                  "medium",
+                  "small"
+                ]
+              },
+              "x": {
+                "$ref": "#/definitions/PointCoordinate"
+              },
+              "y": {
+                "$ref": "#/definitions/PointCoordinate"
+              }
+            }
+          },
+          "PointCoordinate": {
+            "type": "number"
+          }
         }
       });
+      // КОНТРАКТЫ МЕТОДА: RealtyObjectDetailsResponse
     language: text/javascript
 settings: {}
 order: 3000

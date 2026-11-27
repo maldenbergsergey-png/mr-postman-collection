@@ -9,16 +9,19 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "array",
         required: [
           "*.description",
           "*.image_horizontal",
           "*.image_horizontal.src",
           "*.image_vertical",
           "*.image_vertical.src",
-          "*.name"
+          "*.name",
         ],
         types: {
+          "*": "object",
           "*.description": "string?",
           "*.image_horizontal": "object",
           "*.image_horizontal.description": "string",
@@ -26,8 +29,8 @@ scripts:
           "*.image_vertical": "object",
           "*.image_vertical.description": "string",
           "*.image_vertical.src": "string",
-          "*.name": "string"
-        }
+          "*.name": "string",
+        },
       });
     language: text/javascript
 settings: {}

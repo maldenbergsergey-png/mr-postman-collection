@@ -1,14 +1,16 @@
 $kind: http-request
 name: "Шаг Банк"
-description: |
+description: |-
   Сохраняет выбранный банк и наличие дебетового счёта. Без обращения к CRM.
 
   Банк обязан быть в витрине оформления (`GET /deal-application/{id}/banks`), иначе 422:
   показ и сохранение сверяются с одним правилом годности, чтобы в CRM не ушёл банк, которого
   клиент не мог выбрать.
 
-  Позиция в ответе (`current_step`) зависит от ответа про дебетовый счёт:
-  `1_bank_conditions`, пока клиент не ответил, и `1_date`, когда ответил.
+  Позиция в ответе (`step`) зависит от ответа про дебетовый счёт: `bank_conditions`, пока
+  клиент не ответил, и `date`, когда ответил. `bank_conditions` отдаётся только для банков
+  с экраном условий (сейчас Альфа-Банк, `bank_code = alfa_bank`); для остальных банков
+  сразу `date`.
 url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/bank"
 method: POST
 headers:
@@ -28,27 +30,28 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["dealApplicationId", "dealBankId"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ DealApplicationState
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "booking_date",
           "contract_price",
-          "current_step",
           "id",
+          "manager.full_name",
+          "manager.photo_url",
+          "progress.stage",
+          "progress.stage_total",
+          "progress.step",
+          "progress.step_total",
           "realty_object",
           "realty_object.article",
+          "realty_object.category.code",
           "realty_object.id",
           "realty_object.project_name",
           "realty_object.type_title",
-          "status"
+          "stage",
+          "status",
+          "step",
         ],
         types: {
           "bank_code": "string?",
@@ -56,7 +59,6 @@ scripts:
           "booking_date": "string",
           "contract_price": "number",
           "crm_deal_id": "string?",
-          "current_step": "string",
           "deal_date": "string?",
           "deal_type": "string?",
           "has_debit_account": "boolean?",
@@ -68,10 +70,16 @@ scripts:
           "manager.email": "string?",
           "manager.full_name": "string",
           "manager.phone": "string?",
+          "manager.photo_url": "string?",
           "offline_reason": "string?",
           "ownership_form": "string?",
           "participants_count": "integer?",
           "payment_form": "string?",
+          "progress": "object?",
+          "progress.stage": "integer",
+          "progress.stage_total": "integer",
+          "progress.step": "number",
+          "progress.step_total": "integer",
           "realty_object": "object",
           "realty_object.area": "number?",
           "realty_object.article": "string",
@@ -87,9 +95,21 @@ scripts:
           "realty_object.rooms": "integer?",
           "realty_object.type_title": "string",
           "realty_object.url": "string?",
-          "status": "string"
-        }
+          "reason": "string?",
+          "stage": "integer",
+          "status": "string",
+          "step": "string",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["dealApplicationId", "dealBankId"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ DealApplicationState
     language: text/javascript
 settings: {}
 order: 4000

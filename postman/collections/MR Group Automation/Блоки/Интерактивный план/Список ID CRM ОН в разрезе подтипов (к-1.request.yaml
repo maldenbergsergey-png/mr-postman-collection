@@ -54,22 +54,25 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |+
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "array",
         required: [
           "*.code",
           "*.description",
           "*.icon",
           "*.name",
-          "*.objects"
+          "*.objects",
         ],
         types: {
+          "*": "object",
           "*.code": "string",
           "*.description": "string",
           "*.icon": "string?",
           "*.name": "string",
           "*.objects": "array",
-          "*.objects.*": "string"
-        }
+          "*.objects.*": "string",
+        },
       });
 
     language: text/javascript

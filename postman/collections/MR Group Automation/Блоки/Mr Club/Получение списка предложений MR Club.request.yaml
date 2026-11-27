@@ -41,9 +41,9 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
@@ -59,11 +59,12 @@ scripts:
           "items.*.teaser",
           "limit",
           "page",
-          "page_count"
+          "page_count",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.best_benefits": "object",
           "items.*.best_benefits.id": "string?",
           "items.*.best_benefits.is_offer": "boolean",
@@ -71,14 +72,17 @@ scripts:
           "items.*.code": "string",
           "items.*.image": "string",
           "items.*.labels": "array",
+          "items.*.labels.*": "object",
           "items.*.labels.*.text": "string",
           "items.*.name": "string",
           "items.*.teaser": "string",
           "limit": "integer",
           "page": "integer",
-          "page_count": "integer"
-        }
+          "page_count": "integer",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка предложений MR Club.resources/examples

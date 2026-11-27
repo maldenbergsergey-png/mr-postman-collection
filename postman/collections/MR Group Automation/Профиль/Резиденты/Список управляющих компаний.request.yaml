@@ -13,21 +13,24 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "data",
           "data.*.id",
           "data.*.logo",
           "data.*.name",
-          "data.*.url"
+          "data.*.url",
         ],
         types: {
           "data": "array",
+          "data.*": "object",
           "data.*.id": "integer",
           "data.*.logo": "string?",
           "data.*.name": "string",
-          "data.*.url": "string"
-        }
+          "data.*.url": "string",
+        },
       });
     language: text/javascript
 settings: {}

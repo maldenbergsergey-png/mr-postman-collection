@@ -9,10 +9,24 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
+          "app_links.*.icon",
+          "app_links.*.icon.src",
+          "app_links.*.link",
+          "app_links.*.name",
+          "footer_links.*.icon",
+          "footer_links.*.icon.src",
+          "footer_links.*.link",
+          "footer_links.*.name",
+          "reg_links.*.link",
+          "reg_links.*.name",
+          "socnet_links.*.icon",
+          "socnet_links.*.icon.src",
+          "socnet_links.*.link",
+          "socnet_links.*.name",
         ],
         types: {
           "advert": "object",
@@ -21,6 +35,7 @@ scripts:
           "advert.link": "string",
           "advert.title": "string",
           "app_links": "array",
+          "app_links.*": "object",
           "app_links.*.icon": "object",
           "app_links.*.icon.description": "string",
           "app_links.*.icon.src": "string",
@@ -28,22 +43,27 @@ scripts:
           "app_links.*.name": "string?",
           "app_universal_link": "string",
           "footer_links": "array",
+          "footer_links.*": "object",
           "footer_links.*.icon": "object",
           "footer_links.*.icon.description": "string",
           "footer_links.*.icon.src": "string",
           "footer_links.*.link": "string",
           "footer_links.*.name": "string?",
           "reg_links": "array",
+          "reg_links.*": "object",
           "reg_links.*.link": "string",
           "reg_links.*.name": "string?",
           "socnet_links": "array",
+          "socnet_links.*": "object",
           "socnet_links.*.icon": "object",
           "socnet_links.*.icon.description": "string",
           "socnet_links.*.icon.src": "string",
           "socnet_links.*.link": "string",
-          "socnet_links.*.name": "string?"
-        }
+          "socnet_links.*.name": "string?",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Данные для «шапки» и «подвала» сай.resources/examples

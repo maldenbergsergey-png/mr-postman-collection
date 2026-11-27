@@ -15,14 +15,18 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ MortgageOfferDetail
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "amount",
           "application",
           "application.create_date",
           "application.id",
           "application.manager",
+          "application.manager.email",
+          "application.manager.name",
+          "application.manager.phone",
           "application.number",
           "application.project",
           "application.project.brandbook",
@@ -40,8 +44,11 @@ scripts:
           "application.project.metro_stations.*.id",
           "application.project.metro_stations.*.line",
           "application.project.metro_stations.*.movement_way",
+          "application.project.metro_stations.*.movement_way.icon",
+          "application.project.metro_stations.*.movement_way.name",
           "application.project.metro_stations.*.name",
           "application.project.name",
+          "application.project.office_class.code",
           "application.project.title",
           "application.status",
           "application.status.code",
@@ -69,7 +76,7 @@ scripts:
           "reject_reason",
           "status",
           "status.code",
-          "status.name"
+          "status.name",
         ],
         types: {
           "amount": "number?",
@@ -92,6 +99,7 @@ scripts:
           "application.project.is_private": "boolean",
           "application.project.is_promoted": "boolean",
           "application.project.metro_stations": "array",
+          "application.project.metro_stations.*": "object",
           "application.project.metro_stations.*.color": "string?",
           "application.project.metro_stations.*.distance": "integer?",
           "application.project.metro_stations.*.id": "integer",
@@ -100,7 +108,9 @@ scripts:
           "application.project.metro_stations.*.movement_way.icon": "string",
           "application.project.metro_stations.*.movement_way.name": "string",
           "application.project.metro_stations.*.name": "string",
+          "application.project.metro_stations.*.name_en": "string?",
           "application.project.name": "string",
+          "application.project.name_en": "string?",
           "application.project.office_class": "object?",
           "application.project.office_class.code": "string",
           "application.project.office_class.description": "string?",
@@ -119,6 +129,7 @@ scripts:
           "payment": "number?",
           "period": "integer?",
           "persons": "array",
+          "persons.*": "object",
           "persons.*.email": "string?",
           "persons.*.id": "integer",
           "persons.*.name": "string",
@@ -131,9 +142,10 @@ scripts:
           "reject_reason": "string?",
           "status": "object",
           "status.code": "string",
-          "status.name": "string"
-        }
+          "status.name": "string",
+        },
       });
+      // КОНТРАКТ MortgageOfferDetail
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение деталей заявки в банк.resources/examples

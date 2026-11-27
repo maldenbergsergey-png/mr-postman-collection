@@ -1,0 +1,53 @@
+$kind: http-request
+name: "Получить материалы о компании"
+description: |-
+  Возвращает материалы о компании на русском и английском языках.
+
+  Материалы на языке возвращаются, только если для него заполнены обложка, описание и презентация,
+  иначе вместо них возвращается `null`.
+url: "{{baseUrl}}/content/booklets"
+method: GET
+headers:
+  Accept: "application/json"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "booklet",
+          "booklet.description",
+          "booklet.image",
+          "booklet.presentation",
+          "booklet.presentation.size",
+          "booklet.presentation.src",
+          "booklet.title",
+          "booklet_en",
+          "booklet_en.description",
+          "booklet_en.image",
+          "booklet_en.presentation",
+          "booklet_en.presentation.size",
+          "booklet_en.presentation.src",
+          "booklet_en.title",
+        ],
+        types: {
+          "booklet": "object?",
+          "booklet.description": "string",
+          "booklet.image": "string",
+          "booklet.presentation": "object",
+          "booklet.presentation.size": "integer",
+          "booklet.presentation.src": "string",
+          "booklet.title": "string?",
+          "booklet_en": "object?",
+          "booklet_en.description": "string",
+          "booklet_en.image": "string",
+          "booklet_en.presentation": "object",
+          "booklet_en.presentation.size": "integer",
+          "booklet_en.presentation.src": "string",
+          "booklet_en.title": "string?",
+        },
+      });
+    language: text/javascript
+settings: {}
+order: 13000

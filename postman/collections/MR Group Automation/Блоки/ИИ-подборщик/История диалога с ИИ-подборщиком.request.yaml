@@ -14,15 +14,41 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ AiChatHistoryResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "dialog",
-          "is_in_flight"
+          "dialog.messages",
+          "dialog.messages.*.content",
+          "dialog.messages.*.created_dt",
+          "dialog.messages.*.lots.*.area",
+          "dialog.messages.*.lots.*.building_deadline",
+          "dialog.messages.*.lots.*.code",
+          "dialog.messages.*.lots.*.floor",
+          "dialog.messages.*.lots.*.floors_number",
+          "dialog.messages.*.lots.*.functional_layout",
+          "dialog.messages.*.lots.*.metro",
+          "dialog.messages.*.lots.*.metro.color",
+          "dialog.messages.*.lots.*.metro.distance",
+          "dialog.messages.*.lots.*.metro.id",
+          "dialog.messages.*.lots.*.metro.line",
+          "dialog.messages.*.lots.*.metro.movement_way",
+          "dialog.messages.*.lots.*.metro.movement_way.icon",
+          "dialog.messages.*.lots.*.metro.movement_way.name",
+          "dialog.messages.*.lots.*.metro.name",
+          "dialog.messages.*.lots.*.price",
+          "dialog.messages.*.lots.*.project_name",
+          "dialog.messages.*.lots.*.rooms_number",
+          "dialog.messages.*.role",
+          "dialog.messages.*.status",
+          "dialog.title",
+          "is_in_flight",
         ],
         types: {
           "dialog": "object?",
           "dialog.messages": "array",
+          "dialog.messages.*": "object",
           "dialog.messages.*.content": "string",
           "dialog.messages.*.created_dt": "string",
           "dialog.messages.*.filters": "object",
@@ -76,6 +102,7 @@ scripts:
           "dialog.messages.*.intent": "string",
           "dialog.messages.*.lot_count": "integer",
           "dialog.messages.*.lots": "array",
+          "dialog.messages.*.lots.*": "object",
           "dialog.messages.*.lots.*.area": "number?",
           "dialog.messages.*.lots.*.building_deadline": "string?",
           "dialog.messages.*.lots.*.code": "string",
@@ -91,15 +118,17 @@ scripts:
           "dialog.messages.*.lots.*.metro.movement_way.icon": "string",
           "dialog.messages.*.lots.*.metro.movement_way.name": "string",
           "dialog.messages.*.lots.*.metro.name": "string",
+          "dialog.messages.*.lots.*.metro.name_en": "string?",
           "dialog.messages.*.lots.*.price": "number",
           "dialog.messages.*.lots.*.project_name": "string?",
           "dialog.messages.*.lots.*.rooms_number": "integer?",
           "dialog.messages.*.role": "string",
           "dialog.messages.*.status": "string",
           "dialog.title": "string?",
-          "is_in_flight": "boolean"
-        }
+          "is_in_flight": "boolean",
+        },
       });
+      // КОНТРАКТ AiChatHistoryResponse
     language: text/javascript
 settings: {}
 order: 2000

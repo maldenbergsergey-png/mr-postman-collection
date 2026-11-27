@@ -8,29 +8,30 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      const code = pm.environment.get("projectPrivateCode");
-
-      if (!code) {
-        console.warn("⚠️ Переменная окружения 'projectPrivateCode' пуста — сначала нужно выполнить запрос /private/banners");
-      } else {
-        console.log("✅ Используем сохранённый projectPrivateCode:", code);
-      }
-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
           "items.*.id",
           "items.*.image",
+          "items.*.image.image_desktop",
+          "items.*.image.image_desktop_big",
+          "items.*.image.image_mobile",
+          "items.*.image.image_tablet",
           "items.*.name",
           "items.*.type",
-          "items.*.video"
+          "items.*.video",
+          "items.*.video.image_preview_desktop",
+          "items.*.video.image_preview_mobile",
+          "items.*.video.video_desktop",
+          "items.*.video.video_mobile",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.id": "integer",
           "items.*.image": "object?",
           "items.*.image.image_desktop": "string",
@@ -43,9 +44,19 @@ scripts:
           "items.*.video.image_preview_desktop": "string",
           "items.*.video.image_preview_mobile": "string",
           "items.*.video.video_desktop": "string",
-          "items.*.video.video_mobile": "string"
-        }
+          "items.*.video.video_mobile": "string",
+        },
       });
+      const code = pm.environment.get("projectPrivateCode");
+
+      if (!code) {
+        console.warn("⚠️ Переменная окружения 'projectPrivateCode' пуста — сначала нужно выполнить запрос /private/banners");
+      } else {
+        console.log("✅ Используем сохранённый projectPrivateCode:", code);
+      }
+
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Список баннеров для проекта MR Private.resources/examples

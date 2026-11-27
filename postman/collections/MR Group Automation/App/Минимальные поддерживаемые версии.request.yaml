@@ -9,18 +9,20 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "android",
-          "ios"
+          "ios",
         ],
         types: {
           "android": "string",
-          "ios": "string"
-        }
+          "ios": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Минимальные поддерживаемые версии.resources/examples

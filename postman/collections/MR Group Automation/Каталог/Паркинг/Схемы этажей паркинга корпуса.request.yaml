@@ -15,16 +15,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["parkingProjectCode", "parkingBuildingCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ ParkingPlanFloorsResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.floor",
@@ -49,12 +42,14 @@ scripts:
           "items.*.plan.object_types",
           "items.*.plan.price_table_variant",
           "items.*.plan.section_id",
-          "items.*.plan.svg_markup"
+          "items.*.plan.svg_markup",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.floor": "integer?",
           "items.*.objects": "array",
+          "items.*.objects.*": "object",
           "items.*.objects.*.crm_id": "string",
           "items.*.objects.*.parking_types": "array",
           "items.*.objects.*.parking_types.*": "string",
@@ -77,9 +72,18 @@ scripts:
           "items.*.plan.object_types.*": "string",
           "items.*.plan.price_table_variant": "string?",
           "items.*.plan.section_id": "integer?",
-          "items.*.plan.svg_markup": "string?"
-        }
+          "items.*.plan.svg_markup": "string?",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["parkingProjectCode", "parkingBuildingCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ParkingPlanFloorsResponse
     language: text/javascript
 settings: {}
 order: 4000

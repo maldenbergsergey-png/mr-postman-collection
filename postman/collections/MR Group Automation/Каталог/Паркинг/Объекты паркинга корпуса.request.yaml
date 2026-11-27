@@ -15,16 +15,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["parkingProjectCode", "parkingBuildingCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ ParkingObjectsResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "filters",
@@ -51,6 +44,13 @@ scripts:
           "items.*.code",
           "items.*.crm_id",
           "items.*.discount",
+          "items.*.discount.absolute_discount",
+          "items.*.discount.description",
+          "items.*.discount.is_stock",
+          "items.*.discount.meter_price",
+          "items.*.discount.percentage_discount",
+          "items.*.discount.price",
+          "items.*.discount.type",
           "items.*.floor",
           "items.*.id",
           "items.*.length",
@@ -58,41 +58,59 @@ scripts:
           "items.*.number_on_floor",
           "items.*.parking_types",
           "items.*.plan",
+          "items.*.plan.available",
+          "items.*.plan.background_image",
+          "items.*.plan.compass_angle",
+          "items.*.plan.floor",
+          "items.*.plan.id",
+          "items.*.plan.items_level",
+          "items.*.plan.level",
+          "items.*.plan.level_plan",
+          "items.*.plan.object_type",
+          "items.*.plan.object_types",
+          "items.*.plan.price_table_variant",
+          "items.*.plan.section_id",
+          "items.*.plan.svg_markup",
           "items.*.price",
           "items.*.price_disclaimer",
           "items.*.project",
           "items.*.project.brandbook",
           "items.*.project.business_unit",
           "items.*.project.code",
+          "items.*.project.description",
           "items.*.project.id",
           "items.*.project.image",
           "items.*.project.is_countryside",
           "items.*.project.is_premium",
           "items.*.project.is_private",
           "items.*.project.is_promoted",
+          "items.*.project.marketing_image",
           "items.*.project.metro_stations",
           "items.*.project.metro_stations.*.color",
           "items.*.project.metro_stations.*.distance",
           "items.*.project.metro_stations.*.id",
           "items.*.project.metro_stations.*.line",
           "items.*.project.metro_stations.*.movement_way",
+          "items.*.project.metro_stations.*.movement_way.icon",
+          "items.*.project.metro_stations.*.movement_way.name",
           "items.*.project.metro_stations.*.name",
           "items.*.project.name",
+          "items.*.project.office_class.code",
           "items.*.project.title",
-          "items.*.project.description",
-          "items.*.project.marketing_image",
           "items.*.status",
           "items.*.status.code",
           "items.*.status.name",
           "items.*.stop_sales",
           "items.*.subtype",
+          "items.*.subtype.code",
+          "items.*.subtype.name",
           "items.*.width",
           "limit",
           "page",
           "page_count",
           "sort",
           "sort.code",
-          "sort.name"
+          "sort.name",
         ],
         types: {
           "count": "integer",
@@ -102,12 +120,15 @@ scripts:
           "filters.available_types": "array",
           "filters.available_types.*": "string",
           "filters.parking_types": "array",
+          "filters.parking_types.*": "object",
           "filters.parking_types.*.code": "string",
           "filters.parking_types.*.name": "string",
           "filters.sorts": "array",
+          "filters.sorts.*": "object",
           "filters.sorts.*.code": "string",
           "filters.sorts.*.name": "string",
           "items": "array",
+          "items.*": "object",
           "items.*.area": "number?",
           "items.*.booking_type": "string?",
           "items.*.building": "object",
@@ -157,13 +178,16 @@ scripts:
           "items.*.project.brandbook": "string",
           "items.*.project.business_unit": "string",
           "items.*.project.code": "string",
+          "items.*.project.description": "string?",
           "items.*.project.id": "integer",
           "items.*.project.image": "string?",
           "items.*.project.is_countryside": "boolean",
           "items.*.project.is_premium": "boolean",
           "items.*.project.is_private": "boolean",
           "items.*.project.is_promoted": "boolean",
+          "items.*.project.marketing_image": "string?",
           "items.*.project.metro_stations": "array",
+          "items.*.project.metro_stations.*": "object",
           "items.*.project.metro_stations.*.color": "string?",
           "items.*.project.metro_stations.*.distance": "integer?",
           "items.*.project.metro_stations.*.id": "integer",
@@ -172,13 +196,13 @@ scripts:
           "items.*.project.metro_stations.*.movement_way.icon": "string",
           "items.*.project.metro_stations.*.movement_way.name": "string",
           "items.*.project.metro_stations.*.name": "string",
+          "items.*.project.metro_stations.*.name_en": "string?",
           "items.*.project.name": "string",
+          "items.*.project.name_en": "string?",
           "items.*.project.office_class": "object?",
           "items.*.project.office_class.code": "string",
           "items.*.project.office_class.description": "string?",
           "items.*.project.title": "string?",
-          "items.*.project.description": "string?",
-          "items.*.project.marketing_image": "string?",
           "items.*.status": "object",
           "items.*.status.code": "string",
           "items.*.status.name": "string",
@@ -192,9 +216,18 @@ scripts:
           "page_count": "integer",
           "sort": "object",
           "sort.code": "string",
-          "sort.name": "string"
-        }
+          "sort.name": "string",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["parkingProjectCode", "parkingBuildingCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ParkingObjectsResponse
     language: text/javascript
 settings: {}
 order: 3000

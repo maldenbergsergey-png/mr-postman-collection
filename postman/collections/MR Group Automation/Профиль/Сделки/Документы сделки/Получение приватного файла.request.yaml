@@ -12,6 +12,7 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/octet-stream"]});
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
       const missingInputs__ = ["documentDeal"].filter((n) => !pm.variables.get(n));
       if (missingInputs__.length) {
@@ -19,7 +20,6 @@ scripts:
         pm.execution.skipRequest();
       }
 
-      pm.variables.set("responseKind", "application/octet-stream");
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение приватного файла.resources/examples

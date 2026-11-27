@@ -9,7 +9,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "array",
         required: [
           "*.email",
           "*.icon",
@@ -21,21 +23,23 @@ scripts:
           "*.persons.*.name",
           "*.persons.*.phone",
           "*.phone",
-          "*.responsibility"
+          "*.responsibility",
         ],
         types: {
+          "*": "object",
           "*.email": "string?",
           "*.icon": "string?",
           "*.id": "number",
           "*.name": "string",
           "*.notice": "string?",
           "*.persons": "array",
+          "*.persons.*": "object",
           "*.persons.*.id": "number",
           "*.persons.*.name": "string",
           "*.persons.*.phone": "string",
           "*.phone": "string?",
-          "*.responsibility": "string?"
-        }
+          "*.responsibility": "string?",
+        },
       });
     language: text/javascript
 settings: {}

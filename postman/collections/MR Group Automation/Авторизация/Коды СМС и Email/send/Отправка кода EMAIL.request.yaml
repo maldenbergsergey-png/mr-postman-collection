@@ -27,15 +27,17 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ SendCodeResponse
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
-          "refresh"
+          "refresh",
         ],
         types: {
-          "refresh": "string"
-        }
+          "refresh": "string",
+        },
       });
+      // КОНТРАКТ SendCodeResponse
     language: text/javascript
 settings: {}
 examples: ./.resources/Отправка кода EMAIL.resources/examples

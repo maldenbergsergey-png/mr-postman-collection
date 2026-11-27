@@ -14,15 +14,17 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "blocking_period",
-          "retry_after"
+          "retry_after",
         ],
         types: {
           "blocking_period": "integer",
-          "retry_after": "string"
-        }
+          "retry_after": "string",
+        },
       });
     language: text/javascript
 settings:

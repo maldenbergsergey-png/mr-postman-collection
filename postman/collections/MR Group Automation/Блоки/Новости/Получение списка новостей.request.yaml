@@ -46,9 +46,9 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
@@ -71,21 +71,26 @@ scripts:
           "items.*.project.*.metro_stations.*.id",
           "items.*.project.*.metro_stations.*.line",
           "items.*.project.*.metro_stations.*.movement_way",
+          "items.*.project.*.metro_stations.*.movement_way.icon",
+          "items.*.project.*.metro_stations.*.movement_way.name",
           "items.*.project.*.metro_stations.*.name",
           "items.*.project.*.name",
+          "items.*.project.*.office_class.code",
           "items.*.project.*.title",
           "items.*.teaser",
           "items.*.title",
           "page",
-          "page_count"
+          "page_count",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.code": "string",
           "items.*.date": "string",
           "items.*.image": "string",
           "items.*.project": "array",
+          "items.*.project.*": "object",
           "items.*.project.*.brandbook": "string",
           "items.*.project.*.business_unit": "string",
           "items.*.project.*.code": "string",
@@ -96,6 +101,7 @@ scripts:
           "items.*.project.*.is_private": "boolean",
           "items.*.project.*.is_promoted": "boolean",
           "items.*.project.*.metro_stations": "array",
+          "items.*.project.*.metro_stations.*": "object",
           "items.*.project.*.metro_stations.*.color": "string?",
           "items.*.project.*.metro_stations.*.distance": "integer?",
           "items.*.project.*.metro_stations.*.id": "integer",
@@ -104,7 +110,9 @@ scripts:
           "items.*.project.*.metro_stations.*.movement_way.icon": "string",
           "items.*.project.*.metro_stations.*.movement_way.name": "string",
           "items.*.project.*.metro_stations.*.name": "string",
+          "items.*.project.*.metro_stations.*.name_en": "string?",
           "items.*.project.*.name": "string",
+          "items.*.project.*.name_en": "string?",
           "items.*.project.*.office_class": "object?",
           "items.*.project.*.office_class.code": "string",
           "items.*.project.*.office_class.description": "string?",
@@ -112,9 +120,11 @@ scripts:
           "items.*.teaser": "string",
           "items.*.title": "string",
           "page": "integer",
-          "page_count": "integer"
-        }
+          "page_count": "integer",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
   - type: afterResponse
     code: |+

@@ -14,6 +14,7 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"204": []});
       const baseUrl = pm.environment.get("baseUrl");
       const token = pm.environment.get("bearerToken");
       const onlyCategoryCode = pm.environment.get("favCategoryCode") || ""; // необязательный фильтр
@@ -22,16 +23,14 @@ scripts:
       if (!token) throw new Error("bearerToken не задан");
 
       // Переопределяемые через окружение (строки с ';' как разделителем)
-      const batchResolversEnv = pm.environment.get("favBatchResolvers"); // напр.: `${baseUrl}/sale/products?{ids_query};${baseUrl}/realty/objects?{ids_query}`
-      const itemResolversEnv  = pm.environment.get("favItemResolvers");  // напр.: `${baseUrl}/sale/products/{id};${baseUrl}/realty/objects/{id}`
+      const batchResolversEnv = pm.environment.get("favBatchResolvers"); // напр.: `${baseUrl}/realty/objects?{ids_query}`
+      const itemResolversEnv  = pm.environment.get("favItemResolvers");  // напр.: `${baseUrl}/realty/objects/{id}`
 
       // Значения по умолчанию
       const defaultBatchResolvers = [
-        `${baseUrl}/sale/products?{ids_query}`,
         `${baseUrl}/realty/objects?{ids_query}`
       ];
       const defaultItemResolvers = [
-        `${baseUrl}/sale/products/{id}`,
         `${baseUrl}/realty/objects/{id}`
       ];
 

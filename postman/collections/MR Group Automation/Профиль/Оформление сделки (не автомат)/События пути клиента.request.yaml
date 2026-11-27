@@ -31,6 +31,7 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"202": []});
       // Входные данные приходят из предыдущих запросов или задаются вручную
       const required = ["dealApplicationId"];
       const absent = required.filter((n) => !pm.variables.get(n));
@@ -39,7 +40,6 @@ scripts:
         pm.execution.skipRequest();
       }
 
-      pm.variables.set("responseKind", "none");
     language: text/javascript
 settings: {}
 order: 8000

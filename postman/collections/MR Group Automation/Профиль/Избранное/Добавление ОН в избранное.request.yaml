@@ -18,6 +18,7 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"204": []});
       // Мини-Pre-request: выбрать ОН не из избранного и проставить переменные
       const baseUrl = pm.environment.get("baseUrl");
       const token   = pm.environment.get("bearerToken");
@@ -38,6 +39,7 @@ scripts:
         }, (e, r) => {
           if (e) return cb(e);
           if (r.code === 204) return cb(null, { data: null });
+          if (r.code !== 200) return cb(new Error("GET: HTTP " + r.code));
           const ct = (r.headers.get("Content-Type") || "").toLowerCase();
           if (ct.indexOf("application/json") === -1) return cb(new Error("Ожидался JSON"));
           try { cb(null, { data: r.json() }); }
@@ -46,7 +48,7 @@ scripts:
       }
 
       const favURL  = `${baseUrl}/user/favourites`;
-      const listURL = `${baseUrl}/sale/products?category=${encodeURIComponent(category)}&page=1&limit=50`;
+      const listURL = `${baseUrl}/realty/objects?category=${encodeURIComponent(category)}&page=1&limit=50`;
 
       getJson(favURL, (fe, fav) => {
         if (fe) { postman.setNextRequest(null); throw new Error("Не удалось получить избранное: " + fe.message); }

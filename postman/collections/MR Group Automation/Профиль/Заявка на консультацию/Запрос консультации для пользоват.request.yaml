@@ -49,13 +49,15 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
-          "id"
+          "id",
         ],
         types: {
-          "id": "string"
-        }
+          "id": "string",
+        },
       });
     language: text/javascript
   - type: beforeRequest

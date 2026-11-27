@@ -27,15 +27,17 @@ auth:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"201": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "data",
-          "data.id"
+          "data.id",
         ],
         types: {
           "data": "object",
-          "data.id": "string"
-        }
+          "data.id": "string",
+        },
       });
     language: text/javascript
 settings: {}

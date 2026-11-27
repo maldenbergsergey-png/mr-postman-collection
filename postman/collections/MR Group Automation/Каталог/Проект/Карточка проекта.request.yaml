@@ -1,5 +1,7 @@
 $kind: http-request
 description: |
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
   Получение данных проекта по коду проекта
 url: "{{baseUrl}}/sale/projects/{{projectCode}}"
 method: GET

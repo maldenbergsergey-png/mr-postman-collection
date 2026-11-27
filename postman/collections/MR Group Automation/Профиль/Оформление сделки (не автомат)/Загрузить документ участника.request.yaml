@@ -1,0 +1,114 @@
+$kind: http-request
+name: "Загрузить документ участника"
+description: |-
+  Multipart: файл в S3, OCR через интеграционный адаптер (до 3 retry на BE при 503/timeout).
+  Размер файла — не более 5 МБ, больший файл отклоняется с `413`. Допустимые форматы — JPEG,
+  PNG, PDF, HEIC и HEIF; остальные форматы, включая AVIF, отклоняются с `422`
+  `unsupported_file_format`. HEIC и HEIF сохраняются как есть, без конвертации и без миниатюры; HEIF хранится и отдаётся как HEIC (`image/heic`).
+  В ответе у документа есть `ocr_status`.
+  В одном запросе — только один файл: несколько полей-файлов или `file[]` массивом — `422`.
+  Известное ограничение: повтор одного имени поля `file` PHP схлопывает до контроллера,
+  остаётся последний файл, `422` не возвращается.
+  Из JPEG и PNG до сохранения удаляются метаданные (Exif, XMP, IPTC); JPEG с ориентацией в Exif
+  поворачивается физически. Метаданные удалить не удалось — `422` на поле `file`; битый или обрезанный JPEG и PNG — `422` `unsupported_file_format`.
+
+  Подсказка фронту: `<input type="file" accept="image/jpeg,image/png,image/heic,image/heif,application/pdf">`,
+  без `image/*`.
+
+  Загрузка в `marriage_contract` добавляет файл к уже загруженным, в остальные слоты —
+  заменяет все файлы этого типа. Повтор того же файла в `marriage_contract` (совпадает
+  sha256 содержимого) отвечает `200` с уже существующим документом и `duplicate: true`, новая запись не
+  создаётся; повтор проверяется раньше лимита. В слоте не больше 20 файлов (настраивается переменной
+  `DEAL_APPLICATION_MULTI_FILE_SLOT_LIMIT`).
+
+  У JPEG и PNG в слотах `passport_main`, `snils`, `inn` ширина и высота должны быть не
+  меньше 600 пикселей, иначе `422` `image_resolution_too_low`. PDF и другие слоты
+  разрешение не проверяют; HEIC в пикселях не проверяется.
+
+  Загрузка — только на шагах загрузки: на `passport_upload`, `snils_upload`, `inn_upload`,
+  `family_docs`, `marriage_contract` — в любой слот, видимый участнику; на
+  `registration_upload` — только `passport_registration`; на `ocr_review` (клиент вернулся
+  к документам со шага проверки данных) — в любой слот, видимый участнику; иначе `409`.
+  На шагах загрузки (`doc_upload`) `passport_registration` принимается при любом сохранённом
+  `no_registration_in_passport`: флаг меняет только `submit` экрана паспорта.
+  Загрузка шаг не меняет, следующий экран открывает `submit`. На любой из этих фаз загрузка
+  нового файла (не повтор уже загруженного) снимает отметку «проверка пройдена», если она
+  стоит: клиент подтверждает данные заново. Повтор файла отметку не снимает. У клиента типа `existing` с отметкой
+  отметка остаётся, дозагруженный документ не распознаётся (`ocr_status` — `not_required`). Результат распознавания нового документа при опросе
+  перезаписывает поля этого документа в данных участника, в том числе правленные клиентом;
+  не возвращённое поле не меняется. ИНН из результата заменяет введённый вручную, если
+  результат ИНН не содержит — введённый клиентом остаётся.
+
+  Нужны шаг загрузки, допустимое значение dealDocumentType и тестовый файл dealDocumentFile.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/participant/documents/upload"
+method: POST
+headers:
+  Accept: "application/json"
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+body:
+  type: formdata
+  content:
+    - key: document_type
+      value: "{{dealDocumentType}}"
+      type: text
+    - key: file
+      src: "{{dealDocumentFile}}"
+      type: file
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"], "201": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "document_id",
+          "document_type",
+          "duplicate",
+          "error_code",
+          "file_content_type",
+          "file_name",
+          "is_not_required",
+          "ocr_status",
+          "preview_url",
+          "recognition_attempt_count",
+          "recognition_blocks_progress",
+          "recognition_error_message",
+          "recognized_fields",
+          "updated_dt",
+          "upload_status",
+          "uploaded_by",
+          "uploaded_dt",
+        ],
+        types: {
+          "document_id": "string",
+          "document_type": "string",
+          "duplicate": "boolean",
+          "error_code": "string?",
+          "file_content_type": "string?",
+          "file_name": "string?",
+          "is_not_required": "boolean",
+          "ocr_status": "string",
+          "preview_url": "string?",
+          "recognition_attempt_count": "integer",
+          "recognition_blocks_progress": "boolean",
+          "recognition_error_message": "string?",
+          "recognized_fields": "object?",
+          "updated_dt": "string?",
+          "upload_status": "string",
+          "uploaded_by": "string",
+          "uploaded_dt": "string?",
+        },
+        openPaths: ["recognized_fields"],
+      });
+      const required = ["dealApplicationId", "dealDocumentType", "dealDocumentFile", "bearerToken"];
+      const missing = required.filter((key) => !pm.variables.get(key));
+      if (missing.length) {
+        console.warn("Нужны входные данные: " + missing.join(", "));
+        pm.execution.skipRequest();
+      }
+    language: text/javascript
+settings: {}
+order: 13000

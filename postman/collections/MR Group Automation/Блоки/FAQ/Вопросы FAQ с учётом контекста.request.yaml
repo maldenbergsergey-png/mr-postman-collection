@@ -23,8 +23,9 @@ body:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ FaqContextList
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
@@ -39,11 +40,12 @@ scripts:
           "items.*.type",
           "limit",
           "page",
-          "page_count"
+          "page_count",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.attributes": "object",
           "items.*.attributes.answer": "string",
           "items.*.attributes.category_code": "string",
@@ -55,9 +57,10 @@ scripts:
           "items.*.type": "string",
           "limit": "integer",
           "page": "integer",
-          "page_count": "integer"
-        }
+          "page_count": "integer",
+        },
       });
+      // КОНТРАКТ FaqContextList
     language: text/javascript
 settings: {}
 order: 4000

@@ -9,22 +9,25 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "categories",
           "categories.*.code",
           "categories.*.name",
-          "count"
+          "count",
         ],
         types: {
           "categories": "array",
+          "categories.*": "object",
           "categories.*.code": "string",
           "categories.*.name": "string",
-          "count": "integer"
-        }
+          "count": "integer",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
   - type: afterResponse
     code: |-

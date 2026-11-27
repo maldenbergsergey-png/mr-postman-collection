@@ -47,25 +47,31 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "categories",
           "categories.*.code",
-          "categories.*.name"
+          "categories.*.name",
+          "categories.*.subcategories.*.code",
+          "categories.*.subcategories.*.name",
         ],
         types: {
           "categories": "array",
+          "categories.*": "object",
           "categories.*.code": "string",
           "categories.*.image": "string",
           "categories.*.name": "string",
           "categories.*.subcategories": "array",
+          "categories.*.subcategories.*": "object",
           "categories.*.subcategories.*.code": "string",
           "categories.*.subcategories.*.image": "string",
-          "categories.*.subcategories.*.name": "string"
-        }
+          "categories.*.subcategories.*.name": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение категорий.resources/examples

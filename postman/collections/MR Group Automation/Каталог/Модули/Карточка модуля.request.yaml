@@ -9,6 +9,1005 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("contractJsonSchema", {
+        "$ref": "#/definitions/RealtyModule",
+        "definitions": {
+          "RealtyModule": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleBrief"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "additional_data",
+                  "additional_materials",
+                  "banner_image",
+                  "banner_image_mobile",
+                  "details",
+                  "details_title",
+                  "page_subtitle",
+                  "page_title",
+                  "show_details"
+                ],
+                "properties": {
+                  "additional_data": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "additional_materials": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/RealtyModuleAdditionalMaterial"
+                    }
+                  },
+                  "banner_image": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/Image"
+                      },
+                      {}
+                    ]
+                  },
+                  "banner_image_mobile": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/Image"
+                      },
+                      {}
+                    ]
+                  },
+                  "details": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/RealtyModuleFeature"
+                    }
+                  },
+                  "details_title": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "page_subtitle": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "page_title": {
+                    "type": "string"
+                  },
+                  "show_details": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyModuleBrief": {
+            "type": "object",
+            "required": [
+              "category",
+              "code",
+              "id",
+              "key_calc_params",
+              "key_param_variant",
+              "project",
+              "queues"
+            ],
+            "properties": {
+              "category": {
+                "$ref": "#/definitions/ObjectTypeBrief"
+              },
+              "code": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "key_calc_params": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/RealtyObjectKeyCalcParams"
+                  },
+                  {}
+                ]
+              },
+              "key_param_variant": {
+                "type": "string",
+                "enum": [
+                  "max_area",
+                  "max_discount",
+                  "min_area",
+                  "min_meter_price",
+                  "min_price",
+                  "not_display"
+                ]
+              },
+              "project": {
+                "$ref": "#/definitions/ProjectBrief"
+              },
+              "queues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/ConstructionQueue"
+                }
+              }
+            }
+          },
+          "ObjectTypeBrief": {
+            "type": "object",
+            "required": [
+              "code",
+              "name"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/definitions/RealtyObjectType"
+              },
+              "name": {
+                "$ref": "#/definitions/RealtyObjectTypeName"
+              }
+            }
+          },
+          "RealtyObjectType": {
+            "type": "string",
+            "enum": [
+              "boxrooms",
+              "commercials",
+              "flats",
+              "ihc",
+              "offices",
+              "parkings",
+              "townhouses"
+            ]
+          },
+          "RealtyObjectTypeName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "RealtyObjectKeyCalcParams": {
+            "type": "object",
+            "required": [
+              "max_area",
+              "max_discount",
+              "min_area",
+              "min_meter_price",
+              "min_price",
+              "objects_count"
+            ],
+            "properties": {
+              "max_area": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "max_discount": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_area": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_meter_price": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0.0
+              },
+              "min_price": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0.0
+              },
+              "objects_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              }
+            }
+          },
+          "ProjectBrief": {
+            "type": "object",
+            "required": [
+              "brandbook",
+              "business_unit",
+              "code",
+              "id",
+              "image",
+              "is_countryside",
+              "is_premium",
+              "is_private",
+              "is_promoted",
+              "metro_stations",
+              "name",
+              "title"
+            ],
+            "properties": {
+              "brandbook": {
+                "$ref": "#/definitions/ProjectBrandbook"
+              },
+              "business_unit": {
+                "$ref": "#/definitions/ProjectBusinessUnit"
+              },
+              "code": {
+                "$ref": "#/definitions/ProjectCode"
+              },
+              "id": {
+                "$ref": "#/definitions/ProjectId"
+              },
+              "image": {
+                "$ref": "#/definitions/ProjectImage"
+              },
+              "is_countryside": {
+                "$ref": "#/definitions/IsCountrysideProject"
+              },
+              "is_premium": {
+                "$ref": "#/definitions/IsPremiumProject"
+              },
+              "is_private": {
+                "$ref": "#/definitions/ProjectPrivate"
+              },
+              "is_promoted": {
+                "$ref": "#/definitions/ProjectIsPromoted"
+              },
+              "metro_stations": {
+                "$ref": "#/definitions/MetroStations"
+              },
+              "name": {
+                "$ref": "#/definitions/ProjectName"
+              },
+              "name_en": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "office_class": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/OfficeClass"
+                  },
+                  {}
+                ]
+              },
+              "title": {
+                "$ref": "#/definitions/ProjectTitle"
+              }
+            }
+          },
+          "ProjectBrandbook": {
+            "type": "string",
+            "enum": [
+              "mr_countryside",
+              "mr_group",
+              "mr_offices",
+              "mr_premium",
+              "mr_private",
+              "mr_retail"
+            ]
+          },
+          "ProjectBusinessUnit": {
+            "type": "string",
+            "enum": [
+              "commercials",
+              "flats",
+              "offices"
+            ]
+          },
+          "ProjectCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ProjectId": {
+            "type": "integer"
+          },
+          "ProjectImage": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "IsCountrysideProject": {
+            "type": "boolean"
+          },
+          "IsPremiumProject": {
+            "type": "boolean"
+          },
+          "ProjectPrivate": {
+            "type": "boolean"
+          },
+          "ProjectIsPromoted": {
+            "type": "boolean"
+          },
+          "MetroStations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/MetroStation"
+            }
+          },
+          "MetroStation": {
+            "type": "object",
+            "required": [
+              "color",
+              "distance",
+              "id",
+              "line",
+              "movement_way",
+              "name"
+            ],
+            "properties": {
+              "color": {
+                "$ref": "#/definitions/MetroColor"
+              },
+              "distance": {
+                "$ref": "#/definitions/MetroDistance"
+              },
+              "id": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "line": {
+                "$ref": "#/definitions/MetroLine"
+              },
+              "movement_way": {
+                "$ref": "#/definitions/MetroMovementWay"
+              },
+              "name": {
+                "$ref": "#/definitions/MetroName"
+              },
+              "name_en": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "MetroColor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "MetroDistance": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "MetroLine": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "MetroMovementWay": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "icon",
+              "name"
+            ],
+            "properties": {
+              "icon": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "MetroName": {
+            "type": "string"
+          },
+          "ProjectName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "OfficeClass": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "ProjectTitle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ConstructionQueue": {
+            "type": "object",
+            "required": [
+              "buildings",
+              "deadline",
+              "id",
+              "is_sales_stopped",
+              "marketing_deadline",
+              "marketing_name",
+              "name",
+              "number"
+            ],
+            "properties": {
+              "buildings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Building"
+                }
+              },
+              "deadline": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/Date"
+                  },
+                  {}
+                ]
+              },
+              "id": {
+                "type": "integer"
+              },
+              "is_sales_stopped": {
+                "type": "boolean"
+              },
+              "marketing_deadline": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "marketing_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "number": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          },
+          "Building": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "code",
+              "compass_angle",
+              "deadline",
+              "floors_number",
+              "id",
+              "name",
+              "readiness",
+              "scheme"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/definitions/BuildingCode"
+              },
+              "compass_angle": {
+                "$ref": "#/definitions/CompassAngle"
+              },
+              "deadline": {
+                "$ref": "#/definitions/BuildingDeadline"
+              },
+              "floors_number": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "id": {
+                "$ref": "#/definitions/BuildingId"
+              },
+              "name": {
+                "$ref": "#/definitions/BuildingName"
+              },
+              "readiness": {
+                "$ref": "#/definitions/BuildingReadiness"
+              },
+              "scheme": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "BuildingCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "CompassAngle": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": -359,
+            "maximum": 359
+          },
+          "BuildingDeadline": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "BuildingId": {
+            "type": "integer"
+          },
+          "BuildingName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "BuildingReadiness": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "Date": {
+            "type": "string"
+          },
+          "RealtyModuleAdditionalMaterial": {
+            "type": "object",
+            "required": [
+              "accent_name",
+              "content_type",
+              "download_file",
+              "link_3d",
+              "mobile_url",
+              "secondary_name",
+              "site_url",
+              "video"
+            ],
+            "properties": {
+              "accent_name": {
+                "type": "string"
+              },
+              "content_type": {
+                "type": "string",
+                "enum": [
+                  "3d_content",
+                  "file",
+                  "link",
+                  "video"
+                ]
+              },
+              "download_file": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/File"
+                  },
+                  {
+                    "type": [
+                      "object",
+                      "null"
+                    ]
+                  }
+                ]
+              },
+              "link_3d": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "mobile_url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "secondary_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "site_url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "video": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/Video"
+                  },
+                  {}
+                ]
+              }
+            }
+          },
+          "File": {
+            "type": "object",
+            "required": [
+              "src"
+            ],
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "src": {
+                "type": "string"
+              }
+            }
+          },
+          "Video": {
+            "type": "object",
+            "required": [
+              "duration",
+              "src"
+            ],
+            "properties": {
+              "duration": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "src": {
+                "type": "string"
+              }
+            }
+          },
+          "Image": {
+            "type": "object",
+            "required": [
+              "src"
+            ],
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "src": {
+                "type": "string"
+              }
+            }
+          },
+          "RealtyModuleFeature": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureBoolean"
+              },
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureDecoration"
+              },
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureMetro"
+              },
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureNumber"
+              },
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureObject"
+              },
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureString"
+              }
+            ]
+          },
+          "RealtyModuleFeatureBoolean": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  "value": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyModuleFeatureBase": {
+            "required": [
+              "additional_info",
+              "code",
+              "formatted_value",
+              "icon",
+              "name",
+              "show_in"
+            ],
+            "properties": {
+              "additional_info": {
+                "oneOf": [
+                  {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "code": {
+                "type": "string"
+              },
+              "formatted_value": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "icon": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/ImageLink"
+                  },
+                  {
+                    "type": [
+                      "object",
+                      "null"
+                    ]
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "show_in": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "details",
+                    "tags"
+                  ]
+                }
+              }
+            }
+          },
+          "ImageLink": {
+            "type": "string",
+            "minLength": 1
+          },
+          "RealtyModuleFeatureDecoration": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "decoration"
+                    ]
+                  },
+                  "value": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/DecorationTypeBrief"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "DecorationTypeBrief": {
+            "type": "object",
+            "required": [
+              "description",
+              "disclaimer",
+              "id",
+              "name"
+            ],
+            "properties": {
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "disclaimer": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "RealtyModuleFeatureMetro": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "metro"
+                    ]
+                  },
+                  "value": {
+                    "$ref": "#/definitions/MetroStations"
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyModuleFeatureNumber": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "number"
+                    ]
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyModuleFeatureObject": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "object"
+                    ]
+                  },
+                  "value": {
+                    "type": "object",
+                    "properties": {
+                      "max": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "min": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "RealtyModuleFeatureString": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/RealtyModuleFeatureBase"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      });
       // Входные данные приходят из предыдущих запросов или задаются вручную
       const required = ["moduleCode"];
       const absent = required.filter((n) => !pm.variables.get(n));
@@ -18,162 +1017,6 @@ scripts:
       }
 
       // КОНТРАКТ RealtyModule
-      pm.variables.set("schema", {
-        required: [
-          "category",
-          "category.code",
-          "category.name",
-          "code",
-          "id",
-          "key_calc_params",
-          "key_param_variant",
-          "project",
-          "project.brandbook",
-          "project.business_unit",
-          "project.code",
-          "project.id",
-          "project.image",
-          "project.is_countryside",
-          "project.is_premium",
-          "project.is_private",
-          "project.is_promoted",
-          "project.metro_stations",
-          "project.metro_stations.*.color",
-          "project.metro_stations.*.distance",
-          "project.metro_stations.*.id",
-          "project.metro_stations.*.line",
-          "project.metro_stations.*.movement_way",
-          "project.metro_stations.*.name",
-          "project.name",
-          "project.title",
-          "queues",
-          "queues.*.buildings",
-          "queues.*.deadline",
-          "queues.*.id",
-          "queues.*.is_sales_stopped",
-          "queues.*.marketing_deadline",
-          "queues.*.marketing_name",
-          "queues.*.name",
-          "queues.*.number",
-          "additional_data",
-          "additional_materials",
-          "additional_materials.*.accent_name",
-          "additional_materials.*.content_type",
-          "additional_materials.*.download_file",
-          "additional_materials.*.link_3d",
-          "additional_materials.*.mobile_url",
-          "additional_materials.*.secondary_name",
-          "additional_materials.*.site_url",
-          "additional_materials.*.video",
-          "banner_image",
-          "banner_image_mobile",
-          "details",
-          "details.*.additional_info",
-          "details.*.code",
-          "details.*.formatted_value",
-          "details.*.icon",
-          "details.*.name",
-          "details.*.show_in",
-          "details.*.type",
-          "details.*.value",
-          "details_title",
-          "page_subtitle",
-          "page_title",
-          "show_details"
-        ],
-        types: {
-          "category": "object",
-          "category.code": "string",
-          "category.name": "string",
-          "code": "string",
-          "id": "integer",
-          "key_calc_params": "object?",
-          "key_calc_params.max_area": "number?",
-          "key_calc_params.max_discount": "number?",
-          "key_calc_params.min_area": "number?",
-          "key_calc_params.min_meter_price": "number?",
-          "key_calc_params.min_price": "number?",
-          "key_calc_params.objects_count": "integer",
-          "key_param_variant": "string",
-          "project": "object",
-          "project.brandbook": "string",
-          "project.business_unit": "string",
-          "project.code": "string",
-          "project.id": "integer",
-          "project.image": "string?",
-          "project.is_countryside": "boolean",
-          "project.is_premium": "boolean",
-          "project.is_private": "boolean",
-          "project.is_promoted": "boolean",
-          "project.metro_stations": "array",
-          "project.metro_stations.*.color": "string?",
-          "project.metro_stations.*.distance": "integer?",
-          "project.metro_stations.*.id": "integer",
-          "project.metro_stations.*.line": "string?",
-          "project.metro_stations.*.movement_way": "object?",
-          "project.metro_stations.*.movement_way.icon": "string",
-          "project.metro_stations.*.movement_way.name": "string",
-          "project.metro_stations.*.name": "string",
-          "project.name": "string",
-          "project.office_class": "object?",
-          "project.office_class.code": "string",
-          "project.office_class.description": "string?",
-          "project.title": "string?",
-          "queues": "array",
-          "queues.*.buildings": "array",
-          "queues.*.buildings.*": "object?",
-          "queues.*.buildings.*.code": "string",
-          "queues.*.buildings.*.compass_angle": "number?",
-          "queues.*.buildings.*.deadline": "string?",
-          "queues.*.buildings.*.floors_number": "integer?",
-          "queues.*.buildings.*.id": "integer",
-          "queues.*.buildings.*.name": "string?",
-          "queues.*.buildings.*.readiness": "integer?",
-          "queues.*.buildings.*.scheme": "string?",
-          "queues.*.deadline": "string?",
-          "queues.*.id": "integer",
-          "queues.*.is_sales_stopped": "boolean",
-          "queues.*.marketing_deadline": "string?",
-          "queues.*.marketing_name": "string?",
-          "queues.*.name": "string?",
-          "queues.*.number": "integer?",
-          "additional_data": "string?",
-          "additional_materials": "array",
-          "additional_materials.*.accent_name": "string",
-          "additional_materials.*.content_type": "string",
-          "additional_materials.*.download_file": "object?",
-          "additional_materials.*.download_file.description": "string",
-          "additional_materials.*.download_file.src": "string",
-          "additional_materials.*.link_3d": "string?",
-          "additional_materials.*.mobile_url": "string?",
-          "additional_materials.*.secondary_name": "string?",
-          "additional_materials.*.site_url": "string?",
-          "additional_materials.*.video": "object?",
-          "additional_materials.*.video.duration": "integer?",
-          "additional_materials.*.video.src": "string",
-          "banner_image": "object?",
-          "banner_image.description": "string",
-          "banner_image.src": "string",
-          "banner_image_mobile": "object?",
-          "banner_image_mobile.description": "string",
-          "banner_image_mobile.src": "string",
-          "details": "array",
-          "details.*.additional_info": "array|string",
-          "details.*.code": "string",
-          "details.*.formatted_value": "string?",
-          "details.*.icon": "object?",
-          "details.*.icon.*": "any",
-          "details.*.name": "string",
-          "details.*.show_in": "array",
-          "details.*.show_in.*": "string",
-          "details.*.type": "string",
-          "details.*.value": "string",
-          "details_title": "string?",
-          "page_subtitle": "string?",
-          "page_title": "string",
-          "show_details": "boolean"
-        }
-      });
     language: text/javascript
 settings: {}
 order: 2000

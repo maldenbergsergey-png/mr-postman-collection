@@ -9,6 +9,20 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "description",
+          "short_description",
+          "title",
+        ],
+        types: {
+          "description": "string?",
+          "short_description": "string?",
+          "title": "string?",
+        },
+      });
       // Входные данные приходят из предыдущих запросов или задаются вручную
       const required = ["product_code"];
       const absent = required.filter((n) => !pm.variables.get(n));
@@ -18,18 +32,6 @@ scripts:
       }
 
       // КОНТРАКТ SeoText
-      pm.variables.set("schema", {
-        required: [
-          "description",
-          "short_description",
-          "title"
-        ],
-        types: {
-          "description": "string?",
-          "short_description": "string?",
-          "title": "string?"
-        }
-      });
     language: text/javascript
 settings: {}
 order: 12000

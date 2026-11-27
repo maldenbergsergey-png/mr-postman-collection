@@ -7,20 +7,23 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
-          "items"
+          "items",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
+          "items.*.image": "string?",
+          "items.*.job_title": "string?",
           "items.*.name": "string?",
           "items.*.surname": "string?",
-          "items.*.job_title": "string?",
-          "items.*.image": "string?"
-        }
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Команда.resources/examples

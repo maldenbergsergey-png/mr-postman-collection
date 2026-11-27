@@ -149,93 +149,530 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
-      pm.variables.set("schema", {
-        required: [
-          "categories",
-          "categories.*.additional_info",
-          "categories.*.available",
-          "categories.*.checked",
-          "categories.*.classes",
-          "categories.*.classes.*.available",
-          "categories.*.classes.*.checked",
-          "categories.*.classes.*.min_price",
-          "categories.*.classes.*.name",
-          "categories.*.classes.*.value",
-          "categories.*.min_price",
-          "categories.*.name",
-          "categories.*.value",
-          "count",
-          "filters",
-          "filters.*.code",
-          "filters.*.name",
-          "filters.*.type",
-          "projects_count",
-          "sorts",
-          "sorts.*.code",
-          "sorts.*.name",
-          "typical_objects_count"
-        ],
-        types: {
-          "categories": "array",
-          "categories.*.additional_info": "string?",
-          "categories.*.available": "boolean",
-          "categories.*.checked": "boolean",
-          "categories.*.classes": "array",
-          "categories.*.classes.*.available": "boolean",
-          "categories.*.classes.*.checked": "boolean",
-          "categories.*.classes.*.min_price": "number?",
-          "categories.*.classes.*.name": "string",
-          "categories.*.classes.*.value": "string",
-          "categories.*.min_price": "number?",
-          "categories.*.name": "string",
-          "categories.*.value": "string",
-          "count": "integer",
-          "filters": "array",
-          "filters.*.available": "boolean",
-          "filters.*.checked": "boolean",
-          "filters.*.code": "string",
-          "filters.*.name": "string",
-          "filters.*.type": "string",
-          "filters.*.global_range": "object",
-          "filters.*.global_range.max": "number",
-          "filters.*.global_range.min": "number",
-          "filters.*.presets": "array",
-          "filters.*.presets.*.from": "number?",
-          "filters.*.presets.*.to": "number?",
-          "filters.*.range": "object",
-          "filters.*.range.max": "number",
-          "filters.*.range.min": "number",
-          "filters.*.values": "array",
-          "filters.*.values.*.additional_info": "object?",
-          "filters.*.values.*.additional_info.class": "string?",
-          "filters.*.values.*.additional_info.image": "string?",
-          "filters.*.values.*.additional_info.metro_color": "string?",
-          "filters.*.values.*.additional_info.metro_distance": "integer?",
-          "filters.*.values.*.additional_info.metro_line": "string?",
-          "filters.*.values.*.additional_info.metro_name": "string?",
-          "filters.*.values.*.additional_info.min_price": "number?",
-          "filters.*.values.*.additional_info.movement_way": "string?",
-          "filters.*.values.*.additional_info.project_id": "integer?",
-          "filters.*.values.*.additional_info.show_buildings": "boolean",
-          "filters.*.values.*.additional_info.project_name": "string?",
-          "filters.*.values.*.additional_info.quarter": "integer?",
-          "filters.*.values.*.additional_info.released": "boolean?",
-          "filters.*.values.*.additional_info.year": "string?",
-          "filters.*.values.*.additional_info.area_id": "integer?",
-          "filters.*.values.*.additional_info.area_name": "string?",
-          "filters.*.values.*.available": "boolean",
-          "filters.*.values.*.checked": "boolean",
-          "filters.*.values.*.name": "string",
-          "filters.*.values.*.value": "integer|string",
-          "projects_count": "integer",
-          "sorts": "array",
-          "sorts.*.code": "string",
-          "sorts.*.name": "string",
-          "typical_objects_count": "integer"
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("contractJsonSchema", {
+        "$ref": "#/definitions/RealtyFilterResponse",
+        "definitions": {
+          "RealtyFilterResponse": {
+            "type": "object",
+            "required": [
+              "categories",
+              "count",
+              "filters",
+              "projects_count",
+              "sorts",
+              "typical_objects_count"
+            ],
+            "properties": {
+              "categories": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/RealtyCategory"
+                }
+              },
+              "count": {
+                "$ref": "#/definitions/Count"
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/BooleanFilter"
+                    },
+                    {
+                      "$ref": "#/definitions/RealtyRangeFilter"
+                    },
+                    {
+                      "$ref": "#/definitions/RealtySelectFilter"
+                    }
+                  ]
+                }
+              },
+              "projects_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "sorts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Sort"
+                }
+              },
+              "typical_objects_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              }
+            }
+          },
+          "RealtyCategory": {
+            "type": "object",
+            "required": [
+              "additional_info",
+              "available",
+              "checked",
+              "classes",
+              "min_price",
+              "name",
+              "value"
+            ],
+            "properties": {
+              "additional_info": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "available": {
+                "type": "boolean"
+              },
+              "checked": {
+                "type": "boolean"
+              },
+              "classes": {
+                "$ref": "#/definitions/RealtyClassList"
+              },
+              "min_price": {
+                "$ref": "#/definitions/MinPriceNullable"
+              },
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "$ref": "#/definitions/RealtyObjectType"
+              }
+            }
+          },
+          "RealtyClassList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/RealtyClass"
+            }
+          },
+          "RealtyClass": {
+            "type": "object",
+            "required": [
+              "available",
+              "checked",
+              "min_price",
+              "name",
+              "value"
+            ],
+            "properties": {
+              "available": {
+                "type": "boolean"
+              },
+              "checked": {
+                "type": "boolean"
+              },
+              "min_price": {
+                "$ref": "#/definitions/MinPriceNullable"
+              },
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "$ref": "#/definitions/RealtyClassCode"
+              }
+            }
+          },
+          "MinPriceNullable": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "RealtyClassCode": {
+            "type": "string",
+            "enum": [
+              "mr_group",
+              "mr_premium",
+              "mr_private"
+            ]
+          },
+          "RealtyObjectType": {
+            "type": "string",
+            "enum": [
+              "boxrooms",
+              "commercials",
+              "flats",
+              "ihc",
+              "offices",
+              "parkings",
+              "townhouses"
+            ]
+          },
+          "Count": {
+            "type": "integer"
+          },
+          "BooleanFilter": {
+            "type": "object",
+            "required": [
+              "available",
+              "checked",
+              "code",
+              "name",
+              "type"
+            ],
+            "properties": {
+              "available": {
+                "type": "boolean"
+              },
+              "checked": {
+                "type": "boolean"
+              },
+              "code": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "boolean"
+                ]
+              }
+            }
+          },
+          "RealtyRangeFilter": {
+            "type": "object",
+            "required": [
+              "code",
+              "global_range",
+              "name",
+              "presets",
+              "range",
+              "type"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "global_range": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/RangeBounds"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "presets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "from",
+                    "to"
+                  ],
+                  "properties": {
+                    "from": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "to": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              "range": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/RangeBounds"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "range"
+                ]
+              }
+            }
+          },
+          "RangeBounds": {
+            "type": "object",
+            "required": [
+              "max",
+              "min"
+            ],
+            "properties": {
+              "max": {
+                "type": "number"
+              },
+              "min": {
+                "type": "number"
+              }
+            }
+          },
+          "RealtySelectFilter": {
+            "type": "object",
+            "required": [
+              "code",
+              "name",
+              "type",
+              "values"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "select"
+                ]
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/RealtyFilterValue"
+                }
+              }
+            }
+          },
+          "RealtyFilterValue": {
+            "type": "object",
+            "required": [
+              "additional_info",
+              "available",
+              "checked",
+              "name",
+              "value"
+            ],
+            "properties": {
+              "additional_info": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/RealtyFilterAdditionalInfoProject"
+                  },
+                  {
+                    "$ref": "#/definitions/RealtyFilterAdditionalInfoBuilding"
+                  },
+                  {
+                    "$ref": "#/definitions/RealtyFilterAdditionalInfoPlace"
+                  }
+                ]
+              },
+              "available": {
+                "type": "boolean"
+              },
+              "checked": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              }
+            }
+          },
+          "RealtyFilterAdditionalInfoProject": {
+            "type": "object",
+            "required": [
+              "class",
+              "image",
+              "metro_color",
+              "metro_distance",
+              "metro_line",
+              "metro_name",
+              "min_price",
+              "movement_way",
+              "project_id",
+              "show_buildings"
+            ],
+            "properties": {
+              "class": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/RealtyClassCode"
+                  }
+                ]
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "metro_color": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "metro_distance": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "metro_line": {
+                "$ref": "#/definitions/MetroLine"
+              },
+              "metro_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "min_price": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "movement_way": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "project_id": {
+                "type": "integer"
+              },
+              "show_buildings": {
+                "type": "boolean"
+              }
+            }
+          },
+          "MetroLine": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "RealtyFilterAdditionalInfoBuilding": {
+            "type": "object",
+            "required": [
+              "project_id",
+              "project_name",
+              "quarter",
+              "released",
+              "year"
+            ],
+            "properties": {
+              "project_id": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "project_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "quarter": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "released": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "year": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "RealtyFilterAdditionalInfoPlace": {
+            "type": "object",
+            "required": [
+              "area_id",
+              "area_name",
+              "metro_color",
+              "metro_distance",
+              "metro_line",
+              "movement_way"
+            ],
+            "properties": {
+              "area_id": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "area_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "metro_color": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "metro_distance": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "metro_line": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "movement_way": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "Sort": {
+            "type": "object",
+            "required": [
+              "code",
+              "name"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
         }
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Фильтры ОН (новый метод).resources/examples

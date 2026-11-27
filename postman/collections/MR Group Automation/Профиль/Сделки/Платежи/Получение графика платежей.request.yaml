@@ -12,6 +12,29 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "payments",
+          "payments.*.debt",
+          "payments.*.expiration_dt",
+          "payments.*.number",
+          "payments.*.payment",
+          "show_in",
+          "show_in.purchase_card",
+        ],
+        types: {
+          "payments": "array",
+          "payments.*": "object",
+          "payments.*.debt": "number",
+          "payments.*.expiration_dt": "string",
+          "payments.*.number": "integer",
+          "payments.*.payment": "number",
+          "show_in": "object",
+          "show_in.purchase_card": "boolean",
+        },
+      });
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
       const missingInputs__ = ["idDeal"].filter((n) => !pm.variables.get(n));
       if (missingInputs__.length) {
@@ -21,26 +44,6 @@ scripts:
 
       // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-          "payments",
-          "payments.*.debt",
-          "payments.*.expiration_dt",
-          "payments.*.number",
-          "payments.*.payment",
-          "show_in",
-          "show_in.purchase_card"
-        ],
-        types: {
-          "payments": "array",
-          "payments.*.debt": "number",
-          "payments.*.expiration_dt": "string",
-          "payments.*.number": "integer",
-          "payments.*.payment": "number",
-          "show_in": "object",
-          "show_in.purchase_card": "boolean"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение графика платежей.resources/examples

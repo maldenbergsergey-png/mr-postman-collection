@@ -7,9 +7,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "array",
         required: [
           "*.id",
           "*.items",
@@ -33,11 +33,13 @@ scripts:
           "*.items.*.pins.*.y",
           "*.items.*.type",
           "*.items.*.video_link",
-          "*.name"
+          "*.name",
         ],
         types: {
+          "*": "object",
           "*.id": "integer",
           "*.items": "array",
+          "*.items.*": "object",
           "*.items.*.description": "string?",
           "*.items.*.hide_description": "boolean",
           "*.items.*.id": "integer",
@@ -52,15 +54,18 @@ scripts:
           "*.items.*.link_3d": "string?",
           "*.items.*.name": "string?",
           "*.items.*.pins": "array",
+          "*.items.*.pins.*": "object",
           "*.items.*.pins.*.description": "string?",
           "*.items.*.pins.*.id": "integer",
           "*.items.*.pins.*.x": "number",
           "*.items.*.pins.*.y": "number",
           "*.items.*.type": "string",
           "*.items.*.video_link": "string?",
-          "*.name": "string"
-        }
+          "*.name": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Галерея.resources/examples

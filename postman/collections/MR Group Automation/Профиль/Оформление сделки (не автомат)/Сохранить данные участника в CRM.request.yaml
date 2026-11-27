@@ -1,0 +1,257 @@
+$kind: http-request
+name: "Сохранить данные участника в CRM"
+description: |-
+  Единая ручка записи этапа 2. В ответе — состояние этапа после пересчёта: фаза может не
+  смениться, а экран смениться (например, появился новый обязательный слот).
+
+  `step` в теле — шаг экрана, с которого клиент нажал «Далее»; фронт берёт его из ответа
+  сервера или из экрана, на который клиент вернулся кнопкой «Назад». Шаг в ответе меняется
+  только здесь: загрузка, удаление и распознавание документа его не двигают. Переход с
+  `intro` — через `POST /deal-application/{id}/completed-steps`.
+
+  Маршрут: `contact_form` → `passport_upload` → `snils_upload` → `inn_upload` →
+  `family_docs` (если `is_married`) → `marriage_contract` (если `is_married` и
+  `has_marriage_contract`) → `ocr_review`. Новый клиент проходит все экраны маршрута.
+  Существующий клиент после `contact_form` сразу попадает на `ocr_review`, экраны загрузки
+  пропускаются. Если на `ocr_review` не хватает документов (регистрация, СНИЛС, ИНН,
+  свидетельство о браке — по условиям анкеты; брачный договор — только если файлы
+  загружены, но ещё не доставлены в CRM), `submit` ведёт на первый
+  экран с недостающим документом, а после закрытия каждого экрана — на следующий такой
+  экран. После закрытия последнего экрана клиент снова попадает на `ocr_review`: загрузка и
+  удаление документа снимают отметку «проверка пройдена», данные подтверждаются заново, и только
+  после этого `prepare_dp` (подготовка договора). Шаг загрузки, которого нет в маршруте участника, не применим. `registration_upload` — вне
+  маршрута (см. `DealParticipantsStep`), принимается как текущий шаг; повтор из `ocr_review`
+  отвечает `200` без изменений, если экран закрыт, иначе `422`.
+
+  Ранг шага — его место в маршруте. `step` раньше текущего шага — повтор пройденного
+  экрана: данные сохраняются, а сохранённый шаг участника (его выдаёт `GET`) не двигается.
+
+  `step` в ответе зависит от того, прошёл ли клиент `ocr_review`:
+  - не прошёл — следующий применимый экран маршрута от экрана запроса, в том числе на повторе
+    после «Назад»: `contact_form` → `passport_upload` (существующий клиент — `ocr_review`),
+    экран загрузки → следующий экран маршрута, последний экран → `ocr_review`,
+    `registration_upload` → `ocr_review`. Когда экран запроса совпадает с текущим шагом,
+    ответ тот же, что и раньше: шаг продвигается вперёд. При текущем `registration_upload`
+    правила те же, но вместо `ocr_review` ответ остаётся `registration_upload`;
+  - прошёл (дозагрузка существующим клиентом) — первый экран с незакрытыми документами, а если
+    все закрыты — `prepare_dp`.
+
+  `progress` в ответе считается от `step` ответа. Экран, который не закрыт (нет обязательного
+  документа), отвечает `422`, в том числе на повторе.
+
+
+  Экран загрузки закрыт, когда:
+  - `passport_upload` — `passport_main` готов; `passport_registration` загружен или
+    `no_registration_in_passport` = true;
+  - `snils_upload` — `snils` готов; ручного ввода номера на экране нет;
+  - `inn_upload` — `inn` готов или `inn_state.is_slot_required` = false; ручного ввода
+    номера на экране нет;
+  - `family_docs` — загружен `marriage_cert`;
+  - `marriage_contract` — договор обязателен (экран есть при `has_marriage_contract` = true):
+    закрыт, когда все загруженные файлы `marriage_contract` переданы в CRM (если CRM
+    откажется принять один из файлов — уточняется у аналитика);
+  - `registration_upload` — загружен `passport_registration`.
+
+  Документ с OCR (`passport_main`, `snils`, `inn`) готов, когда распознавание завершено без
+  блокирующей ошибки или при `ocr_status = processing` передан `force`.
+
+  | `step` в теле | Фаза | Результат |
+  |---|---|---|
+  | любой | `prepare_dp` | `409`, блок со `step = prepare_dp` |
+  | любой | `not_started` | `409`, вводный экран закрывается через `completed-steps` |
+  | `intro`, `not_started`, `prepare_dp`, `change_requested` | любая | `400` |
+  | позже текущего шага по маршруту (кроме `ocr_review` после пройденной проверки) или не из маршрута участника | любая | `409`, блок с текущим шагом |
+  | `ocr_review` | шаг загрузки (`passport_upload`, `snils_upload`, `inn_upload`, `family_docs`, `marriage_contract`) или `registration_upload`, участник уже прошёл проверку | `200` без изменений: клиент возвращается на проверку, данные не пишутся, распознавание и CRM не затрагиваются, шаг и экран прежние |
+  | `ocr_review` | шаг загрузки или `registration_upload`, проверка ещё не пройдена (новый клиент) | `409`, блок с текущим шагом |
+  | `passport_upload`, `contact_form` | `registration_upload` | `200`, повтор: данные сохранены, шаг прежний |
+  | любой | запрос на изменение подан (`change_requested`) | `422`, оформление заблокировано запросом на изменение |
+  | `contact_form` | `contact_form` | `200`: новый клиент — `passport_upload`; существующий — `ocr_review` |
+  | `contact_form` | шаг загрузки, `registration_upload`, `ocr_review` | `200`: данные сохранены. Сохранённый шаг прежний; если он выпал из маршрута (сняты `is_married` или `has_marriage_contract`) — следующий шаг маршрута; если правка добавила экран с незакрытыми документами раньше сохранённого шага — этот экран. `step` в ответе: новый клиент — `passport_upload`, существующий клиент — `ocr_review` (при текущем `registration_upload` — `registration_upload`) |
+  | шаг загрузки | тот же шаг | `200`: экран закрыт — следующий шаг маршрута, а после последнего экрана у существующего клиента — `ocr_review` (отметка «проверка пройдена» снята загрузкой); не закрыт — `422` (в том числе с `document_id`) |
+  | `registration_upload` | `registration_upload` | `200`: экран закрыт — `ocr_review`, а если отметка «проверка пройдена» стоит (документы после неё не менялись) — `prepare_dp`; не закрыт — `422` (в том числе с `document_id`) |
+  | шаг загрузки, `registration_upload` | тот же шаг, с `document_id` | `404` — документ не этого участника; `422` `unprocessable_entity` — документ не загружен, неверный тип или плохое качество; `422` `recognition_not_finished` — OCR не завершён и нет `force`, либо документ ещё отправляется (даже с `force`); `503` — CRM недоступна при отправке документа |
+  | шаг загрузки | шаг позже по маршруту, `ocr_review` | `200`, повтор: данные экрана сохранены, сохранённый шаг прежний, `step` в ответе — следующий применимый экран маршрута от экрана запроса (последний экран — `ocr_review`); не закрыт — `422` (в том числе с `document_id`) |
+  | `ocr_review` | `ocr_review`, нужные документы есть | `200`, `step = prepare_dp`, договор готовится асинхронно |
+  | `ocr_review` | `ocr_review`, не хватает документов | `200`, возврат на первый экран маршрута с незакрытыми документами или на `registration_upload`, договор не готовится до закрытия последнего экрана |
+  | `ocr_review` | `ocr_review` после замены документа (отметка «проверка пройдена» снята), все обязательные документы готовы | `200`, `step = prepare_dp`: данные уходят в CRM полным набором, неотправленные резервные файлы (например, `marriage_contract`) — только новые |
+  | `ocr_review` | `ocr_review`, нет действующего подписанного ДБ | `422` `booking_contract_not_signed`, фаза прежняя |
+  | `ocr_review` | `ocr_review`, у клиента или заявки нет CRM-идентификаторов | `422` `client_not_in_crm`, фаза прежняя |
+  | `ocr_review` | `ocr_review`, бизнес-отказ CRM при подготовке договора (все номера, кроме №8, включая №15 «по ОН уже запущен процесс продажи») | `200`, `step = prepare_dp`, повторного запуска нет, договор придёт из CRM |
+  | `ocr_review` | `ocr_review`, CRM недоступна, либо `UserChanged` с данными анкеты не поставлен в очередь (в том числе клиент не найден) | `503`, фаза прежняя, повтор доступен |
+
+  Ошибки валидации данных шага (формат, обязательные поля анкеты и проверки) — `422` `unprocessable_entity`, по ошибке на поле в виде
+  `поле: причина`, изменений нет. Тело не JSON-объект, поле неверного типа или формата
+  (дата не `Y-m-d`, `document_id` не UUID, `force` не булево, адрес без `full_text`) — `400`.
+
+  Нужен JSON dealParticipantPayload со step и данными для текущего экрана, а также подготовленная тестовая заявка.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/participant/submit"
+method: POST
+headers:
+  Accept: "application/json"
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+body:
+  type: json
+  content: |-
+    {{dealParticipantPayload}}
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "client_type",
+          "documents",
+          "documents.*.document_id",
+          "documents.*.document_type",
+          "documents.*.error_code",
+          "documents.*.file_content_type",
+          "documents.*.file_name",
+          "documents.*.is_not_required",
+          "documents.*.ocr_status",
+          "documents.*.preview_url",
+          "documents.*.recognition_attempt_count",
+          "documents.*.recognition_blocks_progress",
+          "documents.*.recognition_error_message",
+          "documents.*.recognized_fields",
+          "documents.*.updated_dt",
+          "documents.*.upload_status",
+          "documents.*.uploaded_by",
+          "documents.*.uploaded_dt",
+          "form_preferences.requires_notarial_consent",
+          "inn_state",
+          "inn_state.inn",
+          "inn_state.is_slot_required",
+          "inn_state.message",
+          "inn_state.source",
+          "ocr_warnings",
+          "ocr_warnings.*.field",
+          "ocr_warnings.*.message",
+          "participant",
+          "progress",
+          "progress.stage",
+          "progress.stage_total",
+          "progress.step",
+          "progress.step_total",
+          "recognition_mode",
+          "stage",
+          "step",
+          "user_data",
+          "user_data.birth_date",
+          "user_data.birth_place",
+          "user_data.correspondence_address",
+          "user_data.correspondence_address.full_text",
+          "user_data.division_code",
+          "user_data.inn",
+          "user_data.is_prefilled",
+          "user_data.passport_issued_at",
+          "user_data.passport_issued_by",
+          "user_data.registration_address.full_text",
+          "user_data.snils",
+          "user_data.updated_dt",
+        ],
+        types: {
+          "client_type": "string",
+          "documents": "array",
+          "documents.*": "object",
+          "documents.*.document_id": "string",
+          "documents.*.document_type": "string",
+          "documents.*.error_code": "string?",
+          "documents.*.file_content_type": "string?",
+          "documents.*.file_name": "string?",
+          "documents.*.is_not_required": "boolean",
+          "documents.*.ocr_status": "string",
+          "documents.*.preview_url": "string?",
+          "documents.*.recognition_attempt_count": "integer",
+          "documents.*.recognition_blocks_progress": "boolean",
+          "documents.*.recognition_error_message": "string?",
+          "documents.*.recognized_fields": "object?",
+          "documents.*.updated_dt": "string?",
+          "documents.*.upload_status": "string",
+          "documents.*.uploaded_by": "string",
+          "documents.*.uploaded_dt": "string?",
+          "form_preferences": "object",
+          "form_preferences.address_match": "boolean",
+          "form_preferences.has_marriage_contract": "boolean",
+          "form_preferences.is_married": "boolean",
+          "form_preferences.no_registration_in_passport": "boolean",
+          "form_preferences.requires_notarial_consent": "boolean?",
+          "inn_state": "object",
+          "inn_state.inn": "string?",
+          "inn_state.is_slot_required": "boolean",
+          "inn_state.message": "string?",
+          "inn_state.source": "string?",
+          "ocr_warnings": "array",
+          "ocr_warnings.*": "object",
+          "ocr_warnings.*.field": "string",
+          "ocr_warnings.*.message": "string",
+          "participant": "object",
+          "participant.confirmed_dt": "string?",
+          "participant.deal_application_id": "integer",
+          "participant.participant_id": "string",
+          "participant.updated_dt": "string?",
+          "progress": "object?",
+          "progress.stage": "integer",
+          "progress.stage_total": "integer",
+          "progress.step": "number",
+          "progress.step_total": "integer",
+          "recognition_mode": "string?",
+          "stage": "integer",
+          "step": "string",
+          "user_data": "object?",
+          "user_data.birth_date": "string?",
+          "user_data.birth_place": "string?",
+          "user_data.correspondence_address": "object?",
+          "user_data.correspondence_address.apartment": "string?",
+          "user_data.correspondence_address.building": "string?",
+          "user_data.correspondence_address.city": "string?",
+          "user_data.correspondence_address.fias_id": "string?",
+          "user_data.correspondence_address.full_text": "string",
+          "user_data.correspondence_address.house": "string?",
+          "user_data.correspondence_address.postal_code": "string?",
+          "user_data.correspondence_address.region": "string?",
+          "user_data.correspondence_address.settlement": "string?",
+          "user_data.correspondence_address.street": "string?",
+          "user_data.division_code": "string?",
+          "user_data.gender": "string",
+          "user_data.inn": "string?",
+          "user_data.is_prefilled": "boolean",
+          "user_data.passport_issued_at": "string?",
+          "user_data.passport_issued_by": "string?",
+          "user_data.registration_address": "object",
+          "user_data.registration_address.apartment": "string?",
+          "user_data.registration_address.building": "string?",
+          "user_data.registration_address.city": "string?",
+          "user_data.registration_address.fias_id": "string?",
+          "user_data.registration_address.full_text": "string",
+          "user_data.registration_address.house": "string?",
+          "user_data.registration_address.postal_code": "string?",
+          "user_data.registration_address.region": "string?",
+          "user_data.registration_address.settlement": "string?",
+          "user_data.registration_address.street": "string?",
+          "user_data.snils": "string?",
+          "user_data.updated_dt": "string",
+          "user_profile": "object",
+          "user_profile.citizenship": "string",
+          "user_profile.email": "string",
+          "user_profile.first_name": "string",
+          "user_profile.last_name": "string",
+          "user_profile.middle_name": "string?",
+          "user_profile.passport_number": "string",
+          "user_profile.passport_series": "string",
+          "user_profile.phone": "string",
+        },
+        openPaths: ["documents.*.recognized_fields"],
+      });
+      const required = ["dealApplicationId", "dealParticipantPayload", "bearerToken"];
+      const missing = required.filter((key) => !pm.variables.get(key));
+      if (missing.length) {
+        console.warn("Нужны входные данные: " + missing.join(", "));
+        pm.execution.skipRequest();
+      }
+    language: text/javascript
+settings: {}
+order: 16000

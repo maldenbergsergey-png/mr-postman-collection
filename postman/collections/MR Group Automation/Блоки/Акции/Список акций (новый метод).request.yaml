@@ -18,8 +18,9 @@ body:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТ PromotionsList
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "items",
           "items.*.attributes",
@@ -49,10 +50,11 @@ scripts:
           "items.*.attributes.terms_variant",
           "items.*.attributes.title",
           "items.*.attributes.transition_text",
-          "items.*.type"
+          "items.*.type",
         ],
         types: {
           "items": "array",
+          "items.*": "object",
           "items.*.attributes": "object",
           "items.*.attributes.background_color": "string?",
           "items.*.attributes.background_variant": "string",
@@ -80,9 +82,10 @@ scripts:
           "items.*.attributes.terms_variant": "string",
           "items.*.attributes.title": "string",
           "items.*.attributes.transition_text": "string?",
-          "items.*.type": "string"
-        }
+          "items.*.type": "string",
+        },
       });
+      // КОНТРАКТ PromotionsList
     language: text/javascript
   - type: afterResponse
     code: |-

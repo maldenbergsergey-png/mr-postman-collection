@@ -8,9 +8,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА:
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
         ],
         types: {
@@ -19,9 +19,11 @@ scripts:
           "email_support": "string",
           "footer_copyright": "string",
           "phone_support": "string",
-          "reg_text": "string"
-        }
+          "reg_text": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Параметры конфигурации.resources/examples

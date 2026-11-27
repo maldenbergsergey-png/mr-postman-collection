@@ -1,5 +1,7 @@
 $kind: http-request
 description: |
+  Маршрут снят из эксплуатации в контракте 2026-11.2. Запрос сохранён для истории и исключён из smoke.
+
   Фильтры поиска товаров в ES с учётом фильтров и строки поиска
 url: "{{baseUrl}}/sale/products/filters"
 method: GET
@@ -149,7 +151,7 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
       pm.variables.set("schema", {
         required: [

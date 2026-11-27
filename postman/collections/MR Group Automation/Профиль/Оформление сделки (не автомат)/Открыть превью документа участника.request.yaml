@@ -1,0 +1,40 @@
+$kind: http-request
+name: "Открыть превью документа участника"
+description: |-
+  Файл загруженного документа для показа в `<img>` или вкладке браузера. Адрес — `preview_url`
+  из `DealApplicationParticipantDocument`, вызывать его без заголовка авторизации: доступ даёт
+  подпись `signature` в ссылке (HMAC-SHA256 от заявки, документа и `expires`), параметры
+  менять нельзя. Срок ссылки ограничен `expires` (unix-время, сейчас 15 минут от выдачи);
+  после него и при любой неверной подписи — `403`, новую ссылку отдаёт `GET /deal-application/{id}/participant`.
+
+  Ответ — файл как есть, `Content-Type` по содержимому (`image/png`, `image/jpeg`,
+  `application/pdf`, `image/heic`), `Content-Disposition: inline; filename="<ASCII-вариант file_name>"; filename*=UTF-8''<file_name>`
+  (`filename` — ASCII-фолбэк: не-ASCII символы, `"`, `\` и `%` заменены на `_`; `filename*` — точное
+  имя, закодированное как UTF-8; `file_name` — из `DealApplicationParticipantDocument`; у HEIC — `attachment`, файл отдаётся
+  оригиналом без конвертации: Safari покажет, Chrome скачает), `X-Content-Type-Options: nosniff`,
+  `Cache-Control: no-store`.
+  Состояние заявки и фаза участника на превью не влияют (чтение).
+
+  Возьмите document-id, expires и signature из актуальной preview_url. Срок ссылки 15 минут.
+url: "{{baseUrl}}/deal-application/{{dealApplicationId}}/participant/documents/{{dealDocumentId}}/preview?expires={{dealPreviewExpires}}&signature={{dealPreviewSignature}}"
+method: GET
+queryParams:
+  - key: "expires"
+    value: "{{dealPreviewExpires}}"
+  - key: "signature"
+    value: "{{dealPreviewSignature}}"
+headers:
+  Accept: "application/pdf, image/heic, image/jpeg, image/png"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["image/png", "image/jpeg", "application/pdf", "image/heic"]});
+      const required = ["dealApplicationId", "dealDocumentId", "dealPreviewExpires", "dealPreviewSignature"];
+      const missing = required.filter((key) => !pm.variables.get(key));
+      if (missing.length) {
+        console.warn("Нужны входные данные: " + missing.join(", "));
+        pm.execution.skipRequest();
+      }
+    language: text/javascript
+settings: {}
+order: 14000

@@ -12,6 +12,33 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "count",
+          "items",
+          "items.*.answer",
+          "items.*.category_code",
+          "items.*.category_name",
+          "items.*.question",
+          "items.*.question_id",
+          "items.*.subcategory_code",
+          "items.*.subcategory_name",
+        ],
+        types: {
+          "count": "integer",
+          "items": "array",
+          "items.*": "object",
+          "items.*.answer": "string",
+          "items.*.category_code": "string",
+          "items.*.category_name": "string",
+          "items.*.question": "string",
+          "items.*.question_id": "integer",
+          "items.*.subcategory_code": "string?",
+          "items.*.subcategory_name": "string?",
+        },
+      });
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
       const missingInputs__ = ["faqQuery"].filter((n) => !pm.variables.get(n));
       if (missingInputs__.length) {
@@ -26,32 +53,8 @@ scripts:
 
 
 
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-          "count",
-          "items",
-          "items.*.answer",
-          "items.*.category_code",
-          "items.*.category_name",
-          "items.*.question",
-          "items.*.question_id",
-          "items.*.subcategory_code",
-          "items.*.subcategory_name"
-        ],
-        types: {
-          "count": "integer",
-          "items": "array",
-          "items.*.answer": "string",
-          "items.*.category_code": "string",
-          "items.*.category_name": "string",
-          "items.*.question": "string",
-          "items.*.question_id": "integer",
-          "items.*.subcategory_code": "string?",
-          "items.*.subcategory_name": "string?"
-        }
-      });
     language: text/javascript
   - type: afterResponse
     code: |-

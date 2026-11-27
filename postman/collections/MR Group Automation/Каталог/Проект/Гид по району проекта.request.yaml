@@ -9,15 +9,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["projectCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "array",
         required: [
           "*.code",
           "*.image_horizontal",
@@ -25,9 +19,10 @@ scripts:
           "*.image_vertical",
           "*.image_vertical.src",
           "*.teaser",
-          "*.title"
+          "*.title",
         ],
         types: {
+          "*": "object",
           "*.code": "string",
           "*.image_horizontal": "object",
           "*.image_horizontal.description": "string",
@@ -36,9 +31,17 @@ scripts:
           "*.image_vertical.description": "string",
           "*.image_vertical.src": "string",
           "*.teaser": "string?",
-          "*.title": "string"
-        }
+          "*.title": "string",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["projectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
     language: text/javascript
   - type: afterResponse
     code: |-

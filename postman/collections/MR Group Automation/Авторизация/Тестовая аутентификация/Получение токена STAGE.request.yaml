@@ -19,17 +19,23 @@ body:
         }
     }
 scripts:
+  - type: beforeRequest
+    code: |-
+      pm.environment.unset("bearerToken");
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", { rootType: "object", required: ["jwt", "payload"],
+        types: { jwt: "string", payload: "object" }, openPaths: ["payload"] });
+    language: text/javascript
   - type: afterResponse
     code: |
-      const jwtToken = pm.response.json().jwt;
-
-      if (!pm.environment.has('bearerToken')) {
-          pm.environment.set('bearerToken', jwtToken);
-          console.log("Переменная окружения 'bearerToken' создана и значение установлено:", jwtToken);
-      } else {
-          pm.environment.set('bearerToken', jwtToken);
-          console.log("Значение переменной окружения 'bearerToken' обновлено:", jwtToken);
-      }
+      const media = (pm.response.headers.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
+      if (pm.response.code !== 200 || media !== "application/json") return;
+      let data;
+      try { data = pm.response.json(); } catch { return; }
+      const valid = typeof data?.jwt === "string" && data.jwt.trim().length > 0
+        && data.payload !== null && typeof data.payload === "object" && !Array.isArray(data.payload);
+      pm.test("Тестовый JWT получен", () => pm.expect(valid).to.be.true);
+      if (valid) pm.environment.set("bearerToken", data.jwt);
     language: text/javascript
 settings: {}
 order: 2000

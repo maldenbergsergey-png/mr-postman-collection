@@ -7,6 +7,30 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "main_title",
+        ],
+        types: {
+          "faq_linked_section": "array",
+          "faq_linked_section.*": "string",
+          "main_button": "object",
+          "main_button.link_app": "string",
+          "main_button.link_web": "string",
+          "main_button.text": "string",
+          "main_description": "string",
+          "main_description_en": "string?",
+          "main_image_desk": "string",
+          "main_image_mob": "string",
+          "main_title": "string",
+          "main_title_en": "string?",
+          "second_description": "string",
+          "second_title": "string",
+          "steps_block_code": "string",
+        },
+      });
       const templatesArray = ["brokeram", "vacancy", "installments", "tradein", "our-people", "referral"];
 
       pm.environment.set("templateCode", templatesArray[Math.floor(Math.random() * templatesArray.length)])
@@ -27,30 +51,8 @@ scripts:
           })
       }
 
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-          "main_title"
-        ],
-        types: {
-          "faq_linked_section": "array?",
-          "faq_linked_section.*": "string",
-          "main_button": "object?",
-          "main_button.link_app": "string?",
-          "main_button.link_web": "string?",
-          "main_button.text": "string?",
-          "main_description": "string?",
-          "main_description_en": "string?",
-          "main_image_desk": "string?",
-          "main_image_mob": "string?",
-          "main_title": "string",
-          "main_title_en": "string?",
-          "second_description": "string?",
-          "second_title": "string?",
-          "steps_block_code": "string?"
-        }
-      });
     language: text/javascript
   - type: afterResponse
     code: |+

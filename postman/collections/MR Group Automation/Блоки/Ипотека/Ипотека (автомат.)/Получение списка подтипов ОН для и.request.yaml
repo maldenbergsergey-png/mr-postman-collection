@@ -17,28 +17,28 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |
-      // КОНТРАКТЫ МЕТОДА: MortgageCalcCategoryList
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
-
           "items.*.code",
-          "items.*.name",
+          "items.*.max_price",
           "items.*.min_price",
-          "items.*.max_price"
+          "items.*.name",
         ],
-
         types: {
           "count": "integer",
           "items": "array",
-
+          "items.*": "object",
           "items.*.code": "string",
-          "items.*.name": "string",
+          "items.*.max_price": "number",
           "items.*.min_price": "number",
-          "items.*.max_price": "number"
-        }
+          "items.*.name": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА: MortgageCalcCategoryList
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка подтипов ОН для и.resources/examples

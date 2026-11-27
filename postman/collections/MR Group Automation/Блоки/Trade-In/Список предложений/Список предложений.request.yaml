@@ -8,9 +8,9 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА: 
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "offers",
           "offers.*.background_color",
@@ -18,18 +18,21 @@ scripts:
           "offers.*.font_color",
           "offers.*.image",
           "offers.*.note",
-          "offers.*.title"
+          "offers.*.title",
         ],
         types: {
           "offers": "array",
+          "offers.*": "object",
           "offers.*.background_color": "string",
           "offers.*.description": "string",
           "offers.*.font_color": "string",
           "offers.*.image": "string?",
           "offers.*.note": "string",
-          "offers.*.title": "string"
-        }
+          "offers.*.title": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА:
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Список предложений.resources/examples

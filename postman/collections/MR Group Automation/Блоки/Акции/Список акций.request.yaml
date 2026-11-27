@@ -21,6 +21,27 @@ queryParams:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "array",
+        required: [
+          "*.background_color",
+          "*.code",
+          "*.promo_expires",
+          "*.promo_image",
+          "*.subtitle",
+          "*.title",
+        ],
+        types: {
+          "*": "object",
+          "*.background_color": "string?",
+          "*.code": "string?",
+          "*.promo_expires": "string?",
+          "*.promo_image": "string?",
+          "*.subtitle": "string?",
+          "*.title": "string",
+        },
+      });
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
       const missingInputs__ = ["projectCodePromo"].filter((n) => !pm.variables.get(n));
       if (missingInputs__.length) {
@@ -30,24 +51,6 @@ scripts:
 
       // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-          "*.background_color",
-          "*.code",
-          "*.promo_expires",
-          "*.promo_image",
-          "*.subtitle",
-          "*.title"
-        ],
-        types: {
-          "*.background_color": "string?",
-          "*.code": "string?",
-          "*.promo_expires": "string?",
-          "*.promo_image": "string?",
-          "*.subtitle": "string?",
-          "*.title": "string"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Список акций.resources/examples

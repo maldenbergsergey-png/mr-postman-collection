@@ -26,6 +26,24 @@ scripts:
     language: text/javascript
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "items.*.description",
+          "items.*.id",
+          "items.*.image",
+          "items.*.title",
+        ],
+        types: {
+          "items": "array",
+          "items.*": "object",
+          "items.*.description": "string",
+          "items.*.id": "string",
+          "items.*.image": "string",
+          "items.*.title": "string",
+        },
+      });
       // URL метода, откуда берём проекты
       const baseUrl = pm.environment.get("baseUrl")
 
@@ -79,19 +97,8 @@ scripts:
           });
       })();
 
-      // КОНТРАКТЫ МЕТОДА: 
+      // КОНТРАКТЫ МЕТОДА:
 
-      pm.variables.set("schema", {
-        required: [
-        ],
-        types: {
-          "items": "array",
-          "items.*.description": "string",
-          "items.*.id": "string",
-          "items.*.image": "string",
-          "items.*.title": "string"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Особенности проекта.resources/examples

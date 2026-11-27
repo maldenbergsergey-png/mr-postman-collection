@@ -13,6 +13,21 @@ auth:
 scripts:
   - type: beforeRequest
     code: |
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "items",
+          "items.*.date",
+          "items.*.id",
+        ],
+        types: {
+          "items": "array",
+          "items.*": "object",
+          "items.*.date": "string",
+          "items.*.id": "string",
+        },
+      });
       // Нужные значения приходят из предыдущих запросов; без них запрос не отправляется
       const missingInputs__ = ["idDeal", "dealProductId"].filter((n) => !pm.variables.get(n));
       if (missingInputs__.length) {
@@ -21,19 +36,6 @@ scripts:
       }
 
       // КОНТРАКТЫ МЕТОДА: Schedule
-      pm.variables.set("schema", {
-        required: [
-          "items",
-          "items.*.date",
-          "items.*.id"
-        ],
-
-        types: {
-          "items": "array",
-          "items.*.date": "string",
-          "items.*.id": "string"
-        }
-      });
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение слотов для записи на осм.resources/examples

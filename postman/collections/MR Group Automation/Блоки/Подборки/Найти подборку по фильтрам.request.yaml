@@ -1,0 +1,39 @@
+$kind: http-request
+name: "Найти подборку по фильтрам"
+description: |-
+  Возвращает сведения для SEO-блока из подборки, фильтры которой совпадают с переданным
+  набором применённых фильтров (порядок следования параметров не важен).
+  Если такой подборки нет, возвращается `seo: null`, и клиент использует шаблонные заголовки.
+
+  Для базового запроса используется категория flats из договора API. Фильтры можно передать в соответствии с контрактом.
+url: "{{baseUrl}}/selections/match?category=flats"
+method: GET
+queryParams:
+  - key: "category"
+    value: "flats"
+headers:
+  Accept: "application/json"
+scripts:
+  - type: beforeRequest
+    code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
+      pm.variables.set("schema", {
+        rootType: "object",
+        required: [
+          "seo",
+          "seo.description",
+          "seo.h1",
+          "seo.short_description",
+          "seo.title",
+        ],
+        types: {
+          "seo": "object?",
+          "seo.description": "string?",
+          "seo.h1": "string?",
+          "seo.short_description": "string?",
+          "seo.title": "string?",
+        },
+      });
+    language: text/javascript
+settings: {}
+order: 2000

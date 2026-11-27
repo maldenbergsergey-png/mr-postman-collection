@@ -10,18 +10,13 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // Входные данные приходят из предыдущих запросов или задаются вручную
-      const required = ["parkingProjectCode"];
-      const absent = required.filter((n) => !pm.variables.get(n));
-      if (absent.length) {
-        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
-        pm.execution.skipRequest();
-      }
-
-      // КОНТРАКТ ParkingLanding
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "advantages",
+          "advantages.description",
+          "advantages.title",
           "buildings",
           "buildings.*.available_levels",
           "buildings.*.available_types",
@@ -40,17 +35,24 @@ scripts:
           "buildings.*.parking_places_count",
           "buildings.*.readiness",
           "genplan",
+          "genplan.available",
+          "genplan.background_image",
+          "genplan.compass_angle",
+          "genplan.svg_markup",
           "purchase_rules",
+          "purchase_rules.description",
+          "purchase_rules.title",
           "summary",
           "summary.boxrooms_count",
           "summary.motorcycle_places_count",
-          "summary.parking_places_count"
+          "summary.parking_places_count",
         ],
         types: {
           "advantages": "object?",
           "advantages.description": "string?",
           "advantages.title": "string?",
           "buildings": "array",
+          "buildings.*": "object",
           "buildings.*.available_levels": "array",
           "buildings.*.available_levels.*": "integer",
           "buildings.*.available_types": "array",
@@ -80,9 +82,18 @@ scripts:
           "summary": "object",
           "summary.boxrooms_count": "integer",
           "summary.motorcycle_places_count": "integer?",
-          "summary.parking_places_count": "integer"
-        }
+          "summary.parking_places_count": "integer",
+        },
       });
+      // Входные данные приходят из предыдущих запросов или задаются вручную
+      const required = ["parkingProjectCode"];
+      const absent = required.filter((n) => !pm.variables.get(n));
+      if (absent.length) {
+        console.warn("Запрос пропущен: нет значений для " + absent.join(", "));
+        pm.execution.skipRequest();
+      }
+
+      // КОНТРАКТ ParkingLanding
     language: text/javascript
   - type: afterResponse
     code: |-

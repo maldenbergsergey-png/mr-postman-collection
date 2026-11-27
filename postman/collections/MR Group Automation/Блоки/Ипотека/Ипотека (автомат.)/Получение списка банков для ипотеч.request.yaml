@@ -9,24 +9,27 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
-      // КОНТРАКТЫ МЕТОДА
-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
           "count",
           "items",
           "items.*.code",
           "items.*.logo",
-          "items.*.name"
+          "items.*.name",
         ],
         types: {
           "count": "integer",
           "items": "array",
+          "items.*": "object",
           "items.*.code": "string",
           "items.*.logo": "string",
-          "items.*.name": "string"
-        }
+          "items.*.name": "string",
+        },
       });
+      // КОНТРАКТЫ МЕТОДА
+
     language: text/javascript
 settings: {}
 examples: ./.resources/Получение списка банков для ипотеч.resources/examples

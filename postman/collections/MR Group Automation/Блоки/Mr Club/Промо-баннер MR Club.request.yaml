@@ -9,9 +9,28 @@ headers:
 scripts:
   - type: beforeRequest
     code: |-
+      pm.variables.set("expectedResponse", {"200": ["application/json"]});
       pm.variables.set("schema", {
+        rootType: "object",
         required: [
-          "banner"
+          "banner",
+          "banner.ad_label",
+          "banner.description",
+          "banner.id",
+          "banner.image_desktop",
+          "banner.image_desktop.height",
+          "banner.image_desktop.src",
+          "banner.image_desktop.width",
+          "banner.image_mobile",
+          "banner.image_mobile.height",
+          "banner.image_mobile.src",
+          "banner.image_mobile.width",
+          "banner.image_tablet",
+          "banner.image_tablet.height",
+          "banner.image_tablet.src",
+          "banner.image_tablet.width",
+          "banner.link",
+          "banner.title",
         ],
         types: {
           "banner": "object?",
@@ -20,22 +39,22 @@ scripts:
           "banner.id": "integer",
           "banner.image_desktop": "object",
           "banner.image_desktop.description": "string",
-          "banner.image_desktop.src": "string",
           "banner.image_desktop.height": "integer",
+          "banner.image_desktop.src": "string",
           "banner.image_desktop.width": "integer",
-          "banner.image_mobile": "object?",
+          "banner.image_mobile": "object",
           "banner.image_mobile.description": "string",
-          "banner.image_mobile.src": "string",
           "banner.image_mobile.height": "integer",
+          "banner.image_mobile.src": "string",
           "banner.image_mobile.width": "integer",
-          "banner.image_tablet": "object?",
+          "banner.image_tablet": "object",
           "banner.image_tablet.description": "string",
-          "banner.image_tablet.src": "string",
           "banner.image_tablet.height": "integer",
+          "banner.image_tablet.src": "string",
           "banner.image_tablet.width": "integer",
           "banner.link": "string?",
-          "banner.title": "string?"
-        }
+          "banner.title": "string?",
+        },
       });
     language: text/javascript
 settings: {}
